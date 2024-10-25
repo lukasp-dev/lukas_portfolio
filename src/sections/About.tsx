@@ -4,6 +4,18 @@ import Globe from 'react-globe.gl';
 import Button from '../components/Button';
 import Skills from "../components/Skills";
 
+const techStackIcons = [
+    { name: "Java", path: "/assets/java.png" },
+    { name: "Spring Boot", path: "/assets/springboot.png" },
+    { name: "TypeScript", path: "/assets/typescript.png" },
+    { name: "React", path: "/assets/react.svg" },
+    { name: "Python", path: "/assets/python.png" },
+    { name: "Numpy", path: "/assets/numpy.png" },
+    { name: "Tensor", path: "/assets/tensor.png" },
+    { name: "Cpp", path: "/assets/cpp.png" },
+    { name: "Unity", path: "/assets/unity.png" }
+];
+
 const About = () => {
     const [hasCopied, setHasCopied] = useState(false);
 
@@ -39,7 +51,9 @@ const About = () => {
                 <div className="col-span-1 xl:row-span-3">
                     <div className="grid-container flex flex-col items-center p-6 sm:p-8 bg-black rounded-lg shadow-md h-full justify-between">
                         <div className="flex-grow grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 items-center justify-center">
-                            {/* ... 기술 스택 아이콘들 */}
+                            {techStackIcons.map((icon, index) => (
+                                <img key={index} src={icon.path} alt={icon.name} className="w-10 h-10 hover:scale-110 transition-transform duration-300"/>
+                            ))}
                         </div>
                         <div className="text-left w-full mt-auto">
                             <p className="text-2xl font-bold text-white mb-2">Tech Stack</p>
