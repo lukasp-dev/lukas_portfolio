@@ -32,7 +32,7 @@ const Skills: React.FC = () => {
                 if (entry.isIntersecting) {
                     const bars = document.querySelectorAll('.skill-bar-fill');
                     bars.forEach(bar => {
-                        (bar as HTMLElement).style.width = (bar as HTMLElement).dataset.width;
+                        (bar as HTMLElement).style.width = (bar as HTMLElement).dataset.width ?? '0%';
                     });
                 } else {
                     // 애니메이션 초기화
@@ -70,7 +70,7 @@ const Skills: React.FC = () => {
                 <div
                     className="skill-bar-fill bg-green-800 h-4 rounded-full transition-all duration-1000"
                     style={{ width: '0%' }}
-                    data-width={`${skill.years * 25}%`}
+                    data-width={`${skill.years * 25}%`} // Adjust to your preferred calculation
                 />
             </div>
         </div>

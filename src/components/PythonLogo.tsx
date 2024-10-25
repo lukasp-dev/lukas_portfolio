@@ -1,8 +1,22 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Float, useGLTF } from '@react-three/drei';
+import { Mesh, Material } from 'three';
 
-const PythonLogo = (props) => {
-    const { nodes, materials } = useGLTF('/models/python.glb');
+interface PythonLogoProps {
+    position?: [number, number, number];
+    scale?: number | [number, number, number];
+    rotation?: [number, number, number];
+}
+
+const PythonLogo: React.FC<PythonLogoProps> = (props) => {
+    const { nodes, materials } = useGLTF('/models/python.glb') as unknown as {
+        nodes: {
+            Python_Python_0: Mesh;
+        };
+        materials: {
+            Python: Material;
+        };
+    };
 
     return (
         <Float floatIntensity={1}> {/* Float 효과 추가 */}

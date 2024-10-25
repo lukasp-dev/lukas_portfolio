@@ -1,28 +1,37 @@
-import React, {useRef} from 'react'
-import {useGLTF} from "@react-three/drei";
+import React, { useRef, useEffect } from 'react';
+import { useGLTF } from '@react-three/drei';
 import gsap from 'gsap';
-import {useGSAP} from "@gsap/react";
+import { Group } from 'three';
 
-const Target = (props) => {
-    const targetRef = useRef();
+// Define props interface
+interface TargetProps {
+    rotation?: [number, number, number];
+    position?: [number, number, number];
+    scale?: [number, number, number];
+}
+
+const Target: React.FC<TargetProps> = (props) => {
+    const targetRef = useRef<Group>(null);
     const { scene } = useGLTF(
         'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/target-stand/model.gltf',
     );
 
-    useGSAP(() => {
-        gsap.to(targetRef.current.position, {
-            y: targetRef.current.position.y + 1,
-            duration: 1.5,
-            repeat: -1,
-            yoyo: true
-        })
-    })
+    useEffect(() => {
+        if (targetRef.current) {
+            gsap.to(targetRef.current.position, {
+                y: targetRef.current.position.y + 1,
+                duration: 1.5,
+                repeat: -1,
+                yoyo: true
+            });
+        }
+    }, []);
 
     return (
-        <mesh {...props} ref={targetRef} rotation={[0, Math.PI/5, 0]}>
-            <primitive object={scene}>
-            </primitive>
-        </mesh>
-    )
-}
-export default Target
+        <group {...props} ref={targetRef} rotation={props.rotation || [0, Math.PI / 5, 0]}>
+            <primitive object={scene} />
+        </group>
+    );
+};
+
+export default Target;

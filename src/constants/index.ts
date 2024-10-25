@@ -1,67 +1,93 @@
-export const navLinks = [
-    {
-        id: 1,
-        name: 'Home',
-        href: '#home',
-    },
-    {
-        id: 2,
-        name: 'About',
-        href: '#about',
-    },
-    {
-        id: 3,
-        name: 'Work',
-        href: '#work',
-    },
-    {
-        id: 4,
-        name: 'Contact',
-        href: '#contact',
-    },
+interface NavLink {
+    id: number;
+    name: string;
+    href: string;
+}
+
+interface ClientReview {
+    id: number;
+    name: string;
+    position: string;
+    img: string;
+    review: string;
+}
+
+interface ProjectTag {
+    id: number;
+    name: string;
+    path: string;
+}
+
+interface Project {
+    title: string;
+    desc: string;
+    subdesc: string;
+    href: string;
+    texture: string;
+    logo: string;
+    logoStyle: {
+        backgroundColor: string;
+        border: string;
+        boxShadow: string;
+    };
+    spotlight: string;
+    tags: ProjectTag[];
+    picture?: string;
+}
+
+interface WorkExperience {
+    id: number;
+    name: string;
+    pos: string;
+    duration: string;
+    title: string;
+    icon: string;
+    animation: string;
+}
+
+export const navLinks: NavLink[] = [
+    { id: 1, name: 'Home', href: '#home' },
+    { id: 2, name: 'About', href: '#about' },
+    { id: 3, name: 'Work', href: '#work' },
+    { id: 4, name: 'Contact', href: '#contact' },
 ];
 
-export const clientReviews = [
+export const clientReviews: ClientReview[] = [
     {
         id: 1,
         name: 'Emily Johnson',
         position: 'Marketing Director at GreenLeaf',
         img: 'assets/review1.png',
-        review:
-            'Working with Adrian was a fantastic experience. He transformed our outdated website into a modern, user-friendly platform. His attention to detail and commitment to quality are unmatched. Highly recommend him for any web dev projects.',
+        review: 'Working with Adrian was a fantastic experience...'
     },
     {
         id: 2,
         name: 'Mark Rogers',
         position: 'Founder of TechGear Shop',
         img: 'assets/review2.png',
-        review:
-            'Adrian’s expertise in web development is truly impressive. He delivered a robust and scalable solution for our e-commerce site, and our online sales have significantly increased since the launch. He’s a true professional! Fantastic work.',
+        review: 'Adrian’s expertise in web development is truly impressive...'
     },
     {
         id: 3,
         name: 'John Dohsas',
-        position: 'Project Manager at UrbanTech ',
+        position: 'Project Manager at UrbanTech',
         img: 'assets/review3.png',
-        review:
-            'I can’t say enough good things about Adrian. He was able to take our complex project requirements and turn them into a seamless, functional website. His problem-solving abilities are outstanding.',
+        review: 'I can’t say enough good things about Adrian...'
     },
     {
         id: 4,
         name: 'Ether Smith',
         position: 'CEO of BrightStar Enterprises',
         img: 'assets/review4.png',
-        review:
-            'Adrian was a pleasure to work with. He understood our requirements perfectly and delivered a website that exceeded our expectations. His skills in both frontend backend dev are top-notch.',
+        review: 'Adrian was a pleasure to work with...'
     },
 ];
 
-export const myProjects = [
+export const myProjects: Project[] = [
     {
         title: 'Online Retail Data Analysis',
         desc: 'An online retail data analysis project using Python.',
-        subdesc:
-            'The Online Retail Data Analysis Project is designed to perform a comprehensive exploratory data analysis (EDA) on retail data, with a primary focus on understanding customer behavior and sales trends. Using Python, the project leverages data analysis libraries such as pandas and numpy, visualization tools like matplotlib and seaborn, and machine learning techniques, including RFM Analysis and K-Means clustering, to gain insights into customer segmentation. The project aims to enhance data-driven decision-making and prepare for future predictive modeling, interactive dashboards, and integration of additional data sources to enrich the analysis.',
+        subdesc: 'The Online Retail Data Analysis Project is designed...',
         href: 'https://github.com/lukasp-dev/online-sale-data-analysis/tree/main',
         texture: '/textures/project/project1.mp4',
         logo: '/assets/python.png',
@@ -72,39 +98,18 @@ export const myProjects = [
         },
         spotlight: '/assets/spotlight1.png',
         tags: [
-            {
-                id: 1,
-                name: 'Pandas',
-                path: '/assets/pandas.png',
-            },
-            {
-                id: 2,
-                name: 'Numpy',
-                path: 'assets/numpy.png',
-            },
-            {
-                id: 3,
-                name: 'Scikit-learn',
-                path: '/assets/scikit.png',
-            },
-            {
-                id: 4,
-                name: 'Seaborn',
-                path: '/assets/seaborn.png',
-            },
-            {
-                id: 5,
-                name: 'Jupyter',
-                path: '/assets/jupyter.png',
-            },
+            { id: 1, name: 'Pandas', path: '/assets/pandas.png' },
+            { id: 2, name: 'Numpy', path: 'assets/numpy.png' },
+            { id: 3, name: 'Scikit-learn', path: '/assets/scikit.png' },
+            { id: 4, name: 'Seaborn', path: '/assets/seaborn.png' },
+            { id: 5, name: 'Jupyter', path: '/assets/jupyter.png' },
         ],
         picture: '',
     },
     {
         title: 'StreamFlix - AI Movie Recommendation System',
         desc: 'AI-powered movie recommendation system utilizing advanced machine-learning techniques.',
-        subdesc:
-            'The system analyzes key metrics, such as average ratings and script word similarity, to provide highly accurate and personalized movie suggestions tailored to user preferences. Leveraged a machine-learning algorithm that achieved an impressive 90% accuracy in generating recommendations, significantly enhancing the relevance and quality of movie selections for users.',
+        subdesc: 'The system analyzes key metrics, such as average ratings...',
         href: 'https://github.com/lukasp-dev/movie-recommendation',
         texture: '/textures/project/project3.mp4',
         logo: '/assets/python.png',
@@ -115,24 +120,15 @@ export const myProjects = [
         },
         spotlight: '/assets/spotlight3.png',
         tags: [
-            {
-                id: 1,
-                name: 'Scikit-learn',
-                path: '/assets/scikit.png',
-            },
-            {
-                id: 2,
-                name: 'Anaconda',
-                path: 'assets/anaconda.png',
-            },
+            { id: 1, name: 'Scikit-learn', path: '/assets/scikit.png' },
+            { id: 2, name: 'Anaconda', path: 'assets/anaconda.png' },
         ],
         picture: '/assets/movie-rec.png',
     },
     {
         title: 'Purchease API - API for Online Shopping Platform',
-        desc: 'Purchase API is a RESTful API that allows users to purchase products from a website. It is designed to be scalable and efficient, and it provides a seamless and secure online shopping experience.',
-        subdesc:
-            'Built with Spring Boot, Java, MySQL and Docker, Purchase API is a robust and scalable solution for online shopping. It offers a seamless and secure online shopping experience.',
+        desc: 'Purchase API is a RESTful API that allows users to purchase products from a website.',
+        subdesc: 'Built with Spring Boot, Java, MySQL and Docker...',
         href: 'https://github.com/lukasp-dev/e-commerce-backend',
         texture: '/textures/project/project2.mp4',
         logo: '/assets/java.png',
@@ -143,34 +139,17 @@ export const myProjects = [
         },
         spotlight: '/assets/spotlight2.png',
         tags: [
-            {
-                id: 1,
-                name: 'Spring Boot',
-                path: '/assets/springboot.png',
-            },
-            {
-                id: 3,
-                name: 'Gradle',
-                path: '/assets/gradle.png',
-            },
-            {
-                id: 4,
-                name: 'Docker',
-                path: '/assets/docker.png',
-            },
-            {
-                id: 5,
-                name: 'MySQL',
-                path: '/assets/mysql.png',
-            }
+            { id: 1, name: 'Spring Boot', path: '/assets/springboot.png' },
+            { id: 3, name: 'Gradle', path: '/assets/gradle.png' },
+            { id: 4, name: 'Docker', path: '/assets/docker.png' },
+            { id: 5, name: 'MySQL', path: '/assets/mysql.png' },
         ],
         picture: '',
     },
     {
         title: 'Quiz Trivia - Online Quiz Platform',
-        desc: 'Quiz Trivia is a platform that offers users a chance to test their knowledge. It provides a range of trivia questions and answers, allowing users to test their knowledge in a fun and engaging way.',
-        subdesc:
-            'Built with React.js, TypeScript, ChakraUI, and Vite, Quiz Trivia is a user-friendly platform that offers a range of trivia questions and answers, allowing users to test their knowledge in a fun and engaging way.',
+        desc: 'Quiz Trivia is a platform that offers users a chance to test their knowledge.',
+        subdesc: 'Built with React.js, TypeScript, ChakraUI, and Vite...',
         href: 'https://lukasp-dev.github.io/quiz-app/',
         texture: '/textures/project/project5.mp4',
         logo: '/assets/typescript.png',
@@ -181,45 +160,21 @@ export const myProjects = [
         },
         spotlight: '/assets/spotlight5.png',
         tags: [
-            {
-                id: 1,
-                name: 'React.js',
-                path: '/assets/react.svg',
-            },
-            {
-                id: 2,
-                name: 'chakraUI',
-                path: 'assets/chakra.png',
-            },
-            {
-                id: 4,
-                name: 'Vite',
-                path: '/assets/vite.png',
-            },
+            { id: 1, name: 'React.js', path: '/assets/react.svg' },
+            { id: 2, name: 'chakraUI', path: 'assets/chakra.png' },
+            { id: 4, name: 'Vite', path: '/assets/vite.png' },
         ],
         picture: '',
     },
 ];
 
-export const calculateSizes = (isSmall, isMobile, isTablet) => {
-    return {
-        deskScale: isSmall ? 0.05 : isMobile ? 0.06 : 0.065,
-        deskPosition: isMobile ? [0.5, -4.5, 0] : [0.25, -5.5, 0],
-        cubePosition: isSmall ? [4, -5, 0] : isMobile ? [5, -5, 0] : isTablet ? [5, -5, 0] : [9, -5.5, 0],
-        reactLogoPosition: isSmall ? [3, 4, 0] : isMobile ? [5, 4, 0] : isTablet ? [5, 4, 0] : [12, 3, 0],
-        ringPosition: isSmall ? [-5, 7, 0] : isMobile ? [-10, 10, 0] : isTablet ? [-12, 10, 0] : [-24, 10, 0],
-        targetPosition: isSmall ? [-5, -10, -10] : isMobile ? [-9, -10, -10] : isTablet ? [-11, -7, -10] : [-13, -13, -10],
-    };
-};
-
-export const workExperiences = [
+export const workExperiences: WorkExperience[] = [
     {
         id: 1,
         name: 'Stride Labs',
         pos: 'Software Engineer',
         duration: 'Oct 2024 - Present',
-        title: "\n" +
-            "Developed an AI-driven automated system for custom medical brace manufacturing, integrating CAD and padiform orthotics design. Utilized WebGL-based 3D rendering with Three.js to create precise and customizable models, improving accuracy and efficiency in the production of patient-specific orthotic devices",
+        title: "Developed an AI-driven automated system...",
         icon: '/assets/stride_labs.png',
         animation: 'victory',
     },
@@ -228,8 +183,7 @@ export const workExperiences = [
         name: 'Georgia Tech',
         pos: 'Undergraduate Researcher',
         duration: 'Aug 2024 - Present',
-        title: "\n" +
-            "Enhanced vehicle autonomy and safety using LiDAR technology. Developed Python-based edge detection algorithms with OpenCV and TensorFlow, integrated into a Dockerized ROS2 setup",
+        title: "Enhanced vehicle autonomy and safety using LiDAR technology...",
         icon: '/assets/gt_logo.png',
         animation: 'victory',
     },
@@ -238,8 +192,7 @@ export const workExperiences = [
         name: '360 Energy',
         pos: 'Software Engineer',
         duration: 'Jul 2024 - Present',
-        title: "\n" +
-            "Built a real-time dashboard for store owners to monitor battery levels, integrating sensor data for live updates. Developed a SolarCharge Optimizer to simulate efficient battery charging based on sunlight, enhancing renewable energy management",
+        title: "Built a real-time dashboard for store owners...",
         icon: '/assets/360energy_logo.png',
         animation: 'clapping',
     },
@@ -262,3 +215,4 @@ export const workExperiences = [
         animation: 'salute',
     },
 ];
+

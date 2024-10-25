@@ -1,41 +1,34 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
-import HackerRoom from '../components/HackerRoom.tsx';
-import CanvasLoader from '../components/CanvasLoader.tsx';
-import { Leva, useControls } from 'leva';
+import HackerRoom from '../components/HackerRoom';
+import CanvasLoader from '../components/CanvasLoader';
 import { useMediaQuery } from 'react-responsive';
-import Target from "../components/Target.tsx";
-import ReactLogo from "../components/ReactLogo.tsx";
-import PythonLogo from "../components/PythonLogo.tsx";
-import CppLogo from "../components/CppLogo.tsx";
-import JavaLogo from "../components/JavaLogo.tsx";
-import HeroCamera from "../components/HeroCamera.tsx";
-import Button from "../components/Button.tsx";
+import ReactLogo from "../components/ReactLogo";
+import PythonLogo from "../components/PythonLogo";
+import CppLogo from "../components/CppLogo";
+import JavaLogo from "../components/JavaLogo";
+import HeroCamera from "../components/HeroCamera";
+import Button from "../components/Button";
 
 const Hero = () => {
     const isSmall = useMediaQuery({ maxWidth: 440 });
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
 
-    // `calculateSizes` 함수 선언 수정 및 사용 위치 변경
     const calculateSizes = (isSmall: boolean, isMobile: boolean, isTablet: boolean) => {
         return {
             deskScale: isSmall ? 0.05 : isMobile ? 0.06 : 0.065,
-            deskPosition: isMobile ? [0.5, -4.5, 0] : [0.25, -5.5, 0],
-            cppPosition: isSmall ? [-3.5, 4, 0] : isMobile ? [8, 3, 0] : isTablet ? [-7, 5, 0] : [-11, 2, 0], // C++ 로고 위치 추가
-            reactLogoPosition: isSmall ? [3, 4, 0] : isMobile ? [5, 4, 0] : isTablet ? [5, 4, 0] : [11, 3, 0],
-            ringPosition: isSmall ? [-5, 7, 0] : isMobile ? [-10, 10, 0] : isTablet ? [-12, 10, 0] : [-24, 10, 0],
-            javaPosition: isSmall ? [-5, -11, -10] : isMobile ? [-9, -10, -10] : isTablet ? [-9.5, -9, -10] : [-13, -10, -10],
-            pythonLogoPosition: isSmall ? [4, -7, 0] : isMobile ? [5, -5, 0] : isTablet ? [7, -5, 0] : [9, -5.5, 0],
+            deskPosition: isMobile ? [0.5, -4.5, 0] as [number, number, number] : [0.25, -5.5, 0] as [number, number, number],
+            cppPosition: isSmall ? [-3.5, 4, 0] as [number, number, number] : isMobile ? [8, 3, 0] as [number, number, number] : isTablet ? [-7, 5, 0] as [number, number, number] : [-11, 2, 0] as [number, number, number],
+            reactLogoPosition: isSmall ? [3, 4, 0] as [number, number, number] : isMobile ? [5, 4, 0] as [number, number, number] : isTablet ? [5, 4, 0] as [number, number, number] : [11, 3, 0] as [number, number, number],
+            ringPosition: isSmall ? [-5, 7, 0] as [number, number, number] : isMobile ? [-10, 10, 0] as [number, number, number] : isTablet ? [-12, 10, 0] as [number, number, number] : [-24, 10, 0] as [number, number, number],
+            javaPosition: isSmall ? [-5, -11, -10] as [number, number, number] : isMobile ? [-9, -10, -10] as [number, number, number] : isTablet ? [-9.5, -9, -10] as [number, number, number] : [-13, -10, -10] as [number, number, number],
+            pythonLogoPosition: isSmall ? [4, -7, 0] as [number, number, number] : isMobile ? [5, -5, 0] as [number, number, number] : isTablet ? [7, -5, 0] as [number, number, number] : [9, -5.5, 0] as [number, number, number],
         };
     };
 
     const sizes = calculateSizes(isSmall, isMobile, isTablet);
-
-    // isBeam 변수 정의
-    const isBeam = true;
-    const name = "Let's work together";
 
     return (
         <section className="min-h-screen w-full relative flex flex-col justify-between">
@@ -49,7 +42,6 @@ const Hero = () => {
                 <p className="grid-subtext"> Computer Science Student at Georgia Tech</p>
             </div>
             <div className="w-full h-full absolute inset-0">
-                {/*<Leva />*/}
                 <Canvas className="w-full h-full">
                     <Suspense fallback={<CanvasLoader/>}>
                         <PerspectiveCamera makeDefault position={[0, 0, 30]}/>

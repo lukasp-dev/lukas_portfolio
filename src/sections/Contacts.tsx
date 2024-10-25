@@ -1,27 +1,29 @@
 import emailjs from '@emailjs/browser';
 import { useRef, useState } from 'react';
 
-import useAlert from '../hooks/useAlert.js';
-import Alert from '../components/Alert.jsx';
+import useAlert from '../hooks/useAlert';
+import Alert from '../components/Alert';
 
-const Contacts = () => {
-    const formRef = useRef();
+const Contacts: React.FC = () => {
+    const formRef = useRef<HTMLFormElement>(null);
 
     const { alert, showAlert, hideAlert } = useAlert();
     const [loading, setLoading] = useState(false);
 
     const [form, setForm] = useState({ name: '', email: '', message: '' });
 
-    const handleChange = ({ target: { name, value } }) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
         setForm({ ...form, [name]: value });
     };
+
     /**
      * Handles form submission by sending an email to the server using emailjs and
      * shows a success or danger alert based on the response.
      *
-     * @param {Event} e - The form submission event.
+     * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
      */
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 
@@ -42,26 +44,24 @@ const Contacts = () => {
                 () => {
                     setLoading(false);
                     showAlert({
-                        show: true,
                         text: 'Thank you for your message 😃',
                         type: 'success',
                     });
 
                     setTimeout(() => {
-                        hideAlert(false);
+                        hideAlert();
                         setForm({
                             name: '',
                             email: '',
                             message: '',
                         });
-                    }, [3000]);
+                    }, 3000);
                 },
                 (error) => {
                     setLoading(false);
                     console.error(error);
 
                     showAlert({
-                        show: true,
                         text: "I didn't receive your message 😢",
                         type: 'danger',
                     });
@@ -125,7 +125,6 @@ const Contacts = () => {
 
                         <button className="field-btn" type="submit" disabled={loading}>
                             {loading ? 'Sending...' : 'Send Message'}
-
                             <img src="/assets/arrow-up.png" alt="arrow-up" className="field-btn_arrow" />
                         </button>
                     </form>
