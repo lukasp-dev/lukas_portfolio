@@ -68,8 +68,7 @@ const About = () => {
                         <div className="mt-auto">
                             <p className="text-2xl font-bold text-white mb-2 text-left">Tech Stack</p>
                             <p className="text-base text-gray-400 text-left">
-                                I specialize in a variety of languages, frameworks, and tools that allow me to build
-                                robust and scalable applications.
+                                I have experience in a wide range of programming languages, and specialize in C++, Python, and Java.
                             </p>
                         </div>
                     </div>
@@ -99,7 +98,7 @@ const About = () => {
                         </div>
                         <div>
                             <p className="grid-headtext">I’m very flexible with time zone communications & locations</p>
-                            <p className="grid-subtext">I&apos;m based in Rjieka, Croatia and open to remote work
+                            <p className="grid-subtext">I&apos;m based in Atlanta, Georgia and open to remote work
                                 worldwide.</p>
                             <Button name="Contact Me" isBeam containerClass="w-full mt-10"/>
                         </div>
