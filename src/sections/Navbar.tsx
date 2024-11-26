@@ -24,6 +24,7 @@ const Navbar = () => {
                     <a href="/" className="text-neutral-400 font-bold text-xl hover:text-white transition-colors">
                         <img src="/assets/name.png" className="w-24 h-auto" alt="Logo"/>
                     </a>
+                    
                     <button
                         className="text-neutral-400 hover:text-white focus:outline-none sm:hidden flex"
                         aria-label="Toggle Menu"
@@ -35,6 +36,7 @@ const Navbar = () => {
                             className="w-6 h-6"
                         />
                     </button>
+                    
                     <nav className="sm:flex hidden">
                         <NavItems/>
                     </nav>

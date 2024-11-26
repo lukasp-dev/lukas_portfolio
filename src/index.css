@@ -44,7 +44,8 @@ body {
 
   /* button component */
   .btn {
-    @apply flex gap-4 items-center justify-center cursor-pointer p-3 rounded-md bg-black-300  transition-all active:scale-95 text-white mx-auto;
+    @apply px-4 py-2 rounded-lg text-white font-medium transition-all duration-200;
+    @apply hover:opacity-90 active:opacity-80;
   }
 
   .btn-ping {
@@ -123,32 +124,6 @@ body {
   .work-content_bar {
     @apply flex-1 w-0.5 mt-4 h-full bg-black-300 group-hover:bg-black-500 group-last:hidden;
   }
-
-  /* contact section */
-  .contact-container {
-    @apply max-w-xl relative z-10 sm:px-10 px-5 mt-12;
-  }
-
-  .field-label {
-    @apply text-lg text-white-600;
-  }
-
-  .field-input {
-    @apply w-full bg-black-300 px-5 py-2 min-h-14 rounded-lg placeholder:text-white-500 text-lg text-white-800 shadow-black-200 shadow-2xl focus:outline-none;
-  }
-
-  .field-btn {
-    @apply bg-black-500 px-5 py-2 min-h-12 rounded-lg shadow-black-200 shadow-2xl flex justify-center items-center text-lg text-white gap-3;
-  }
-
-  .field-btn_arrow {
-    @apply w-2.5 h-2.5 object-contain invert brightness-0;
-  }
-
-  /*  footer */
-  .social-icon {
-    @apply w-12 h-12 rounded-full flex justify-center items-center bg-black-300 border border-black-200;
-  }
 }
 
 .waving-hand {
@@ -170,28 +145,22 @@ body {
 }
 
 @keyframes wave-animation {
-  0% {
-    transform: rotate(0deg);
-  }
-  15% {
-    transform: rotate(14deg);
-  }
-  30% {
-    transform: rotate(-8deg);
-  }
-  40% {
-    transform: rotate(14deg);
-  }
-  50% {
-    transform: rotate(-4deg);
-  }
-  60% {
-    transform: rotate(10deg);
-  }
-  70% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  40% { transform: rotate(14deg); }
+  50% { transform: rotate(-4deg); }
+  60% { transform: rotate(10deg); }
+  70% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes softBlink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.soft-blink {
+  animation: softBlink 2s ease-in-out infinite;
 }

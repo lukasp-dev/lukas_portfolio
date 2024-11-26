@@ -18,12 +18,12 @@ interface ProjectTag {
     path: string;
 }
 
-interface Project {
+export interface Project {
     title: string;
     desc: string;
     subdesc: string;
     href: string;
-    texture: string;
+    texture?: string;
     logo: string;
     logoStyle: {
         backgroundColor: string;
@@ -35,7 +35,7 @@ interface Project {
     picture?: string;
 }
 
-interface WorkExperience {
+export interface WorkExperience {
     id: number;
     name: string;
     pos: string;
@@ -43,13 +43,42 @@ interface WorkExperience {
     title: string;
     icon: string;
     animation: string;
+    companyLink?: string;
+    companyInfo?: string;
+    techStack: string[];
+    achievements: {
+        title: string;
+        description: string;
+        details?: string | string[];
+    }[];
+    iconClassName?: string;
+}
+
+export interface ResearchExperience {
+    id: number;
+    name: string;
+    pos: string;
+    duration: string;
+    title: string;
+    icon: string;
+    animation: string;
+    companyLink?: string;
+    companyInfo?: string;
+    techStack: string[];
+    achievements: {
+        title: string;
+        description: string;
+        details?: string | string[];
+    }[];
 }
 
 export const navLinks: NavLink[] = [
     { id: 1, name: 'Home', href: '#home' },
     { id: 2, name: 'About', href: '#about' },
     { id: 3, name: 'Work', href: '#work' },
-    { id: 4, name: 'Contact', href: '#contact' },
+    { id: 4, name: 'Gallery', href: '/gallery' },
+    { id: 5, name: 'UCamCode', href: '/ucamcode' },
+    { id: 6, name: 'Contact', href: '#contact' },
 ];
 
 export const clientReviews: ClientReview[] = [
@@ -164,55 +193,193 @@ export const myProjects: Project[] = [
             { id: 2, name: 'chakraUI', path: 'assets/chakra.png' },
             { id: 4, name: 'Vite', path: '/assets/vite.png' },
         ],
-        picture: '',
+        picture: '/assets/trivia.png',
     },
 ];
 
 export const workExperiences: WorkExperience[] = [
     {
         id: 1,
-        name: 'Stride Labs',
-        pos: 'Software Engineer',
-        duration: 'Oct 2024 - Present',
-        title: "Developed an AI-driven system for automated CAD generation of custom orthotic insoles, converting scans to STL and displaying via WebGL with Three.js. Integrated Stride Labs Pediform™ software, boosting engineering output 10x for FDA Class I devices",
-        icon: '/assets/stride_labs.png',
-        animation: 'victory',
+        name: 'UCamCode',
+        pos: 'Co-founder & CTO',
+        duration: 'July 2024 - Present',
+        title: 'Leading Technical Development at UCamCode',
+        companyLink: '/ucamcode',
+        companyInfo: 'Georgia Tech CREATE-X Startup | Bridging the IT education gap in Cambodia through innovative learning platforms',
+        techStack: ['React', 'Node.js', 'AWS', 'OpenAI API', 'TypeScript', 'Python'],
+        animation: 'fade-right',
+        achievements: [
+            {
+                title: "Technical Leadership",
+                description: "Leading the development of AI-powered educational platform",
+                details: [
+                    "Architecting scalable cloud infrastructure using AWS services",
+                    "Implementing GPT-4 integration for personalized learning feedback",
+                    "Developing adaptive learning algorithms to customize student experiences",
+                    "Managing technical team and establishing development workflows"
+                ]
+            },
+            {
+                title: "Platform Development",
+                description: "Building comprehensive learning platform with offline capabilities",
+                details: [
+                    "Creating interactive coding environments with real-time feedback",
+                    "Implementing offline-first architecture for areas with limited connectivity",
+                    "Designing mobile-responsive interface for universal access",
+                    "Integrating analytics dashboard for tracking student progress"
+                ]
+            }
+        ],
+        icon: '/assets/ucamcode_small_logo.png',
+        iconClassName: "w-32 h-32 rounded-lg object-contain bg-gray-700/30 p-4"
     },
     {
         id: 2,
-        name: 'Georgia Tech',
-        pos: 'Undergraduate Researcher',
-        duration: 'Aug 2024 - Present',
-        title: "Developed and improved vehicle autonomy and safety by integrating LiDAR technology with line-following and object detection algorithms, utilizing a ROS setup on a virtual machine (VM)",
-        icon: '/assets/gt_logo.png',
-        animation: 'victory',
+        name: 'Stride Labs',
+        pos: 'Software Engineer Intern',
+        duration: 'October 2024 - Present',
+        title: 'Software Engineer Intern at Stride Labs',
+        companyLink: 'https://www.stride-labs.com',
+        companyInfo: 'Series A HealthTech Startup | AI-powered custom orthotics design platform that automates 3D design for insoles',
+        techStack: ['React', 'Three.js', 'Express.js', 'GCP', 'Node.js'],
+        animation: 'fade-right',
+        achievements: [
+            {
+                title: "Frontend Revamp",
+                description: "Enhanced the frontend with 3D visualization for seamless user interaction and AI-driven functionality",
+                details: [
+                    "Integrated Three.js to render scanned foot models (STL) in 3D space",
+                    "Implemented interactive point selection system for precise measurements",
+                    "Developed data pipeline to transmit selected points to AI backend for insole generation"
+                ]
+            },
+            {
+                title: "User Report System",
+                description: "Integrated GCP user data processing and Slack notification system",
+                details: [
+                    "Built Express.js module for handling user-reported data uploads to GCP bucket",
+                    "Implemented automatic public URL generation for uploaded files",
+                    "Created Slack integration for real-time team notifications with formatted messages"
+                ]
+            }
+        ],
+        icon: '/assets/stride_labs.png'
     },
     {
         id: 3,
-        name: '360 Energy',
-        pos: 'Software Engineer',
-        duration: 'Jul 2024 - Present',
-        title: "Built a real-time dashboard for store owners to monitor solar charging, battery swaps, and efficiency trends. Enabled comparison of performance metrics across daily, weekly, and yearly intervals. Developed a solar charge optimizer using real-time solar data",
-        icon: '/assets/360energy_logo.png',
-        animation: 'clapping',
+        name: 'Gallery SOMA',
+        pos: 'Software Engineer Intern',
+        duration: 'May 2024 - August 2024',
+        title: 'Software Engineer Intern at Gallery SOMA',
+        companyLink: 'https://www.gallerysoma.co.kr',
+        companyInfo: 'Contemporary Art Gallery | Online Artwork Trading Platform',
+        techStack: ['React', 'Redux', 'TypeScript', 'Figma', 'OAuth 2.0'],
+        animation: 'fade-right',
+        achievements: [
+            {
+                title: "SOMA Artistry",
+                description: "Independently designed and developed the entire frontend web page using React & Redux",
+                details: [
+                    "Designed application logic in Figma for a web app with end-to-end transactions and smooth API/database integration",
+                    "Integrated React purchase logic with backend and APIs, streamlining checkout by auto-filling address fields based on Zipcode, reducing manual errors"
+                ]
+            },
+            {
+                title: "Optimization",
+                description: "Enhanced Web Performance and Security",
+                details: [
+                    "Implemented OAuth 2.0 with JWT authentication, ensuring efficient token management and secure access control",
+                    "Reduced server costs by 30% through local caching of user data, minimizing API calls and optimizing token usage"
+                ]
+            }
+        ],
+        icon: '/assets/gallery_soma_logo.jpeg'
     },
     {
         id: 4,
-        name: 'Gallery SOMA',
+        name: '360 Energy',
         pos: 'Software Engineer Intern',
-        duration: 'March 2024 - Aug 2024',
-        title: "Designed and developed the SOMA Artistry frontend using React & Redux, with end-to-end transactions and smooth API integration. Improved performance by implementing OAuth 2.0 JWT authentication and reduced server costs by 30% through local data caching",
-        icon: '/assets/gallery_soma_logo.jpeg',
-        animation: 'salute',
+        duration: 'March 2024 - May 2024',
+        title: 'Software Engineer Intern at 360 Energy', 
+        animation: 'fade-right',
+        companyLink: 'https://www.360energy.io',
+        companyInfo: 'Series A Clean Energy Startup | Providing sustainable energy solutions for Indonesian industries',
+        techStack: ['MongoDB', 'Express', 'Node.js', 'Docker'],
+        achievements: [
+            {
+                title: "Dashboard for Stores",
+                description: "Created a real-time dashboard with the MERN stack for store owners to monitor batteries",
+                details: [
+                    "Provided visual analytics for battery levels & charging status through data fetching from sensors",
+                    "Used MongoDB Change Streams to achieve real-time battery data updates directly from the database"
+                ]
+            },
+            {
+                title: "SolarCharge Optimizer",
+                description: "Simulated battery charging/discharging based on sunlight using Pandas & Matplotlib"
+            }
+        ],
+        icon: '/assets/360energy_logo.png'
+    }
+];
+
+export const researchExperiences: ResearchExperience[] = [
+    {
+        id: 1,
+        name: 'Georgia Tech Automotive LiDAR Lab',
+        pos: 'Student Researcher',
+        duration: 'August 2024 - December 2024',
+        title: 'VisionLiDAR: Enhanced Safety and Performance in Automotive Systems',
+        companyLink: 'https://www.gatech.edu',
+        companyInfo: 'Research Laboratory | Advancing autonomous vehicle technology through LiDAR innovation',
+        techStack: ['C++', 'Python', 'ROS2', 'Docker', 'TensorFlow', 'OpenCV'],
+        animation: 'fade-right',
+        achievements: [
+            {
+                title: "Autonomous Vehicle Research",
+                description: "Enhanced vehicle autonomy and safety through LiDAR technology integration",
+                details: [
+                    "Researched advanced automotive systems to enhance vehicle autonomy and safety through LiDAR technology",
+                    "Implemented and tested vehicle autonomy on a Dockerized ROS2 setup using C++ and Python",
+                    "Developed Python-based edge detection algorithms using Tensorflow and OpenCV on Virtual Machine",
+                    "Collaborated with the electrical team to test and optimize sensor data for enhancing driving performance"
+                ]
+            }
+        ],
+        icon: '/assets/automotive.png'
     },
     {
-        id: 5,
-        name: 'Worcester Polytechnic Institute',
-        pos: 'Content Management Software Assistant',
-        duration: 'Feb 2022 - May 2022',
-        title: "Managed the WPI website, handling 5-10 daily requests for feature updates using WordPress. Published the daily school newspaper, creating content with HTML, CSS, and MailChimp",
-        icon: '/assets/WPI_logo.svg',
-        animation: 'salute',
-    },
+        id: 2,
+        name: 'Responsible AI for Decision Making',
+        pos: 'Research Assistant',
+        duration: 'January 2025 - Present (Upcoming)',
+        title: 'VIP: Responsible AI Research Team',
+        companyLink: 'https://www.gatech.edu',
+        companyInfo: 'Georgia Tech VIP Program | Developing trustworthy AI tools for engineering and healthcare decisions',
+        techStack: ['Python', 'PyTorch', 'Machine Learning', 'Deep Learning', 'LLMs'],
+        animation: 'fade-right',
+        achievements: [
+            {
+                title: "Research Focus",
+                description: "Development of AI tools for responsible decision-making in engineering and healthcare",
+                details: [
+                    "Specialized Language Models: Tailoring LLMs for domain-specific knowledge extraction",
+                    "Multi-modal Data Analysis: Creating AI systems to integrate various data sources",
+                    "Time Series Forecasting: Developing robust predictive models using historical data",
+                    "AI-based Optimization: Leveraging AI for complex optimization problems"
+                ]
+            },
+            {
+                title: "Project Scope",
+                description: "Applications across multiple sectors including supply chain, manufacturing, and healthcare",
+                details: [
+                    "Focus on developing confidence-aware and interpretable AI systems",
+                    "Integration of uncertainty quantification in decision-making processes",
+                    "Implementation of robust and reliable AI methods for high-stakes decisions"
+                ]
+            }
+        ],
+        icon: '/assets/responsible_ai.png'
+    }
 ];
 
