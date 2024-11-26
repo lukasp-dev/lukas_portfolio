@@ -132,7 +132,7 @@ const Gallery = () => {
                     >
                         <h1 className="text-5xl font-bold text-white mb-4">Art Gallery</h1>
                         <p className="text-xl text-gray-300">
-                            A collection of my digital artwork and illustrations
+                            A collection of my drawings and paintings
                         </p>
                     </motion.div>
 

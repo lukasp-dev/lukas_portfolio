@@ -132,8 +132,8 @@ const UCamCode = () => {
                                 <p className="text-gray-300">Working closely with government institutions to ensure widespread access to quality IT education.</p>
                             </div>
                             <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm shadow-lg transition-transform duration-300 hover:scale-105">
-                                <h3 className="text-xl font-semibold text-white mb-3">EBC</h3>
-                                <p className="text-gray-300">Partnering with Educational Broadcasting Cambodia for efficient content distribution across the country.</p>
+                                <h3 className="text-xl font-semibold text-white mb-3">Georgia Tech</h3>
+                                <p className="text-gray-300">Partnering with Georgia Tech Create-X for efficient growth and development across the country.</p>
                             </div>
                         </div>
                     </motion.div>
