@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import Globe from 'react-globe.gl';
-import Button from '../components/Button';
 import { motion } from 'framer-motion';
 import WelcomeModal from '../components/WelcomeModal';
 
