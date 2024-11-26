@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -90,7 +91,6 @@ const techStackIcons = [
 
 const About = () => {
     const [hasCopied, setHasCopied] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleCopy = () => {
         navigator.clipboard.writeText('lukas.park.dev@gmail.com');
