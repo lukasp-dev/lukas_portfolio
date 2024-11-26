@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import WelcomeModal from '../components/WelcomeModal';
 
 const techStackIcons = [
     { 
@@ -99,13 +98,8 @@ const About = () => {
         setTimeout(() => setHasCopied(false), 2000);
     };
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
     return (
-        <section className="c-space my-20" id="about" onClick={handleOpenModal}>
-            <WelcomeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <section className="c-space my-20" id="about">
             <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 h-full">
                 {/* 섹션 1: 소개 */}
                 <motion.div 

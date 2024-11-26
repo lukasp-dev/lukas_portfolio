@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from "./sections/Navbar";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
@@ -25,15 +25,13 @@ const MainContent = () => {
 
 const App = () => {
     return (
-        <Router>
-            <main className="max-w-7xl mx-auto">
-                <Routes>
-                    <Route path="/" element={<MainContent />} />
-                    <Route path="/gallery" element={<Gallery />} />
-                    <Route path="/ucamcode" element={<UCamCode />} />
-                </Routes>
-            </main>
-        </Router>
+        <main className="max-w-7xl mx-auto">
+            <Routes>
+                <Route path="/" element={<MainContent />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/ucamcode" element={<UCamCode />} />
+            </Routes>
+        </main>
     );
 };
 
