@@ -27,7 +27,7 @@ const Experience = () => {
             className={`flex w-full ${isLeft ? 'justify-start' : 'justify-end'} mb-8`}
         >
             <div 
-                className={`w-5/12 relative cursor-pointer group`}
+                className={`w-full md:w-5/12 relative cursor-pointer group`}
                 onClick={onClick}
             >
 

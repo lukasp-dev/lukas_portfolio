@@ -130,7 +130,7 @@ const About = () => {
                 >
                     <div className="flex flex-col p-8 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-xl h-full border border-gray-800 backdrop-blur-sm transition-transform transform hover:scale-105">
                         <h3 className="text-3xl font-bold text-white mb-4">Tech Stack</h3>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {techStackIcons.map((icon, index) => (
                                 <motion.div
                                     key={index}
