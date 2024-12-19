@@ -1,5 +1,6 @@
 import emailjs from '@emailjs/browser';
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
 import useAlert from '../hooks/useAlert';
 import Alert from '../components/Alert';
@@ -78,6 +79,11 @@ const Contacts: React.FC = () => {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         {/* Left side - Text content */}
                         <div className="space-y-8">
+                                <motion.img
+                                    src="/assets/contact-removebg.png"
+                                    alt="contact"
+                                    className="w-32 h-auto object-cover shadow-2xl transition-transform duration-300 hover:scale-110"
+                                />
                             <div>
                                 <h2 className="head-text mb-4">Let's Connect</h2>
                                 <p className="text-lg text-gray-300">

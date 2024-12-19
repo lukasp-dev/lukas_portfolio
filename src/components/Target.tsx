@@ -3,7 +3,6 @@ import { useGLTF } from '@react-three/drei';
 import gsap from 'gsap';
 import { Group } from 'three';
 
-// Define props interface
 interface TargetProps {
     rotation?: [number, number, number];
     position?: [number, number, number];

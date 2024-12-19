@@ -90,17 +90,6 @@ const UCamCode = () => {
             {/* Content Sections */}
             <section className="py-20 px-4">
                 <div className="max-w-4xl mx-auto space-y-32">
-                    {/* 비디오 임베드 */}
-                    <div style={{ padding: "56.25% 0 0 0", position: "relative", borderRadius: "10px", overflow: "hidden" }}>
-                        <iframe 
-                            src="https://player.vimeo.com/video/1033641487?h=28663a1b8a&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
-                            frameBorder="0" 
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
-                            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} 
-                            title="ucamcode">
-                        </iframe>
-                    </div>
-                    
                     {/* Background Section */}
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}

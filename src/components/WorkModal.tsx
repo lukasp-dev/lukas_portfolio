@@ -11,7 +11,7 @@ const WorkModal = ({ work, isOpen, onClose }: WorkModalProps) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-lg" onClick={onClose} />
             <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
                 <button 
                     onClick={onClose}

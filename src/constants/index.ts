@@ -23,6 +23,7 @@ export interface Project {
     desc: string;
     subdesc: string;
     href: string;
+    pageId?: string;
     texture?: string;
     logo: string;
     logoStyle: {
@@ -33,6 +34,24 @@ export interface Project {
     spotlight: string;
     tags: ProjectTag[];
     picture?: string;
+    type?: string; 
+    role?: string; 
+    technologies?: string[]; 
+    results?: string;
+    links?: {
+        github?: {
+            frontend?: string;
+            backend?: string;
+            fullstack?: string;
+            mobile?: string;
+            desktop?: string;
+            api?: string;
+            machinelearning?: string;
+            ai?: string;
+        };
+        live?: string;
+        youtube?: string;
+    };
 }
 
 export interface WorkExperience {
@@ -74,8 +93,8 @@ export interface ResearchExperience {
 
 export const navLinks: NavLink[] = [
     { id: 1, name: 'Home', href: '#home' },
-    { id: 2, name: 'About', href: '#about' },
-    { id: 3, name: 'Work', href: '#work' },
+    { id: 2, name: 'Work', href: '#work' },
+    { id: 3, name: 'Projects', href: '#projects' },
     { id: 4, name: 'Gallery', href: '/gallery' },
     { id: 5, name: 'UCamCode', href: '/ucamcode' },
     { id: 6, name: 'Contact', href: '#contact' },
@@ -113,51 +132,12 @@ export const clientReviews: ClientReview[] = [
 ];
 
 export const myProjects: Project[] = [
+
     {
-        title: 'Online Retail Data Analysis',
-        desc: 'An online retail data analysis project using Python.',
-        subdesc: 'The Online Retail Data Analysis Project conducts comprehensive EDA on retail data to understand customer behavior and sales trends. Using Python, it employs libraries like pandas, numpy, matplotlib, and seaborn, along with machine learning techniques such as RFM analysis and K-Means clustering for customer segmentation. The project aims to support data-driven decisions and lay the groundwork for predictive modeling, interactive dashboards, and integration of additional data sources.',
-        href: 'https://github.com/lukasp-dev/online-sale-data-analysis/tree/main',
-        texture: '/textures/project/project1.mp4',
-        logo: '/assets/python.png',
-        logoStyle: {
-            backgroundColor: '#2A1816',
-            border: '0.2px solid #36201D',
-            boxShadow: '0px 0px 60px 0px #AA3C304D',
-        },
-        spotlight: '/assets/spotlight1.png',
-        tags: [
-            { id: 1, name: 'Pandas', path: '/assets/pandas.png' },
-            { id: 2, name: 'Numpy', path: 'assets/numpy.png' },
-            { id: 3, name: 'Scikit-learn', path: '/assets/scikit.png' },
-            { id: 4, name: 'Seaborn', path: '/assets/seaborn.png' },
-            { id: 5, name: 'Jupyter', path: '/assets/jupyter.png' },
-        ],
-        picture: '',
-    },
-    {
-        title: 'StreamFlix - AI Movie Recommendation System',
-        desc: 'AI-powered movie recommendation system utilizing advanced machine-learning techniques.',
-        subdesc: 'Developed an AI-powered movie recommendation system using machine learning to analyze metrics like average ratings and script word similarity. Achieved 90% accuracy in delivering personalized movie suggestions, enhancing recommendation relevance. Details on the machine learning techniques are available in the GitHub repository.',
-        href: 'https://github.com/lukasp-dev/movie-recommendation',
-        texture: '/textures/project/project3.mp4',
-        logo: '/assets/python.png',
-        logoStyle: {
-            backgroundColor: '#2A1816',
-            border: '0.2px solid #36201D',
-            boxShadow: '0px 0px 60px 0px #AA3C304D',
-        },
-        spotlight: '/assets/spotlight3.png',
-        tags: [
-            { id: 1, name: 'Scikit-learn', path: '/assets/scikit.png' },
-            { id: 2, name: 'Anaconda', path: 'assets/anaconda.png' },
-        ],
-        picture: '/assets/movie-rec.png',
-    },
-    {
-        title: 'Purchease API - API for Online Shopping Platform',
-        desc: 'Purchase API is a RESTful API that allows users to purchase products from a website.',
-        subdesc: 'Developed a Spring Boot MVC e-commerce backend, emphasizing Object-Oriented Principles for scalability and maintainability. The application features a REST API integrated with MySQL for user authentication and transactions, with JWT-based authentication to ensure secure access control.',
+        title: 'Purchease API',
+        desc: 'A RESTful API that allows users to purchase products from a website',
+        subdesc: 'This Advanced E-Commerce Backend System is designed to meet the increasing demands of online businesses. Driven by Spring Boot MVC and best practices in software design, this system presents a secure, scalable, and user-friendly platform.',
+        pageId: '15ea96ff12e6809dbeaddb6995a5440c',
         href: 'https://github.com/lukasp-dev/e-commerce-backend',
         texture: '/textures/project/project2.mp4',
         logo: '/assets/java.png',
@@ -168,18 +148,122 @@ export const myProjects: Project[] = [
         },
         spotlight: '/assets/spotlight2.png',
         tags: [
-            { id: 1, name: 'Spring Boot', path: '/assets/springboot.png' },
+            { id: 1, name: 'Java', path: '/assets/java.png' },
+            { id: 2, name: 'Spring Boot', path: '/assets/springboot.png' },
             { id: 3, name: 'Gradle', path: '/assets/gradle.png' },
             { id: 4, name: 'Docker', path: '/assets/docker.png' },
             { id: 5, name: 'MySQL', path: '/assets/mysql.png' },
         ],
-        picture: '',
+        picture: '/assets/shopping-api.webp',
+        type: 'Personal Project',
+        role: 'Java API Developer',
+        links: {
+            github: {
+                backend: 'https://github.com/lukasp-dev/PurcheaseAPI',
+            },
+        },
+    },
+    {
+        title: 'WanderSync',
+        desc: 'A platform that allows users to sync their travel plans',
+        subdesc: 'WanderSync is an Android app built with Java and MVVM architecture, enabling users to sync travel plans, manage reservations and accommodations, and share itineraries and posts with friends.',
+        pageId: '15da96ff12e68088b99dfe1feb86f13b',
+        href: 'https://travelsync.vercel.app',
+        texture: '/textures/project/project7.mp4',
+        logo: '/assets/typescript.png',
+        logoStyle: {
+            backgroundColor: '#1C1A43',
+            border: '0.2px solid #252262',
+            boxShadow: '0px 0px 60px 0px #635BFF4D',
+        },
+        spotlight: '/assets/spotlight5.png',
+        tags: [
+            { id: 1, name: 'Java', path: '/assets/java.png' },
+            { id: 2, name: 'Android Studio', path: '/assets/android-studio.png' },
+            { id: 3, name: 'JUnit5', path: 'assets/junit.png' },
+            { id: 4, name: 'Firebase', path: '/assets/firebase.png' },
+        ],
+        picture: '/assets/wandersync.png',
+        type: 'Group Project',
+        role: 'Java Developer',
+        links: {
+            github: {
+                mobile: 'https://github.com/lukasp-dev/WanderSync',
+            },
+            youtube: 'vvpLFVyG7yM',
+        },
+    },
+
+    {
+        title: 'Jewook Portfolio',
+        desc: 'My portfolio website',
+        subdesc: 'Jewook\'s Portfolio is a full-stack React and Express website hosted on AWS, showcasing my experience and projects by integrating Notion content and managing images via S3.',
+        href: 'https://jewook.dev',
+        texture: '/textures/project/project6.mp4',
+        pageId: '15ea96ff12e68054abbfc29d17a926c4',
+        logo: '/assets/typescript.png',
+        logoStyle: {
+            backgroundColor: '#1C1A43',
+            border: '0.2px solid #252262',
+            boxShadow: '0px 0px 60px 0px #635BFF4D',
+        },
+        spotlight: '/assets/spotlight5.png',
+        tags: [
+            { id: 1, name: 'TypeScript', path: '/assets/typescript.png' },
+            { id: 2, name: 'React.js', path: '/assets/react.svg' },
+            { id: 3, name: 'Express', path: '/assets/express.png'},
+            { id: 4, name: 'tailwindCSS', path: 'assets/tailwindcss.png' },
+            { id: 5, name: 'Vite', path: '/assets/vite.png' },
+            { id: 6, name: 'Axios', path: '/assets/axios.png'},
+            { id: 7, name: 'Amazon S3', path: '/assets/amazons3.png'},
+            { id: 8, name: 'Amazon EC2', path: '/assets/amazonec2.png'},
+        ],
+        picture: '/assets/portfolio_thumbnail.png',
+        type: 'Personal Project',
+        role: 'Full Stack Developer',
+        links: {
+            github: {
+                frontend: 'https://github.com/lukasp-dev/lukas_portfolio',
+                backend: 'https://github.com/lukasp-dev/notion-server',
+            },
+            live: 'https://jewook.dev',
+        },
+    },
+    {
+        title: 'StreamFlix - AI Movie Recommendation System',
+        desc: 'An AI-powered movie recommendation system utilizing advanced machine-learning techniques',
+        subdesc: 'StreamFlix is an AI-powered web app that recommends movies based on your preferences. Using machine learning, it analyzes your favorite films and suggests new ones you might love.',
+        href: 'https://github.com/lukasp-dev/movie-recommendation',
+        pageId: '15ea96ff12e680f5bd24de0e492351ab',
+        texture: '/textures/project/project3.mp4',
+        logo: '/assets/python.png',
+        logoStyle: {
+            backgroundColor: '#2A1816',
+            border: '0.2px solid #36201D',
+            boxShadow: '0px 0px 60px 0px #AA3C304D',
+        },
+        spotlight: '/assets/spotlight3.png',
+        tags: [
+            { id: 1, name: 'Python', path: '/assets/python.png' },
+            { id: 2, name: 'Scikit-learn', path: '/assets/scikit.png' },
+            { id: 3, name: 'Anaconda', path: 'assets/anaconda.png' },
+        ],
+        picture: '/assets/movie-rec.png',
+        type: 'Personal Project',
+        role: 'Full Stack Developer',
+        links: {
+            youtube: 'Ccm11V1EwGE',
+            github: {
+                fullstack: 'https://github.com/lukasp-dev/StreamFlix',
+            },
+        },
     },
     {
         title: 'Quiz Trivia - Online Quiz Platform',
-        desc: 'Quiz Trivia is a platform that offers users a chance to test their knowledge.',
-        subdesc: 'Built a Quiz Trivia web application using React.js, chakraUI, and Vite. The application features a responsive design and animations to enhance user experience. The application is deployed using Vercel.',
+        desc: 'A platform that offers users a chance to test their knowledge',
+        subdesc: 'Quiz Trivia is a fun React-based app where users answer True/False questions, track their scores, and enjoy a smooth, interactive quiz experience on any device.',
         href: 'https://lukasp-dev.github.io/quiz-app/',
+        pageId: '15ea96ff12e6807a9126d09a2f4e71ba',
         texture: '/textures/project/project5.mp4',
         logo: '/assets/typescript.png',
         logoStyle: {
@@ -189,11 +273,21 @@ export const myProjects: Project[] = [
         },
         spotlight: '/assets/spotlight5.png',
         tags: [
-            { id: 1, name: 'React.js', path: '/assets/react.svg' },
-            { id: 2, name: 'chakraUI', path: 'assets/chakra.png' },
+            { id: 1, name: 'TypeScript', path: '/assets/typescript.png' },
+            { id: 2, name: 'React.js', path: '/assets/react.svg' },
+            { id: 3, name: 'chakraUI', path: 'assets/chakra.png' },
             { id: 4, name: 'Vite', path: '/assets/vite.png' },
+            { id: 5, name: 'Github Pages', path: '/assets/github.png' },
         ],
         picture: '/assets/trivia.png',
+        type: 'Personal Project',
+        role: 'Frontend Developer',
+        links: {
+            github: {
+                frontend: 'https://github.com/lukasp-dev/QuizTrivia?tab=readme-ov-file',
+            },
+            live: 'https://lukasp-dev.github.io/QuizTrivia/',
+        },
     },
 ];
 

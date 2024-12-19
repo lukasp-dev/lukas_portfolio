@@ -32,7 +32,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                             transition={{ type: "spring", duration: 0.5 }}
-                            className="bg-gradient-to-br from-blue-800 to-yellow-500 border border-gray-300 rounded-xl p-8 max-w-md w-full mx-4 relative z-10 shadow-lg"
+                            className="bg-gradient-to-br from-blue-900 to-yellow-600 border border-gray-300 rounded-xl p-8 max-w-md w-full mx-4 relative z-10 shadow-lg"
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <h2 className="text-2xl font-bold text-white">

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import WelcomeModal from '../components/WelcomeModal';
 import HeroCamera from '../components/HeroCamera';
 import { TypeAnimation } from 'react-type-animation';
-
+import About from '../components/About';
 const Hero = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,7 +24,7 @@ const Hero = () => {
                     className="space-y-4"
                 >
                     <h1 className="hero_tag text-white">
-                        Hi, I'm Lukas Park <span className="waving-hand">👋</span>
+                        Hi, I'm Jewook Park <span className="waving-hand">👋</span>
                         <br />
                         <TypeAnimation
                             sequence={[
@@ -44,10 +44,7 @@ const Hero = () => {
                             repeat={Infinity}
                         />
                     </h1>
-                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        I'm a software engineer specializing in building beneficial products. <br/>
-                        Currently, I'm focused on building UcamCode, an effective way to learn coding.
-                    </p>
+                    <About />
                     <button 
                         onClick={() => setIsModalOpen(true)} 
                         className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
