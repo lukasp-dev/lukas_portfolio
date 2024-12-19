@@ -10,7 +10,7 @@ export const useAxios = (pageId: string) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    const BASE_URL = "http://18.191.200.46:5000";
+    const BASE_URL = "https://api.jewook.dev";
 
     useEffect(() => {
         axios.get(`${BASE_URL}/page/${pageId}/blocks`)
