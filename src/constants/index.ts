@@ -54,14 +54,16 @@ export interface Project {
   };
 }
 
-export interface WorkExperience {
+export interface Experience {
   id: number;
   name: string;
   pos: string;
   duration: string;
+  startDate: string;
   title: string;
   icon: string;
   animation: string;
+  type: "work" | "research";
   companyLink?: string;
   companyInfo?: string;
   techStack: string[];
@@ -71,24 +73,6 @@ export interface WorkExperience {
     details?: string | string[];
   }[];
   iconClassName?: string;
-}
-
-export interface ResearchExperience {
-  id: number;
-  name: string;
-  pos: string;
-  duration: string;
-  title: string;
-  icon: string;
-  animation: string;
-  companyLink?: string;
-  companyInfo?: string;
-  techStack: string[];
-  achievements: {
-    title: string;
-    description: string;
-    details?: string | string[];
-  }[];
 }
 
 export const navLinks: NavLink[] = [
@@ -295,9 +279,11 @@ export const myProjects: Project[] = [
   },
 ];
 
-export const workExperiences: WorkExperience[] = [
+export const experiences: Experience[] = [
   {
     id: 1,
+    type: "work" as const,
+    startDate: "2024-07",
     name: "UCamCode",
     pos: "Co-founder & CTO",
     duration: "July 2024 - Present",
@@ -343,6 +329,8 @@ export const workExperiences: WorkExperience[] = [
   },
   {
     id: 2,
+    type: "research" as const,
+    startDate: "2024-10",
     name: "Stride Labs",
     pos: "Software Engineer Intern",
     duration: "October 2024 - Present",
@@ -378,6 +366,8 @@ export const workExperiences: WorkExperience[] = [
   },
   {
     id: 3,
+    type: "work" as const,
+    startDate: "2024-05",
     name: "Gallery SOMA",
     pos: "Software Engineer Intern",
     duration: "May 2024 - August 2024",
@@ -409,6 +399,8 @@ export const workExperiences: WorkExperience[] = [
   },
   {
     id: 4,
+    type: "work" as const,
+    startDate: "2024-03",
     name: "360 Energy",
     pos: "Software Engineer Intern",
     duration: "March 2024 - May 2024",
@@ -436,11 +428,10 @@ export const workExperiences: WorkExperience[] = [
     ],
     icon: "/assets/360energy_logo.png",
   },
-];
-
-export const researchExperiences: ResearchExperience[] = [
   {
     id: 5,
+    type: "research" as const,
+    startDate: "2024-08",
     name: "Georgia Tech Automotive LiDAR Lab",
     pos: "Student Researcher",
     duration: "August 2024 - December 2024",
@@ -467,6 +458,8 @@ export const researchExperiences: ResearchExperience[] = [
   },
   {
     id: 6,
+    type: "research" as const,
+    startDate: "2025-01",
     name: "Responsible AI for Decision Making",
     pos: "Research Assistant",
     duration: "January 2025 - Present (Upcoming)",
@@ -507,4 +500,6 @@ export const researchExperiences: ResearchExperience[] = [
     ],
     icon: "/assets/responsible_ai.png",
   },
-];
+].sort(
+  (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+);
