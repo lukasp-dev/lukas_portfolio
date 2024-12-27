@@ -1,7 +1,7 @@
-import { WorkExperience } from "../constants";
+import { Experience } from "../constants";
 
 interface WorkModalProps {
-    work: WorkExperience;
+    work: Experience;
     isOpen: boolean;
     onClose: () => void;
 }
