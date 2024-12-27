@@ -4,6 +4,25 @@
 
 Welcome to my portfolio website! I created this website to showcase my experience, projects, and more. I decided to build it myself using **React** for the frontend and **Express** for the backend.
 
+## Used Technologies
+
+### IDE
+[![Visual Studio Code](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
+
+### Languages / Frameworks
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-yellow?logo=javascript&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) 
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) 
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/) 
+[![Express](https://img.shields.io/badge/Express-404D59?logo=express&logoColor=white)](https://expressjs.com/) 
+[![Notion API](https://img.shields.io/badge/Notion_API-000000?logo=notion&logoColor=white)](https://developers.notion.com/)
+
+### Cloud Services
+[![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/) 
+[![AWS EC2](https://img.shields.io/badge/AWS_EC2-FF9900?logo=amazon-ec2&logoColor=white)](https://aws.amazon.com/ec2/) 
+[![AWS Route 53](https://img.shields.io/badge/AWS_Route%2053-232F3E?logo=amazon-route53&logoColor=white)](https://aws.amazon.com/route53/)
+
+
 ## System Architecture
 
 ![System Architecture](https://lukas-portfolio.s3.us-east-2.amazonaws.com/335f59e3ea369ac65f464f0a39562ab0.jpg)
@@ -171,25 +190,6 @@ async function processNotionImages(pageId) {
 When fetching a page from Notion, if the images already exist in the S3 bucket, the following message is displayed:
 
 ![Duplicate Image Message](https://lukas-portfolio.s3.us-east-2.amazonaws.com/c7c1750aa0423d09f611756212699c76.jpg)
-
-## Used Technologies
-
-### IDE
-- [![Visual Studio Code](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
-
-### Languages / Frameworks
-- [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-yellow?logo=javascript&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-- [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-- [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
-- [![Express](https://img.shields.io/badge/Express-404D59?logo=express&logoColor=white)](https://expressjs.com/)
-- [![Notion API](https://img.shields.io/badge/Notion_API-000000?logo=notion&logoColor=white)](https://developers.notion.com/)
-
-### Cloud Services
-- [![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)
-- [![AWS EC2](https://img.shields.io/badge/AWS_EC2-FF9900?logo=amazon-ec2&logoColor=white)](https://aws.amazon.com/ec2/)
-- [![AWS Route 53](https://img.shields.io/badge/AWS_Route%2053-232F3E?logo=amazon-route53&logoColor=white)](https://aws.amazon.com/route53/)
-
 
 ## Installation
 
