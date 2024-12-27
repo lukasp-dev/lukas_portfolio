@@ -1,7 +1,5 @@
 # Jewook’s Portfolio Website
 
-![Portfolio](https://lukas-portfolio.s3.us-east-2.amazonaws.com/335f59e3ea369ac65f464f0a39562ab0.jpg)
-
 ## Introduction
 
 Welcome to my portfolio website! I created this website to showcase my experience, projects, and more. I decided to build it myself using **React** for the frontend and **Express** for the backend.
