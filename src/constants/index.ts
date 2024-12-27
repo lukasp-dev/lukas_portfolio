@@ -117,6 +117,41 @@ export const clientReviews: ClientReview[] = [
 
 export const myProjects: Project[] = [
   {
+    title: "SOMA Notify",
+    desc: "A desktop application allowing the user to simultaneously message multiple clients",
+    subdesc: "SOMA Notify is a desktop application that allows the user to simultaneously message multiple clients. It is built with Electron and uses the React library for the User Interface. It also uses the Kakaotalk API to authenticate the user and send messages to the clients.",
+    pageId: "169a96ff12e680a4ba4bceebcda2dda0",
+    href: "https://genuinelukas.notion.site/SOMA-Notify-169a96ff12e680a4ba4bceebcda2dda0?pvs=73",
+    texture: "/textures/project/project2.mp4",
+    logo: "/assets/java.png",
+    logoStyle: {
+      backgroundColor: "#13202F",
+      border: "0.2px solid #17293E",
+      boxShadow: "0px 0px 60px 0px #2F6DB54D",
+    },
+    spotlight: "/assets/spotlight2.png",
+    tags: [
+      { id: 1, name: "TypeScript", path: "/assets/typescript.png" },
+      { id: 2, name: "React", path: "/assets/react.svg" },
+      { id: 3, name: "Docker", path: "/assets/docker.png" },
+      { id: 4, name: "Express", path: "/assets/express.png" },
+      { id: 5, name: "Vite", path: "/assets/vite.png" },
+      { id: 6, name: "Axios", path: "/assets/axios.png" },
+      { id: 7, name: "Amazon S3", path: "/assets/amazons3.png" },
+      { id: 8, name: "Amazon EC2", path: "/assets/amazonec2.png" },
+      { id: 9, name: "Electron", path: "/assets/electron.png" },
+    ],
+    picture: "/assets/notify-soma-thumbnail.png",
+    type: "Personally led Company Project",
+    role: "Full Stack Developer",
+    links: {
+      github: {
+        frontend: "https://github.com/lukasp-dev/kakao-message-client",
+        backend: "https://github.com/lukasp-dev/express-kakao-server",
+      },
+    },
+  },
+  {
     title: "Purchease API",
     desc: "A RESTful API that allows users to purchase products from a website",
     subdesc:

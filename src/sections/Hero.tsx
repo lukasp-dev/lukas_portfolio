@@ -51,6 +51,14 @@ const Hero = () => {
                     >
                         Navigate through my portfolio
                     </button>
+                    <a 
+                        href="https://drive.google.com/file/d/1GOaf55w2TjRQOa7pwpw1qLtJHByJSvcm/view?pli=1" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="ml-2 mt-4 px-4 py-3 text-white rounded transition bg-blue-800 hover:bg-blue-900"
+                    >
+                        Resume
+                    </a>
                 </motion.div>
             </div>
 

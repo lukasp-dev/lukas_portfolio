@@ -157,7 +157,7 @@ const Contacts: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full py-3 px-6 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="w-full py-3 px-6 rounded-lg bg-blue-800 hover:bg-blue-900 text-white font-medium transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                             >
                                 {loading ? (
                                     <span className="flex items-center gap-2">
