@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UCamCode = () => {
+const Codoc = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -40,8 +40,8 @@ const UCamCode = () => {
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80" />
                     <motion.img
-                        src="/assets/ucamcode_small_logo.png"
-                        alt="UCamCode Background"
+                        src="/assets/codoc_large.png"
+                        alt="CODOC Background"
                         className="w-full h-full object-cover opacity-30"
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
@@ -51,8 +51,8 @@ const UCamCode = () => {
                 
                 <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
                     <motion.img
-                        src="/assets/ucamcode_big_logo.png"
-                        alt="UCamCode Logo"
+                        src="/assets/codoc_small.png"
+                        alt="CODOC Logo"
                         className="w-48 h-auto mx-auto mb-8 object-contain"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ const UCamCode = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
                     >
-                        UCamCode
+                        CODOC
                     </motion.h1>
                     <motion.p
                         className="text-xl text-gray-300 mb-8"
@@ -72,7 +72,7 @@ const UCamCode = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
                     >
-                        Bridging the IT education gap in Cambodia
+                        make your coding interview journey much easier
                     </motion.p>
                 </div>
 
@@ -100,14 +100,12 @@ const UCamCode = () => {
                     >
                         <h2 className="text-3xl font-bold text-white text-center">Our Story</h2>
                         <p className="text-gray-300 text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                            UCamCode was founded in July 2024 at Georgia Tech with a mission to revolutionize IT education in Cambodia. 
-                            We believe in not just teaching code, but fostering creative thinking and problem-solving skills essential 
-                            for success in the global IT market.
+                            CODOC was founded in July 2024 with a mission to streamline the coding interview preparation process easier for the beginners.
                         </p>
                     </motion.div>
 
                     {/* Partners Section */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -125,7 +123,7 @@ const UCamCode = () => {
                                 <p className="text-gray-300">Partnering with Georgia Tech Create-X for efficient growth and development across the country.</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </motion.div> */}
 
                     {/* Target Users Section */}
                     <motion.div
@@ -136,7 +134,7 @@ const UCamCode = () => {
                         className="space-y-6"
                     >
                         <h2 className="text-3xl font-bold text-white text-center">Who We Serve</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm shadow-lg transition-transform duration-300 hover:scale-105">
                                 <h3 className="text-xl font-semibold text-white mb-3">Students</h3>
                                 <p className="text-gray-300">Middle and high school students looking to start their journey in tech.</p>
@@ -145,15 +143,11 @@ const UCamCode = () => {
                                 <h3 className="text-xl font-semibold text-white mb-3">University</h3>
                                 <p className="text-gray-300">Both CS majors and non-majors seeking to enhance their technical skills.</p>
                             </div>
-                            <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm shadow-lg transition-transform duration-300 hover:scale-105">
-                                <h3 className="text-xl font-semibold text-white mb-3">Underserved</h3>
-                                <p className="text-gray-300">Individuals with limited access to traditional technical education.</p>
-                            </div>
                         </div>
                     </motion.div>
 
                     {/* CREATE-X Section */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -167,37 +161,11 @@ const UCamCode = () => {
                                 Georgia Tech's CREATE-X Startup Launch program and is currently in the interview process.
                             </p>
                         </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-20 px-4 bg-gradient-to-t from-black to-transparent">
-                <div className="max-w-4xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="space-y-6"
-                    >
-                        <h2 className="text-3xl font-bold text-white mb-6">Join Our Mission</h2>
-                        <p className="text-gray-300 text-lg mb-8">
-                            Help us make quality IT education accessible to everyone in Cambodia.
-                        </p>
-                        <a
-                            href="https://ucamcode.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                        >
-                            Visit UCamCode →
-                        </a>
-                    </motion.div>
+                    </motion.div> */}
                 </div>
             </section>
         </div>
     );
 };
 
-export default UCamCode; 
+export default Codoc; 

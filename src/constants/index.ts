@@ -80,7 +80,7 @@ export const navLinks: NavLink[] = [
   { id: 2, name: "Work", href: "#work" },
   { id: 3, name: "Projects", href: "#projects" },
   { id: 4, name: "Gallery", href: "/gallery" },
-  { id: 5, name: "UCamCode", href: "/ucamcode" },
+  { id: 5, name: "CODOC", href: "/codoc" },
   { id: 6, name: "Contact", href: "#contact" },
 ];
 
@@ -465,34 +465,6 @@ export const experiences: Experience[] = [
   },
   {
     id: 5,
-    type: "research" as const,
-    startDate: "2024-08",
-    name: "Georgia Tech Automotive LiDAR Lab",
-    pos: "Student Researcher",
-    duration: "August 2024 - December 2024",
-    title: "VisionLiDAR: Enhanced Safety and Performance in Automotive Systems",
-    companyLink: "https://www.gatech.edu",
-    companyInfo:
-      "Research Laboratory | Advancing autonomous vehicle technology through LiDAR innovation",
-    techStack: ["C++", "Python", "ROS2", "Docker", "TensorFlow", "OpenCV"],
-    animation: "fade-right",
-    achievements: [
-      {
-        title: "Autonomous Vehicle Research",
-        description:
-          "Enhanced vehicle autonomy and safety through LiDAR technology integration",
-        details: [
-          "Researched advanced automotive systems to enhance vehicle autonomy and safety through LiDAR technology",
-          "Implemented and tested vehicle autonomy on a Dockerized ROS2 setup using C++ and Python",
-          "Developed Python-based edge detection algorithms using Tensorflow and OpenCV on Virtual Machine",
-          "Collaborated with the electrical team to test and optimize sensor data for enhancing driving performance",
-        ],
-      },
-    ],
-    icon: "/assets/automotive.png",
-  },
-  {
-    id: 6,
     type: "research" as const,
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",

@@ -7,7 +7,7 @@ import Contacts from "./sections/Contacts";
 import Footer from "./sections/Footer";
 import Experience from "./sections/Experience";
 import Gallery from "./sections/Gallery";
-import UCamCode from "./sections/UCamCode";
+import Codoc from './sections/Codoc';
 
 const MainContent = () => {
     return (
@@ -28,7 +28,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<MainContent />} />
                 <Route path="/gallery" element={<Gallery />} />
-                <Route path="/ucamcode" element={<UCamCode />} />
+                <Route path="/codoc" element={<Codoc />} />
                 <Route path="/project/:projectId" element={<ProjectDetail />} />
             </Routes>
         </main>
