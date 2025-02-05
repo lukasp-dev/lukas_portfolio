@@ -317,53 +317,6 @@ export const myProjects: Project[] = [
 export const experiences: Experience[] = [
   {
     id: 1,
-    type: "work" as const,
-    startDate: "2024-07",
-    name: "UCamCode",
-    pos: "Co-founder & CTO",
-    duration: "July 2024 - Present",
-    title: "Leading Technical Development at UCamCode",
-    companyLink: "/ucamcode",
-    companyInfo:
-      "Georgia Tech CREATE-X Startup | Bridging the IT education gap in Cambodia through innovative learning platforms",
-    techStack: [
-      "React",
-      "Node.js",
-      "AWS",
-      "OpenAI API",
-      "TypeScript",
-      "Python",
-    ],
-    animation: "fade-right",
-    achievements: [
-      {
-        title: "Technical Leadership",
-        description:
-          "Leading the development of AI-powered educational platform",
-        details: [
-          "Architecting scalable cloud infrastructure using AWS services",
-          "Implementing GPT-4 integration for personalized learning feedback",
-          "Developing adaptive learning algorithms to customize student experiences",
-          "Managing technical team and establishing development workflows",
-        ],
-      },
-      {
-        title: "Platform Development",
-        description:
-          "Building comprehensive learning platform with offline capabilities",
-        details: [
-          "Creating interactive coding environments with real-time feedback",
-          "Implementing offline-first architecture for areas with limited connectivity",
-          "Designing mobile-responsive interface for universal access",
-          "Integrating analytics dashboard for tracking student progress",
-        ],
-      },
-    ],
-    icon: "/assets/ucamcode_small_logo.png",
-    iconClassName: "w-32 h-32 rounded-lg object-contain bg-gray-700/30 p-4",
-  },
-  {
-    id: 2,
     type: "research" as const,
     startDate: "2024-10",
     name: "Stride Labs",
@@ -400,7 +353,7 @@ export const experiences: Experience[] = [
     icon: "/assets/stride_labs.png",
   },
   {
-    id: 3,
+    id: 2,
     type: "work" as const,
     startDate: "2024-05",
     name: "Gallery SOMA",
@@ -433,7 +386,7 @@ export const experiences: Experience[] = [
     icon: "/assets/gallery_soma_logo.jpeg",
   },
   {
-    id: 4,
+    id: 3,
     type: "work" as const,
     startDate: "2024-03",
     name: "360 Energy",
@@ -464,7 +417,7 @@ export const experiences: Experience[] = [
     icon: "/assets/360energy_logo.png",
   },
   {
-    id: 5,
+    id: 4,
     type: "research" as const,
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",
