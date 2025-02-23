@@ -52,7 +52,7 @@ const Hero = () => {
                         Navigate through my portfolio
                     </button>
                     <a 
-                        href="https://drive.google.com/file/d/1d-QPdxmVCCXEpm7Tm6fCeF4huXlTTnQJ/view?usp=sharing" 
+                        href="https://docs.google.com/document/d/1kYv4Pt7TUjUhrme39X1RicU64JYGQWulSAavTpWx1F8/edit?tab=t.0" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="ml-2 mt-4 px-4 py-3 text-white rounded transition bg-blue-800 hover:bg-blue-900"
