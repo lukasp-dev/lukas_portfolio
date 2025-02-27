@@ -97,14 +97,14 @@ export const clientReviews: ClientReview[] = [
     name: "Mark Rogers",
     position: "Founder of TechGear Shop",
     img: "assets/review2.png",
-    review: "Adrian’s expertise in web development is truly impressive...",
+    review: "Adrian's expertise in web development is truly impressive...",
   },
   {
     id: 3,
     name: "John Dohsas",
     position: "Project Manager at UrbanTech",
     img: "assets/review3.png",
-    review: "I can’t say enough good things about Adrian...",
+    review: "I can't say enough good things about Adrian...",
   },
   {
     id: 4,
@@ -116,6 +116,79 @@ export const clientReviews: ClientReview[] = [
 ];
 
 export const myProjects: Project[] = [
+  {
+    title: "BuzzLine (Winner of Google Built With AI and overall software track at WooHacks 2025)",
+    desc: "a platform for fire survivors, providing emergency support, safe routes, and a live walkability maps",
+    subdesc: "Built with Next.js with JavaScript, 10+ external APIs, Google OAuth, Firebase, and deployed on Vercel",
+    pageId: "1a7a96ff12e680a5920bce87a1afa141",
+    href: "https://devpost.com/software/buzz-innovations?ref_content=user-portfolio&ref_feature=in_progress",
+    logo: "/assets/electron.png",
+    logoStyle: {
+      backgroundColor: "#1C1A43",
+      border: "0.2px solid #252262",
+      boxShadow: "0px 0px 60px 0px #635BFF4D",
+    },
+    spotlight: "/assets/spotlight5.png",
+    tags: [
+      { id: 1, name: "JavaScript", path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" },
+      { id: 2, name: "Next.js", path: "https://icon.icepanel.io/Technology/png-shadow-512/Next.js.png" },
+      { id: 3, name: "Google Oauth", path: "https://www.citypng.com/public/uploads/preview/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png" },
+      { id: 4, name: "Gemini API", path: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" },
+      { id: 5, name: "Axios", path: "https://cdn.worldvectorlogo.com/logos/axios.svg" },
+      { id: 6, name: "Firebase", path: "https://img.icons8.com/?size=100&id=87330&format=png&color=000000" },
+      { id: 7, name: "Vercel", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAZ0lEQVR4AWMYwkBICI/krCm45eQ/ftfCKbnp//9FuOTsfv3//98Fh+TB/0BwELtc8H8wiMMqeRUieRWbXPF/KCjGIvkYJvkYU27KfzjoxAi4jwjJ7/KY/keA1ahy3E2dSKCJm2FEAQAD1l2xzdeQ1AAAAABJRU5ErkJggg==" },
+      { id: 8, name: "TailwindCSS", path: "https://w7.pngwing.com/pngs/293/485/png-transparent-tailwind-css-hd-logo-thumbnail.png" },
+      { id: 9, name: "DaisyUI", path: "https://raw.githubusercontent.com/saadeghi/daisyui-images/master/images/daisyui-logo/favicon-192.png" },
+      { id: 10, name: "NASA Landsat API", path: "https://img.icons8.com/?size=100&id=63673&format=png&color=000000" },
+      { id: 11, name: "Open Source Routing API", path: "https://pbs.twimg.com/profile_images/952551296506134528/u0DkjfzD_400x400.jpg" },
+      { id: 12, name: "Google Maps, Places, Directions API", path: "https://img.icons8.com/?size=100&id=DcygmpZqBEd9&format=png&color=000000" },
+      { id: 13, name: "Turf.js", path: "https://images.opencollective.com/turf/2579a53/logo/256.png?height=256" },
+    ],
+    picture: "https://i.ibb.co/9k46vTtK/tmp.webp",
+    type: "Personal Project",
+    role: "Full Stack Developer",
+    links: {
+      github: {
+        fullstack: "https://github.com/lukasp-dev/woohacks25",
+      },
+      live: "https://woohacks25-blush.vercel.app/",
+    },
+  },
+
+  {
+    title: "FinCompare (Top 3 in the UGAHacks Gamification of Financial Analysis Track by Truist)",
+    desc: "A platform that simplifies financial analysis through interactive visualizations and gamified learning",
+    subdesc: "Built with React (JavaScript), MongoDB, Express.js backend, and Axios for API requests",
+    pageId: "1a3a96ff12e680ef8041f5a225740354",
+    href: "https://devpost.com/software/ugahacksxfincompare",
+    logo: "/assets/javascript.png",
+    logoStyle: {
+      backgroundColor: "#1C1A43",
+      border: "0.2px solid #252262",
+      boxShadow: "0px 0px 60px 0px #635BFF4D",
+    },
+    spotlight: "/assets/spotlight5.png",
+    tags: [
+      { id: 1, name: "JavaScript", path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" },
+      { id: 2, name: "React", path: "/assets/react.svg"   },
+      { id: 3, name: "Express", path: "/assets/express.png" },
+      { id: 4, name: "Vite", path: "/assets/vite.png" },
+      { id: 5, name: "Axios", path: "/assets/axios.png" },
+      { id: 6, name: "OpenAI API", path: "/assets/chatgpt.png" },
+      { id: 7, name: "MongoDB", path: "https://w7.pngwing.com/pngs/956/695/png-transparent-mongodb-original-wordmark-logo-icon-thumbnail.png" },
+      { id: 8, name: "Tesseract.js", path: "/assets/python.png" },
+      { id: 9, name: "Chart.js", path: "https://upload.wikimedia.org/wikipedia/commons/8/86/Chart.js_logo.svg" },
+    ],
+    picture: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/260/831/datas/original.png",
+    type: "Hackathon Project",
+    role: "Full Stack Developer",
+    links: {
+      github: {
+        frontend: "https://github.com/lukasp-dev/ugaHacks",
+        backend: "https://github.com/lukasp-dev/FinCompare",
+      },
+    },
+  },
   {
     title: "SOMA Notify",
     desc: "A desktop application allowing the user to simultaneously message multiple clients",
@@ -320,9 +393,9 @@ export const experiences: Experience[] = [
     type: "research" as const,
     startDate: "2024-10",
     name: "Stride Labs",
-    pos: "Software Engineer Intern",
+    pos: "Software Engineer",
     duration: "October 2024 - Present",
-    title: "Software Engineer Intern at Stride Labs",
+    title: "Software Engineer at Stride Labs",
     companyLink: "https://www.stride-labs.com",
     companyInfo:
       "Series A HealthTech Startup | AI-powered custom orthotics design platform that automates 3D design for insoles",
