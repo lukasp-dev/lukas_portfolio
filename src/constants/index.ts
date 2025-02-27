@@ -145,7 +145,7 @@ export const myProjects: Project[] = [
       { id: 13, name: "Turf.js", path: "https://images.opencollective.com/turf/2579a53/logo/256.png?height=256" },
     ],
     picture: "https://i.ibb.co/9k46vTtK/tmp.webp",
-    type: "Personal Project",
+    type: "Hackathon Project",
     role: "Full Stack Developer",
     links: {
       github: {
