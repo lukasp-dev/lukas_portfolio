@@ -7,7 +7,6 @@ import Contacts from "./sections/Contacts";
 import Footer from "./sections/Footer";
 import Experience from "./sections/Experience";
 import Gallery from "./sections/Gallery";
-import Codoc from './sections/Codoc';
 
 const MainContent = () => {
     return (
@@ -27,8 +26,7 @@ const App = () => {
         <main className="max-w-7xl mx-auto">
             <Routes>
                 <Route path="/" element={<MainContent />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/codoc" element={<Codoc />} />
+                <Route path="/gallery" element={<Gallery />}/> 
                 <Route path="/project/:projectId" element={<ProjectDetail />} />
             </Routes>
         </main>

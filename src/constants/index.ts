@@ -80,7 +80,6 @@ export const navLinks: NavLink[] = [
   { id: 2, name: "Work", href: "#work" },
   { id: 3, name: "Projects", href: "#projects" },
   { id: 4, name: "Gallery", href: "/gallery" },
-  { id: 5, name: "CODOC", href: "/codoc" },
   { id: 6, name: "Contact", href: "#contact" },
 ];
 
@@ -353,38 +352,6 @@ export const myProjects: Project[] = [
       },
     },
   },
-  {
-    title: "Quiz Trivia - Online Quiz Platform",
-    desc: "A platform that offers users a chance to test their knowledge",
-    subdesc:
-      "Quiz Trivia is a fun React-based app where users answer True/False questions, track their scores, and enjoy a smooth, interactive quiz experience on any device.",
-    href: "https://lukasp-dev.github.io/quiz-app/",
-    pageId: "15ea96ff12e6807a9126d09a2f4e71ba",
-    texture: "/textures/project/project5.mp4",
-    logo: "/assets/typescript.png",
-    logoStyle: {
-      backgroundColor: "#1C1A43",
-      border: "0.2px solid #252262",
-      boxShadow: "0px 0px 60px 0px #635BFF4D",
-    },
-    spotlight: "/assets/spotlight5.png",
-    tags: [
-      { id: 1, name: "TypeScript", path: "/assets/typescript.png" },
-      { id: 2, name: "React.js", path: "/assets/react.svg" },
-      { id: 3, name: "chakraUI", path: "assets/chakra.png" },
-      { id: 4, name: "Vite", path: "/assets/vite.png" },
-      { id: 5, name: "Github Pages", path: "/assets/github.png" },
-    ],
-    picture: "/assets/trivia.png",
-    type: "Personal Project",
-    role: "Frontend Developer",
-    links: {
-      github: {
-        frontend: "https://github.com/lukasp-dev/QuizTrivia?tab=readme-ov-file",
-      },
-      live: "https://lukasp-dev.github.io/QuizTrivia/",
-    },
-  },
 ];
 
 export const experiences: Experience[] = [
@@ -398,7 +365,7 @@ export const experiences: Experience[] = [
     title: "Software Engineer at Stride Labs",
     companyLink: "https://www.stride-labs.com",
     companyInfo:
-      "Series A HealthTech Startup | AI-powered custom orthotics design platform that automates 3D design for insoles",
+      "Series A BioTech Startup | AI-powered custom orthotics design platform that automates 3D design for insoles",
     techStack: ["React", "Three.js", "Express.js", "GCP", "Node.js"],
     animation: "fade-right",
     achievements: [
@@ -460,37 +427,6 @@ export const experiences: Experience[] = [
   },
   {
     id: 3,
-    type: "work" as const,
-    startDate: "2024-03",
-    name: "360 Energy",
-    pos: "Software Engineer Intern",
-    duration: "March 2024 - May 2024",
-    title: "Software Engineer Intern at 360 Energy",
-    animation: "fade-right",
-    companyLink: "https://www.360energy.io",
-    companyInfo:
-      "Series A Clean Energy Startup | Providing sustainable energy solutions for Indonesian industries",
-    techStack: ["MongoDB", "Express", "Node.js", "Docker"],
-    achievements: [
-      {
-        title: "Dashboard for Stores",
-        description:
-          "Created a real-time dashboard with the MERN stack for store owners to monitor batteries",
-        details: [
-          "Provided visual analytics for battery levels & charging status through data fetching from sensors",
-          "Used MongoDB Change Streams to achieve real-time battery data updates directly from the database",
-        ],
-      },
-      {
-        title: "SolarCharge Optimizer",
-        description:
-          "Simulated battery charging/discharging based on sunlight using Pandas & Matplotlib",
-      },
-    ],
-    icon: "/assets/360energy_logo.png",
-  },
-  {
-    id: 4,
     type: "research" as const,
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",

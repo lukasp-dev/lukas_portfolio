@@ -12,7 +12,7 @@ const About = () => {
                 <p className="text-lg text-white text-center leading-relaxed max-w-xl">
                     Studying Computer Science at <span className="font-bold text-yellow-400">Georgia Tech</span>,<br></br> 
                     I have developed strong skills in frontend and backend development, 
-                    machine learning, and system architecture.
+                    machine learning, and distributed systems.
                 </p>
             </motion.div>
         </section>

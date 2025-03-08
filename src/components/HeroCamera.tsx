@@ -27,14 +27,14 @@ const HeroCamera = () => {
             wireframe: true
         });
         const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        // scene.add(cube);
 
         // Add lights
-        const pointLight = new THREE.PointLight(0xffffff, 1);
+        const pointLight = new THREE.PointLight(0xffff00, 1);
         pointLight.position.set(5, 5, 5);
         scene.add(pointLight);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffff00, 0.5);
         scene.add(ambientLight);
 
         // Camera position
@@ -69,7 +69,7 @@ const HeroCamera = () => {
         particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const starMaterial = new THREE.PointsMaterial({
-            size: 0.05, // 별 크기 줄이기
+            size: 0.01, // 별 크기 줄이기
             vertexColors: true,
             transparent: true,
             opacity: 1, // 불투명도

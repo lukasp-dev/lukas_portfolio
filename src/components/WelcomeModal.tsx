@@ -100,22 +100,6 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
                                             <span>Contact</span>
                                         </div>
                                     </a>
-
-                                    <button 
-                                        onClick={() => {
-                                            onClose();
-                                            navigate('/codoc');
-                                        }} 
-                                        className="w-full"
-                                    >
-                                        <div className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                            </svg>
-                                            <span>Codoc</span>
-                                            <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full">Startup</span>
-                                        </div>
-                                    </button>
                                 </div>
 
                                 <div className="border-t border-gray-700 pt-6">
@@ -125,7 +109,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
                                         </svg>
                                         <div>
                                             <span className="text-blue-400 font-medium">Fun fact!</span>
-                                            <p className="mt-1 text-gray-300">I love drawing in my free time. Check out my art gallery!</p>
+                                            <p className="mt-1 text-gray-300">I love drawing in my free time. Check out my art gallery in the navigation bar!</p>
                                         </div>
                                     </div>
                                 </div>
