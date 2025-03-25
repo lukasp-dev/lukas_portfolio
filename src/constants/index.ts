@@ -354,9 +354,45 @@ export const myProjects: Project[] = [
   },
 ];
 
-export const experiences: Experience[] = [
+export const experiences: Experience[] = [{
+  id: 1,
+  type: "research" as const,
+  startDate: "2025-2",
+  name: "Systems and Security Lab at Indiana University",
+  pos: "Research Intern",
+  duration: "February 2025 - Present",
+  title: "Systems and Security Lab at Indiana University",
+  companyLink: "https://bloomington.iu.edu/index.html",
+  companyInfo:
+    "Academic research lab focused on systems, cybersecurity, and cyber-physical systems (CPS)",
+  techStack: ["C", "Linux"],
+  animation: "fade-right",
+  achievements: [
+    {
+      title: "CPS Open Source Security Research",
+      description:
+        "Analyzed open-source cyber-physical system (CPS) projects to identify and address security vulnerabilities",
+      details: [
+        "Conducted source code audits of CPS-related open source projects to detect potential attacks (e.g., spoofing, injection)",
+        "Collaborated with faculty to develop patches and mitigation strategies",
+        "Submitted vulnerability reports and contributed fixes to the open-source community",
+      ],
+    },
+    {
+      title: "Security Protocol Enhancement",
+      description:
+        "Improved communication protocols in CPS to defend against spoofing and injection threats",
+      details: [
+        "Analyzed packet flows using Wireshark and simulated attacks to verify vulnerabilities",
+        "Implemented secure message authentication schemes in C and Rust",
+        "Tested protocols in virtualized environments using QEMU for reproducibility",
+      ],
+    },
+  ],
+  icon: "/assets/iu_logo.png",
+},
   {
-    id: 1,
+    id: 2,
     type: "research" as const,
     startDate: "2024-10",
     name: "Stride Labs",
@@ -393,7 +429,7 @@ export const experiences: Experience[] = [
     icon: "/assets/stride_labs.png",
   },
   {
-    id: 2,
+    id: 3,
     type: "work" as const,
     startDate: "2024-05",
     name: "Gallery SOMA",
@@ -426,7 +462,7 @@ export const experiences: Experience[] = [
     icon: "/assets/gallery_soma_logo.jpeg",
   },
   {
-    id: 3,
+    id: 4,
     type: "research" as const,
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",
