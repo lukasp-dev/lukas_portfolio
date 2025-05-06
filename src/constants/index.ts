@@ -357,39 +357,28 @@ export const myProjects: Project[] = [
 export const experiences: Experience[] = [{
   id: 1,
   type: "research" as const,
-  startDate: "2025-2",
-  name: "Systems and Security Lab at Indiana University",
-  pos: "Research Intern",
-  duration: "February 2025 - Present",
-  title: "Systems and Security Lab at Indiana University",
-  companyLink: "https://bloomington.iu.edu/index.html",
-  companyInfo:
-    "Academic research lab focused on systems, cybersecurity, and cyber-physical systems (CPS)",
-  techStack: ["C", "Linux"],
+  startDate: "2025-05",
+  name: "Genuine Parts Company",
+  pos: "Software Engineer Intern",
+  duration: "May 2025 - August 2025",
+  title: "Software Engineer Intern at Genuine Parts Company",
+  companyLink: "https://www.genpt.com/",
+  companyInfo:"a global distributor of automotive and industrial replacement parts, best known for owning NAPA Auto Parts",
+  techStack: ["Java", "Google Cloud Services"],
   animation: "fade-right",
   achievements: [
     {
-      title: "CPS Open Source Security Research",
+      title: "Cloud Infrastructure & Backend Engineering Intern",
       description:
-        "Analyzed open-source cyber-physical system (CPS) projects to identify and address security vulnerabilities",
+        "Designed and optimized backend infrastructure and cloud-based services using Google Cloud Platform (GCP)",
       details: [
-        "Conducted source code audits of CPS-related open source projects to detect potential attacks (e.g., spoofing, injection)",
-        "Collaborated with faculty to develop patches and mitigation strategies",
-        "Submitted vulnerability reports and contributed fixes to the open-source community",
-      ],
-    },
-    {
-      title: "Security Protocol Enhancement",
-      description:
-        "Improved communication protocols in CPS to defend against spoofing and injection threats",
-      details: [
-        "Analyzed packet flows using Wireshark and simulated attacks to verify vulnerabilities",
-        "Implemented secure message authentication schemes in C and Rust",
-        "Tested protocols in virtualized environments using QEMU for reproducibility",
+        "Developed and deployed scalable backend APIs and microservices on Cloud Run and App Engine",
+        "Implemented CI/CD pipelines using Cloud Build and Container Registry to streamline development workflows",
+        "Monitored service health and performance using GCP’s Operations Suite (formerly Stackdriver)",
       ],
     },
   ],
-  icon: "/assets/iu_logo.png",
+  icon: "https://www.genpt.com/images/GPC_LOGO.svg",
 },
   {
     id: 2,
@@ -397,7 +386,7 @@ export const experiences: Experience[] = [{
     startDate: "2024-10",
     name: "Stride Labs",
     pos: "Software Engineer",
-    duration: "October 2024 - Present",
+    duration: "October 2024 - April 2025",
     title: "Software Engineer at Stride Labs",
     companyLink: "https://www.stride-labs.com",
     companyInfo:
@@ -467,7 +456,7 @@ export const experiences: Experience[] = [{
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",
     pos: "Research Assistant",
-    duration: "January 2025 - Present (Upcoming)",
+    duration: "January 2025 - Present",
     title: "VIP: Responsible AI Research Team",
     companyLink: "https://www.gatech.edu",
     companyInfo:
