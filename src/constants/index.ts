@@ -485,7 +485,7 @@ export const experiences: Experience[] = [
         ],
       },
     ],
-    icon: "../../public/assets/dotori_main.png",
+    icon: "https://storage.googleapis.com/dotori-public-assets/images/Main_logo.png",
   },
   {
     id: 3,
