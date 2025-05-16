@@ -57,7 +57,7 @@
   },
   "overrides": {
     "slick-carousel": {
-      "jquery": "false"
+      "jquery": "0.0.0"
     }
   }
 }
