@@ -63,7 +63,7 @@ export interface Experience {
   title: string;
   icon: string;
   animation: string;
-  type: "work" | "research";
+  type: "work" | "research" | "project";
   companyLink?: string;
   companyInfo?: string;
   techStack: string[];
@@ -116,9 +116,11 @@ export const clientReviews: ClientReview[] = [
 
 export const myProjects: Project[] = [
   {
-    title: "BuzzLine (Winner of Google Built With AI and overall software track at WooHacks 2025)",
+    title:
+      "BuzzLine (Winner of Google Built With AI and overall software track at WooHacks 2025)",
     desc: "a platform for fire survivors, providing emergency support, safe routes, and a live walkability maps",
-    subdesc: "Built with Next.js with JavaScript, 10+ external APIs, Google OAuth, Firebase, and deployed on Vercel",
+    subdesc:
+      "Built with Next.js with JavaScript, 10+ external APIs, Google OAuth, Firebase, and deployed on Vercel",
     pageId: "1a7a96ff12e680a5920bce87a1afa141",
     href: "https://devpost.com/software/buzz-innovations?ref_content=user-portfolio&ref_feature=in_progress",
     logo: "/assets/electron.png",
@@ -129,19 +131,71 @@ export const myProjects: Project[] = [
     },
     spotlight: "/assets/spotlight5.png",
     tags: [
-      { id: 1, name: "JavaScript", path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" },
-      { id: 2, name: "Next.js", path: "https://icon.icepanel.io/Technology/png-shadow-512/Next.js.png" },
-      { id: 3, name: "Google Oauth", path: "https://www.citypng.com/public/uploads/preview/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png" },
-      { id: 4, name: "Gemini API", path: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" },
-      { id: 5, name: "Axios", path: "https://cdn.worldvectorlogo.com/logos/axios.svg" },
-      { id: 6, name: "Firebase", path: "https://img.icons8.com/?size=100&id=87330&format=png&color=000000" },
-      { id: 7, name: "Vercel", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAZ0lEQVR4AWMYwkBICI/krCm45eQ/ftfCKbnp//9FuOTsfv3//98Fh+TB/0BwELtc8H8wiMMqeRUieRWbXPF/KCjGIvkYJvkYU27KfzjoxAi4jwjJ7/KY/keA1ahy3E2dSKCJm2FEAQAD1l2xzdeQ1AAAAABJRU5ErkJggg==" },
-      { id: 8, name: "TailwindCSS", path: "https://w7.pngwing.com/pngs/293/485/png-transparent-tailwind-css-hd-logo-thumbnail.png" },
-      { id: 9, name: "DaisyUI", path: "https://raw.githubusercontent.com/saadeghi/daisyui-images/master/images/daisyui-logo/favicon-192.png" },
-      { id: 10, name: "NASA Landsat API", path: "https://img.icons8.com/?size=100&id=63673&format=png&color=000000" },
-      { id: 11, name: "Open Source Routing API", path: "https://pbs.twimg.com/profile_images/952551296506134528/u0DkjfzD_400x400.jpg" },
-      { id: 12, name: "Google Maps, Places, Directions API", path: "https://img.icons8.com/?size=100&id=DcygmpZqBEd9&format=png&color=000000" },
-      { id: 13, name: "Turf.js", path: "https://images.opencollective.com/turf/2579a53/logo/256.png?height=256" },
+      {
+        id: 1,
+        name: "JavaScript",
+        path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
+      },
+      {
+        id: 2,
+        name: "Next.js",
+        path: "https://icon.icepanel.io/Technology/png-shadow-512/Next.js.png",
+      },
+      {
+        id: 3,
+        name: "Google Oauth",
+        path: "https://www.citypng.com/public/uploads/preview/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png",
+      },
+      {
+        id: 4,
+        name: "Gemini API",
+        path: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg",
+      },
+      {
+        id: 5,
+        name: "Axios",
+        path: "https://cdn.worldvectorlogo.com/logos/axios.svg",
+      },
+      {
+        id: 6,
+        name: "Firebase",
+        path: "https://img.icons8.com/?size=100&id=87330&format=png&color=000000",
+      },
+      {
+        id: 7,
+        name: "Vercel",
+        path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAZ0lEQVR4AWMYwkBICI/krCm45eQ/ftfCKbnp//9FuOTsfv3//98Fh+TB/0BwELtc8H8wiMMqeRUieRWbXPF/KCjGIvkYJvkYU27KfzjoxAi4jwjJ7/KY/keA1ahy3E2dSKCJm2FEAQAD1l2xzdeQ1AAAAABJRU5ErkJggg==",
+      },
+      {
+        id: 8,
+        name: "TailwindCSS",
+        path: "https://w7.pngwing.com/pngs/293/485/png-transparent-tailwind-css-hd-logo-thumbnail.png",
+      },
+      {
+        id: 9,
+        name: "DaisyUI",
+        path: "https://raw.githubusercontent.com/saadeghi/daisyui-images/master/images/daisyui-logo/favicon-192.png",
+      },
+      {
+        id: 10,
+        name: "NASA Landsat API",
+        path: "https://img.icons8.com/?size=100&id=63673&format=png&color=000000",
+      },
+      {
+        id: 11,
+        name: "Open Source Routing API",
+        path: "https://pbs.twimg.com/profile_images/952551296506134528/u0DkjfzD_400x400.jpg",
+      },
+      {
+        id: 12,
+        name: "Google Maps, Places, Directions API",
+        path: "https://img.icons8.com/?size=100&id=DcygmpZqBEd9&format=png&color=000000",
+      },
+      {
+        id: 13,
+        name: "Turf.js",
+        path: "https://images.opencollective.com/turf/2579a53/logo/256.png?height=256",
+      },
     ],
     picture: "https://i.ibb.co/9k46vTtK/tmp.webp",
     type: "Hackathon Project",
@@ -155,9 +209,11 @@ export const myProjects: Project[] = [
   },
 
   {
-    title: "FinCompare (Top 3 in the UGAHacks Gamification of Financial Analysis Track by Truist)",
+    title:
+      "FinCompare (Top 3 in the UGAHacks Gamification of Financial Analysis Track by Truist)",
     desc: "A platform that simplifies financial analysis through interactive visualizations and gamified learning",
-    subdesc: "Built with React (JavaScript), MongoDB, Express.js backend, and Axios for API requests",
+    subdesc:
+      "Built with React (JavaScript), MongoDB, Express.js backend, and Axios for API requests",
     pageId: "1a3a96ff12e680ef8041f5a225740354",
     href: "https://devpost.com/software/ugahacksxfincompare",
     logo: "/assets/javascript.png",
@@ -168,17 +224,30 @@ export const myProjects: Project[] = [
     },
     spotlight: "/assets/spotlight5.png",
     tags: [
-      { id: 1, name: "JavaScript", path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" },
-      { id: 2, name: "React", path: "/assets/react.svg"   },
+      {
+        id: 1,
+        name: "JavaScript",
+        path: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
+      },
+      { id: 2, name: "React", path: "/assets/react.svg" },
       { id: 3, name: "Express", path: "/assets/express.png" },
       { id: 4, name: "Vite", path: "/assets/vite.png" },
       { id: 5, name: "Axios", path: "/assets/axios.png" },
       { id: 6, name: "OpenAI API", path: "/assets/chatgpt.png" },
-      { id: 7, name: "MongoDB", path: "https://w7.pngwing.com/pngs/956/695/png-transparent-mongodb-original-wordmark-logo-icon-thumbnail.png" },
+      {
+        id: 7,
+        name: "MongoDB",
+        path: "https://w7.pngwing.com/pngs/956/695/png-transparent-mongodb-original-wordmark-logo-icon-thumbnail.png",
+      },
       { id: 8, name: "Tesseract.js", path: "/assets/python.png" },
-      { id: 9, name: "Chart.js", path: "https://upload.wikimedia.org/wikipedia/commons/8/86/Chart.js_logo.svg" },
+      {
+        id: 9,
+        name: "Chart.js",
+        path: "https://upload.wikimedia.org/wikipedia/commons/8/86/Chart.js_logo.svg",
+      },
     ],
-    picture: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/260/831/datas/original.png",
+    picture:
+      "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/260/831/datas/original.png",
     type: "Hackathon Project",
     role: "Full Stack Developer",
     links: {
@@ -191,7 +260,8 @@ export const myProjects: Project[] = [
   {
     title: "SOMA Notify",
     desc: "A desktop application allowing the user to simultaneously message multiple clients",
-    subdesc: "SOMA Notify is a desktop application that allows the user to simultaneously message multiple clients. It is built with Electron and uses the React library for the User Interface. It also uses the Kakaotalk API to authenticate the user and send messages to the clients.",
+    subdesc:
+      "SOMA Notify is a desktop application that allows the user to simultaneously message multiple clients. It is built with Electron and uses the React library for the User Interface. It also uses the Kakaotalk API to authenticate the user and send messages to the clients.",
     pageId: "169a96ff12e680a4ba4bceebcda2dda0",
     href: "https://genuinelukas.notion.site/SOMA-Notify-169a96ff12e680a4ba4bceebcda2dda0?pvs=73",
     texture: "/textures/project/project2.mp4",
@@ -354,34 +424,71 @@ export const myProjects: Project[] = [
   },
 ];
 
-export const experiences: Experience[] = [{
-  id: 1,
-  type: "research" as const,
-  startDate: "2025-05",
-  name: "Genuine Parts Company",
-  pos: "Software Engineer Intern",
-  duration: "May 2025 - August 2025",
-  title: "Software Engineer Intern at Genuine Parts Company",
-  companyLink: "https://www.genpt.com/",
-  companyInfo:"a global distributor of automotive and industrial replacement parts, best known for owning NAPA Auto Parts",
-  techStack: ["Java", "Google Cloud Services"],
-  animation: "fade-right",
-  achievements: [
-    {
-      title: "Cloud Infrastructure & Backend Engineering Intern",
-      description:
-        "Designed and optimized backend infrastructure and cloud-based services using Google Cloud Platform (GCP)",
-      details: [
-        "Developed and deployed scalable backend APIs and microservices on Cloud Run and App Engine",
-        "Implemented CI/CD pipelines using Cloud Build and Container Registry to streamline development workflows",
-        "Monitored service health and performance using GCP’s Operations Suite (formerly Stackdriver)",
-      ],
-    },
-  ],
-  icon: "https://www.genpt.com/images/GPC_LOGO.svg",
-},
+export const experiences: Experience[] = [
+  {
+    id: 1,
+    type: "research" as const,
+    startDate: "2025-05",
+    name: "Genuine Parts Company",
+    pos: "Software Engineer Intern",
+    duration: "May 2025 - August 2025",
+    title: "Software Engineer Intern at Genuine Parts Company",
+    companyLink: "https://dotori-intro-website.vercel.app/",
+    companyInfo:
+      "a global distributor of automotive and industrial replacement parts, best known for owning NAPA Auto Parts",
+    techStack: ["Java", "Google Cloud Services"],
+    animation: "fade-right",
+    achievements: [
+      {
+        title: "Cloud Infrastructure & Backend Engineering Intern",
+        description:
+          "Designed and optimized backend infrastructure and cloud-based services using Google Cloud Platform (GCP)",
+        details: [
+          "Developed and deployed scalable backend APIs and microservices on Cloud Run and App Engine",
+          "Implemented CI/CD pipelines using Cloud Build and Container Registry to streamline development workflows",
+          "Monitored service health and performance using GCP's Operations Suite (formerly Stackdriver)",
+        ],
+      },
+    ],
+    icon: "https://www.genpt.com/images/GPC_LOGO.svg",
+  },
   {
     id: 2,
+    type: "project" as const,
+    startDate: "2025-04",
+    name: "Dotori",
+    pos: "Founding Software Engineer",
+    duration: "April 2025 – Present",
+    title: "Founding Software Engineer at Dotori",
+    companyLink: "https://dotori.world/",
+    companyInfo:
+      "a startup building an AI-powered college admissions platform for international students",
+    techStack: [
+      "TypeScript",
+      "Next.js",
+      "Spring Boot",
+      "PostgreSQL",
+      "Google Cloud Platform",
+      "OpenAI",
+      "Pinecone",
+    ],
+    animation: "fade-left",
+    achievements: [
+      {
+        title: "Full-Stack AI Admissions Assistant",
+        description:
+          "Built an AI-powered admissions assistant platform from the ground up as a founding engineer",
+        details: [
+          "Implemented a Retrieval-Augmented Generation (RAG) pipeline using OpenAI and Pinecone for context-aware essay assistance",
+          "Developed secure RESTful APIs with Spring Boot and deployed containerized microservices on Google Cloud",
+          "Led the integration of user authentication, essay editing workflows, and real-time feedback for international applicants",
+        ],
+      },
+    ],
+    icon: "../../public/assets/dotori_main.png",
+  },
+  {
+    id: 3,
     type: "research" as const,
     startDate: "2024-10",
     name: "Stride Labs",
@@ -418,7 +525,7 @@ export const experiences: Experience[] = [{
     icon: "/assets/stride_labs.png",
   },
   {
-    id: 3,
+    id: 4,
     type: "work" as const,
     startDate: "2024-05",
     name: "Gallery SOMA",
@@ -451,7 +558,7 @@ export const experiences: Experience[] = [{
     icon: "/assets/gallery_soma_logo.jpeg",
   },
   {
-    id: 4,
+    id: 5,
     type: "research" as const,
     startDate: "2025-01",
     name: "Responsible AI for Decision Making",
