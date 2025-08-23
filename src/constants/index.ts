@@ -430,23 +430,23 @@ export const experiences: Experience[] = [
     type: "research" as const,
     startDate: "2025-05",
     name: "Genuine Parts Company",
-    pos: "Software Engineer Intern",
+    pos: "AI/ML Software Engineering Intern",
     duration: "May 2025 - August 2025",
-    title: "Software Engineer Intern at Genuine Parts Company",
-    companyLink: "https://dotori-intro-website.vercel.app/",
+    title: "AI/ML Software Engineering Intern at Genuine Parts Company",
+    companyLink: "https://www.genpt.com/",
     companyInfo:
       "a global distributor of automotive and industrial replacement parts, best known for owning NAPA Auto Parts",
-    techStack: ["Java", "Google Cloud Services"],
+    techStack: ["React", "FastAPI", "Redux", "Pydantic", "Gemini", "Vertex AI", "Vector DB"],
     animation: "fade-right",
     achievements: [
       {
-        title: "Cloud Infrastructure & Backend Engineering Intern",
+        title: "Full-Stack Product Search Platform",
         description:
-          "Designed and optimized backend infrastructure and cloud-based services using Google Cloud Platform (GCP)",
+          "Built full-stack product search platform (React + FastAPI) for NAPA Auto Parts with natural language filters",
         details: [
-          "Developed and deployed scalable backend APIs and microservices on Cloud Run and App Engine",
-          "Implemented CI/CD pipelines using Cloud Build and Container Registry to streamline development workflows",
-          "Monitored service health and performance using GCP's Operations Suite (formerly Stackdriver)",
+          "Reduced API calls by 94% (18→1) via Redux centralization and frontend memoization, generating $10M annual savings",
+          "Enhanced backend reliability with Pydantic unit tests, ensuring 100% schema validation and blocking malformed data",
+          "Developed RAG-based typo/abbreviation resolution using Gemini embeddings, vector DB, and Vertex AI",
         ],
       },
     ],
@@ -485,7 +485,7 @@ export const experiences: Experience[] = [
         ],
       },
     ],
-    icon: "https://storage.googleapis.com/dotori-public-assets/images/Main_logo.png",
+    icon: "https://dotori-intro-website.vercel.app/logo/main_PNG.png",
   },
   {
     id: 3,
