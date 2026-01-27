@@ -601,6 +601,35 @@ export const experiences: Experience[] = [
     ],
     icon: "/assets/responsible_ai.png",
   },
+  {
+    id: 6,
+    type: "work" as const,
+    startDate: "2026-01",
+    name: "Itential",
+    pos: "Machine Learning Engineer Co-Op",
+    duration: "January 2026 - Present",
+    title: "Machine Learning Engineer Co-Op at Itential",
+    companyLink: "https://www.itential.com",
+    companyInfo:
+      "Network automation software company specializing in enterprise network orchestration and automation for Fortune 500 companies",
+    techStack: [
+      "Python",
+      "SQL",
+      "Snowflake",
+      "AWS Lambda",
+      "Machine Learning",
+      "Deep Learning",
+    ],
+    animation: "fade-left",
+    achievements: [
+      {
+        title: "Ongoing",
+        description: "Currently working on machine learning projects",
+        details: [],
+      },
+    ],
+    icon: "/assets/itential-logo-stacked-r.png",
+  },
 ].sort(
   (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
 );

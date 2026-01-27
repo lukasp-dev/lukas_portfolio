@@ -12,7 +12,7 @@ const ProjectDetail = () => {
     }
 
     return (
-        <div className="p-6 text-white rounded-lg shadow-lg h-screen">
+        <div className="p-6 text-white rounded-lg shadow-lg h-screen mx-4 mb-6">
             <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
             <p className="text-lg mb-2">{project.desc}</p>
             <div className="flex flex-row mb-4 rounded-lg shadow-md">

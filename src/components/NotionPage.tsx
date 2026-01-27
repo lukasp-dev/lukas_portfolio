@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAxios } from '../hooks/useAxios';
-import { Block } from '../types/Block';
+import { Block, RichText } from '../types/Block';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -26,7 +26,7 @@ const getLanguage = (language?: string) => {
 
 const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
     const { data, loading, error } = useAxios(pageId);
-    const blocks: Block[] = Array.isArray(data) ? data : [];
+    const blocks: Block[] = Array.isArray(data) ? (data as Block[]) : [];
 
     console.log('Loaded blocks:', blocks);
 
@@ -125,9 +125,9 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
                 return (
                     <li key={block.id} className="mb-2">
                         {renderRichText(block.content.rich_text)}
-                        {block.has_children && (block as any).children && (
+                        {block.has_children && block.children && (
                             <ol className="list-decimal list-inside ml-4">
-                                {(block as any).children.map((childBlock: Block) => renderBlock(childBlock))}
+                                {block.children.map((childBlock: Block) => renderBlock(childBlock))}
                             </ol>
                         )}
                     </li>
@@ -137,9 +137,9 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
                 return (
                     <li key={block.id} className="mb-2">
                         {renderRichText(block.content.rich_text)}
-                        {block.has_children && (block as any).children && (
+                        {block.has_children && block.children && (
                             <ul className="list-disc list-inside ml-4">
-                                {(block as any).children.map((childBlock: Block) => renderBlock(childBlock))}
+                                {block.children.map((childBlock: Block) => renderBlock(childBlock))}
                             </ul>
                         )}
                     </li>
@@ -188,16 +188,77 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
 
             case 'column_list':
                 return (
-                    <div key={block.id} className="flex space-x-4 mb-4">
-                        {Array.isArray((block as any).children) && (block as any).children.map((childBlock: Block) => (
-                            <div key={childBlock.id} className="flex-1">
-                                {renderBlock(childBlock)}
-                            </div>
-                        ))}
+                    <div key={block.id} className="flex flex-col md:flex-row md:space-x-4 mb-4">
+                        {Array.isArray(block.children) &&
+                            block.children.map((childBlock: Block) => (
+                                <div key={childBlock.id} className="flex-1 mb-4 md:mb-0">
+                                    {renderBlock(childBlock)}
+                                </div>
+                            ))}
                     </div>
                 );
 
+            case 'toggle':
+                // Toggle uses plain text, not rich_text formatting
+                const toggleText = block.content.rich_text?.[0]?.plain_text || '';
+                return (
+                    <details key={block.id} className="mb-4">
+                        <summary className="cursor-pointer font-semibold text-lg mb-2">
+                            {toggleText}
+                        </summary>
+                        {block.has_children && block.children && (
+                            <div className="ml-4 mt-2">
+                                {block.children.map((childBlock: Block) => renderBlock(childBlock))}
+                            </div>
+                        )}
+                    </details>
+                );
+
+            case 'divider':
+                return (
+                    <hr key={block.id} className="my-6 border-gray-600" />
+                );
+
+            case 'table':
+                const tableContent = block.content as any;
+                const hasColumnHeader = tableContent.has_column_header || false;
+                return (
+                    <div key={block.id} className="my-6 overflow-x-auto">
+                        <table className="min-w-full border-collapse border border-gray-600">
+                            <tbody>
+                                {block.has_children && block.children && block.children.map((rowBlock: Block, rowIndex: number) => {
+                                    if (rowBlock.type !== 'table_row') return null;
+                                    const rowContent = rowBlock.content as any;
+                                    const cells = rowContent.cells || [];
+                                    const isHeaderRow = hasColumnHeader && rowIndex === 0;
+                                    
+                                    return (
+                                        <tr key={rowBlock.id} className={isHeaderRow ? 'bg-gray-800' : ''}>
+                                            {cells.map((cell: RichText[], cellIndex: number) => {
+                                                const CellTag = isHeaderRow ? 'th' : 'td';
+                                                return (
+                                                    <CellTag
+                                                        key={cellIndex}
+                                                        className="border border-gray-600 px-4 py-2 text-left"
+                                                    >
+                                                        {renderRichText(cell)}
+                                                    </CellTag>
+                                                );
+                                            })}
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+
+            case 'table_row':
+                // table_row는 table의 children으로만 렌더링되므로 여기서는 처리하지 않음
+                return null;
+
             default:
+                console.warn(`Unsupported block type: ${block.type}`, block);
                 return null;
         }
     };
@@ -232,6 +293,9 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
                     case 'image':
                     case 'table_of_contents':
                     case 'column_list':
+                    case 'toggle':
+                    case 'divider':
+                    case 'table':
                         return group.items.map(block => renderBlock(block));
 
                     case 'numbered_list_item':
