@@ -19,44 +19,13 @@ export interface BuildingModelConfig {
   };
 }
 
-// Project buildings - these will display your portfolio projects
-// Replace with actual model paths once you add GLB files
-export const projectBuildingModels: BuildingModelConfig[] = [
-  // Example:
-  // {
-  //   path: "/models/buildings/project_hq_tower.glb",
-  //   scale: 1.05,
-  //   rotation: [0, 0, 0],
-  //   type: "project",
-  //   lod: {
-  //     near: "/models/buildings/lod/project_hq_tower_lod0.glb",
-  //     mid: "/models/buildings/lod/project_hq_tower_lod1.glb",
-  //     far: "/models/buildings/lod/project_hq_tower_lod2.glb",
-  //     switchDistance: [45, 95],
-  //   },
-  //   materialVariant: {
-  //     emissiveBoost: 0.2,
-  //     hueShift: 0.01,
-  //     saturation: 1.0,
-  //   },
-  // },
-  // Add 8 models here for your 8 projects
-];
+// Project buildings - MODELS HAVE TOO MANY TEXTURES (>16)
+// All downloaded models exceed WebGL texture limit
+// Using procedural buildings instead
+export const projectBuildingModels: BuildingModelConfig[] = [];
 
-// Background buildings - these fill out the city
-// Replace with actual model paths once you add GLB files
-export const backgroundBuildingModels: BuildingModelConfig[] = [
-  // Example:
-  // {
-  //   path: "/models/buildings/bg_midrise_01.glb",
-  //   scale: 0.9,
-  //   rotation: [0, Math.PI / 4, 0],
-  //   type: "background",
-  //   lod: { switchDistance: [35, 80] },
-  //   materialVariant: { hueShift: -0.02, saturation: 0.9 },
-  // },
-  // Add 5-10 varied models here
-];
+// Background buildings - DISABLED FOR TESTING
+export const backgroundBuildingModels: BuildingModelConfig[] = [];
 
 // Optional reference presets for quick setup.
 // Keep these separate from active arrays so the app can stay in procedural mode
