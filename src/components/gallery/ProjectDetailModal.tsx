@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "../../constants";
 
@@ -7,6 +8,13 @@ interface HolographicUIProps {
 }
 
 const HolographicUI = ({ selectedProject, onClose }: HolographicUIProps) => {
+  useEffect(() => {
+    if (!selectedProject) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedProject, onClose]);
+
   return (
     <AnimatePresence>
       {selectedProject && (
@@ -16,7 +24,10 @@ const HolographicUI = ({ selectedProject, onClose }: HolographicUIProps) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
-          style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)" }}
+          style={{
+            background: "rgba(0,0,0,0.65)",
+            backdropFilter: "blur(6px)",
+          }}
           onClick={onClose}
         >
           <motion.div

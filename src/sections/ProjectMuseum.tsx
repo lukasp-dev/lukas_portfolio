@@ -128,6 +128,41 @@ const ArtworkFrame = ({
         />
       </mesh>
 
+      {/* Plaque label */}
+      <Html position={[0, -(FH / 2 + 0.34), 0.14]} center transform occlude>
+        <div style={{ width: "150px", overflow: "hidden", textAlign: "center", pointerEvents: "none" }}>
+          <p style={{
+            color: "#a07820",
+            fontSize: "7px",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            fontFamily: "Georgia, serif",
+            marginBottom: "2px",
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}>
+            {project.type ?? "Project"}
+          </p>
+          <p style={{
+            color: "#e0c870",
+            fontSize: "9px",
+            letterSpacing: "0.08em",
+            fontFamily: "Georgia, serif",
+            fontWeight: 600,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            lineHeight: 1.2,
+          }}>
+            {project.title.includes("(")
+              ? project.title.split("(")[0].trim()
+              : project.title}
+          </p>
+        </div>
+      </Html>
+
       {/* Spotlight from above */}
       <spotLight
         position={[0, 8, 1.8]}
@@ -488,9 +523,9 @@ const WASDControls = ({
     if (keys.current.w) vel.add(dir);
     if (keys.current.s) vel.sub(dir);
     if (keys.current.a)
-      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
-    if (keys.current.d)
       vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
+    if (keys.current.d)
+      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
 
     if (vel.length() > 0) {
       camera.position.addScaledVector(vel.normalize(), 9 * dt);
@@ -570,13 +605,20 @@ const PreviewCard = ({ project }: { project: Project | null }) => (
   </AnimatePresence>
 );
 
-const CyberpunkScene = () => {
+const ProjectMuseum = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const orbitRef = useRef<OrbitControlsImpl>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelectedProject(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedProject]);
 
   const handleDoorClick = () => {
     setTransitioning(true);
@@ -679,4 +721,4 @@ const CyberpunkScene = () => {
   );
 };
 
-export default CyberpunkScene;
+export default ProjectMuseum;

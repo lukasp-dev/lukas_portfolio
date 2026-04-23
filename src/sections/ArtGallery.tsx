@@ -585,9 +585,9 @@ const WASDControls = ({
     if (keys.current.w) vel.add(dir);
     if (keys.current.s) vel.sub(dir);
     if (keys.current.a)
-      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
-    if (keys.current.d)
       vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
+    if (keys.current.d)
+      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
 
     if (vel.length() > 0) {
       camera.position.addScaledVector(vel.normalize(), 9 * dt);
@@ -761,6 +761,13 @@ const Gallery = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const orbitRef = useRef<{ target: Vector3 }>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedArt) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelectedArt(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedArt]);
 
   const handleDoorClick = () => {
     setTransitioning(true);
