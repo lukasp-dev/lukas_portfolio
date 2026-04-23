@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { Project } from "../../constants";
+import type { BuildingModelConfig } from "../../constants/buildingModels";
 
 interface BuildingModelProps {
   position: [number, number, number];
@@ -11,6 +12,8 @@ interface BuildingModelProps {
   onClick?: () => void;
   scale?: number;
   rotation?: [number, number, number];
+  lod?: BuildingModelConfig["lod"];
+  materialVariant?: BuildingModelConfig["materialVariant"];
 }
 
 const BuildingModel = ({
@@ -20,50 +23,93 @@ const BuildingModel = ({
   onClick,
   scale = 1,
   rotation = [0, 0, 0],
+  lod,
+  materialVariant,
 }: BuildingModelProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const { scene } = useGLTF(modelPath);
+  const [selectedLod, setSelectedLod] = useState<0 | 1 | 2>(0);
+  const lodRef = useRef<0 | 1 | 2>(0);
 
-  // Clone the scene to allow multiple instances
-  const clonedScene = scene.clone();
+  const nearPath = lod?.near || modelPath;
+  const midPath = lod?.mid || modelPath;
+  const farPath = lod?.far || modelPath;
+  const lodSwitchDistance = lod?.switchDistance || [45, 95];
+  const hoverBoostMax = materialVariant?.emissiveBoost ?? 0.15;
+  const worldPosition = useMemo(
+    () => new THREE.Vector3(position[0], position[1], position[2]),
+    [position],
+  );
 
-  useFrame((state) => {
-    if (groupRef.current && hovered) {
-      // Add pulsing glow effect when hovered
-      groupRef.current.traverse((child) => {
-        if (child instanceof THREE.Mesh && child.material) {
-          const material = child.material as THREE.MeshStandardMaterial;
-          if (material.emissive) {
-            material.emissiveIntensity =
-              0.5 + Math.sin(state.clock.elapsedTime * 3) * 0.3;
-          }
-        }
-      });
-    }
-  });
+  const { scene: nearScene } = useGLTF(nearPath);
+  const { scene: midScene } = useGLTF(midPath);
+  const { scene: farScene } = useGLTF(farPath);
 
-  // Apply cyberpunk materials to the model
-  clonedScene.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
-      const material = child.material as THREE.MeshStandardMaterial;
+  const sourceScene =
+    selectedLod === 0 ? nearScene : selectedLod === 1 ? midScene : farScene;
 
-      // Enhance materials with cyberpunk aesthetic
-      if (material) {
-        material.metalness = Math.max(material.metalness || 0, 0.7);
-        material.roughness = Math.min(material.roughness || 1, 0.3);
+  // Clone once so each building instance can manage its own material state.
+  const clonedScene = useMemo(() => sourceScene.clone(true), [sourceScene]);
 
-        // Add emissive glow
-        if (!material.emissive) {
-          material.emissive = new THREE.Color(hovered ? "#00ffff" : "#ff00ff");
-          material.emissiveIntensity = hovered ? 0.5 : 0.2;
-        }
-      }
+  const emissiveMaterials = useMemo(() => {
+    const targets: Array<{
+      material: THREE.MeshStandardMaterial;
+      baseIntensity: number;
+    }> = [];
+    const seenMaterials = new Set<THREE.Material>();
 
+    clonedScene.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) return;
       child.castShadow = true;
       child.receiveShadow = true;
+
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      materials.forEach((material) => {
+        if (!(material instanceof THREE.MeshStandardMaterial)) return;
+        if (seenMaterials.has(material)) return;
+        seenMaterials.add(material);
+
+        const hasEmissiveMap = Boolean(material.emissiveMap);
+        const hasEmissiveColor =
+          material.emissive &&
+          !material.emissive.equals(new THREE.Color(0x000000));
+
+        // Only animate materials that are already emissive.
+        if (hasEmissiveMap || hasEmissiveColor) {
+          targets.push({
+            material,
+            baseIntensity: material.emissiveIntensity ?? 0,
+          });
+        }
+      });
+    });
+
+    return targets;
+  }, [clonedScene]);
+
+  useFrame((state) => {
+    if (!groupRef.current || emissiveMaterials.length === 0) return;
+
+    const distance = state.camera.position.distanceTo(worldPosition);
+    const [nearToMid, midToFar] = lodSwitchDistance;
+    const nextLod: 0 | 1 | 2 =
+      distance > midToFar ? 2 : distance > nearToMid ? 1 : 0;
+
+    if (nextLod !== lodRef.current) {
+      lodRef.current = nextLod;
+      setSelectedLod(nextLod);
     }
-  });
+
+    const pulse = 0.05 + Math.sin(state.clock.elapsedTime * 3) * 0.03;
+    const boost = hovered ? Math.min(hoverBoostMax, Math.max(0.03, pulse)) : 0;
+
+    emissiveMaterials.forEach(({ material, baseIntensity }) => {
+      material.emissiveIntensity = baseIntensity + boost;
+    });
+  }, -1);
 
   return (
     <group position={position}>

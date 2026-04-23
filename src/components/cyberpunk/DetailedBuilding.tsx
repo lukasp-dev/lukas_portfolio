@@ -62,6 +62,7 @@ const DetailedBuilding = ({
       accentColor,
       baseWidth,
       baseDepth,
+      random,
     };
   }, [seed]);
 
@@ -101,7 +102,8 @@ const DetailedBuilding = ({
       for (let col = 0; col < windowsPerRow; col++) {
         const x = (col - windowsPerRow / 2) * spacingX;
         const y = yOffset - height / 2 + (floor + 0.5) * spacingY;
-        const isLit = Math.random() > 0.2;
+        const litSeed = seed + sectionIndex * 131 + floor * 17 + col * 29;
+        const isLit = buildingData.random(0, 1, litSeed) > 0.25;
 
         // Front windows
         windows.push(
@@ -146,7 +148,8 @@ const DetailedBuilding = ({
       for (let col = 0; col < windowsPerDepth; col++) {
         const z = (col - windowsPerDepth / 2) * spacingX;
         const y = yOffset - height / 2 + (floor + 0.5) * spacingY;
-        const isLit = Math.random() > 0.2;
+        const litSeed = seed + sectionIndex * 151 + floor * 19 + col * 31;
+        const isLit = buildingData.random(0, 1, litSeed) > 0.3;
 
         // Left windows
         windows.push(
@@ -187,6 +190,114 @@ const DetailedBuilding = ({
     }
 
     return windows;
+  };
+
+  const createFacadeDetails = (
+    width: number,
+    height: number,
+    depth: number,
+    yOffset: number,
+    sectionIndex: number,
+  ) => {
+    const frameColor = buildingData.accentColor;
+    const bandColor = sectionIndex % 2 === 0 ? buildingData.emissiveColor : "#00aaff";
+    const bandCount = Math.max(2, Math.floor(height / 4));
+    const details: JSX.Element[] = [];
+
+    // Corner columns
+    [
+      [width / 2, depth / 2],
+      [-width / 2, depth / 2],
+      [width / 2, -depth / 2],
+      [-width / 2, -depth / 2],
+    ].forEach(([x, z], i) => {
+      details.push(
+        <mesh key={`corner-${sectionIndex}-${i}`} position={[x, yOffset, z]}>
+          <boxGeometry args={[0.18, height, 0.18]} />
+          <meshStandardMaterial
+            color="#3b4768"
+            emissive={hovered ? frameColor : "#16203a"}
+            emissiveIntensity={hovered ? 0.6 : 0.24}
+            metalness={0.82}
+            roughness={0.28}
+          />
+        </mesh>,
+      );
+    });
+
+    // Front/back glass facade slabs so buildings stay visible in dark scenes.
+    details.push(
+      <mesh
+        key={`glass-front-${sectionIndex}`}
+        position={[0, yOffset, depth / 2 + 0.02]}
+      >
+        <planeGeometry args={[width * 0.92, height * 0.92]} />
+        <meshStandardMaterial
+          color="#3ea0ff"
+          emissive="#0a2f55"
+          emissiveIntensity={hovered ? 0.55 : 0.22}
+          metalness={0.2}
+          roughness={0.18}
+          transparent
+          opacity={0.3}
+        />
+      </mesh>,
+    );
+    details.push(
+      <mesh
+        key={`glass-back-${sectionIndex}`}
+        position={[0, yOffset, -depth / 2 - 0.02]}
+        rotation={[0, Math.PI, 0]}
+      >
+        <planeGeometry args={[width * 0.92, height * 0.92]} />
+        <meshStandardMaterial
+          color="#3ea0ff"
+          emissive="#0a2f55"
+          emissiveIntensity={hovered ? 0.55 : 0.22}
+          metalness={0.2}
+          roughness={0.18}
+          transparent
+          opacity={0.26}
+        />
+      </mesh>,
+    );
+
+    // Horizontal neon bands around facade
+    for (let i = 0; i < bandCount; i++) {
+      const bandY = yOffset - height / 2 + ((i + 1) / (bandCount + 1)) * height;
+      details.push(
+        <mesh
+          key={`band-${sectionIndex}-${i}`}
+          position={[0, bandY, depth / 2 + 0.03]}
+        >
+          <boxGeometry args={[width * 0.95, 0.08, 0.04]} />
+          <meshStandardMaterial
+            color={bandColor}
+            emissive={bandColor}
+            emissiveIntensity={hovered ? 1.1 : 0.45}
+            metalness={0.6}
+            roughness={0.35}
+          />
+        </mesh>,
+      );
+      details.push(
+        <mesh
+          key={`band-back-${sectionIndex}-${i}`}
+          position={[0, bandY, -depth / 2 - 0.03]}
+        >
+          <boxGeometry args={[width * 0.95, 0.08, 0.04]} />
+          <meshStandardMaterial
+            color={bandColor}
+            emissive={bandColor}
+            emissiveIntensity={hovered ? 1.1 : 0.45}
+            metalness={0.6}
+            roughness={0.35}
+          />
+        </mesh>,
+      );
+    }
+
+    return details;
   };
 
   // Create rooftop details
@@ -320,11 +431,11 @@ const DetailedBuilding = ({
                 args={[section.width, section.height, section.depth]}
               />
               <meshStandardMaterial
-                color="#0a0a15"
-                emissive={buildingData.emissiveColor}
-                emissiveIntensity={hovered ? 0.5 : 0.3}
-                metalness={0.9}
-                roughness={0.1}
+                color="#1b2340"
+                emissive="#141a2f"
+                emissiveIntensity={hovered ? 0.4 : 0.15}
+                metalness={0.7}
+                roughness={0.35}
               />
             </mesh>
 
@@ -341,13 +452,22 @@ const DetailedBuilding = ({
               />
               <lineBasicMaterial
                 color={buildingData.accentColor}
-                opacity={0.8}
+                opacity={0.95}
                 transparent
               />
             </lineSegments>
 
             {/* Windows */}
             {createWindows(
+              section.width,
+              section.height,
+              section.depth,
+              section.yOffset,
+              index,
+            )}
+
+            {/* Facade details */}
+            {createFacadeDetails(
               section.width,
               section.height,
               section.depth,

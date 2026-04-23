@@ -105,6 +105,13 @@ const CyberpunkScene = () => {
         </p>
       </div>
 
+      {/* Build marker for visual verification */}
+      <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-md border border-cyan-400/70 bg-black/70">
+        <p className="text-cyan-300 text-xs font-semibold tracking-wider">
+          SIMCITY-V2 RENDER CHECK
+        </p>
+      </div>
+
       {/* 3D Canvas */}
       <Canvas
         shadows
@@ -167,6 +174,8 @@ const CyberpunkScene = () => {
                   key={project.title}
                   position={projectPositions[index]}
                   modelPath={modelConfig.path}
+                  lod={modelConfig.lod}
+                  materialVariant={modelConfig.materialVariant}
                   project={project}
                   onClick={() => handleProjectClick(project)}
                   scale={modelConfig.scale || 1}
@@ -204,6 +213,8 @@ const CyberpunkScene = () => {
                   key={`filler-${i}`}
                   position={position}
                   modelPath={modelConfig.path}
+                  lod={modelConfig.lod}
+                  materialVariant={modelConfig.materialVariant}
                   scale={modelConfig.scale || 0.8}
                   rotation={
                     modelConfig.rotation || [0, Math.random() * Math.PI * 2, 0]

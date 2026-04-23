@@ -282,3 +282,48 @@ Models should have origin at ground level. If floating/buried:
 **Current Mode**: Procedural buildings (will switch to models once you add GLB files)
 
 **Ready to use models?** Just add GLB files and update the config!
+
+## Agent Handoff Notes (SimCity Quality Upgrade)
+
+### Completed in `simcity-view`
+
+1. Updated `src/components/cyberpunk/BuildingModel.tsx`
+   - Removed global material overrides that flattened imported PBR materials.
+   - Preserved original GLB look by default.
+   - Hover now boosts emissive only on materials that are already emissive.
+2. Updated `src/constants/buildingModels.ts`
+   - Added `lod` and `materialVariant` fields to `BuildingModelConfig`.
+   - Added reference preset arrays:
+     - `simcityProjectModelPresets`
+     - `simcityBackgroundModelPresets`
+   - Kept active arrays empty so app remains safe in procedural mode until assets are present.
+3. Updated `src/sections/CyberpunkScene.tsx`
+   - Wired `lod` and `materialVariant` config into `BuildingModel` for both project and background model paths.
+4. Extended `BuildingModel` runtime behavior
+   - Added distance-based LOD selection (`near/mid/far`) using camera distance.
+   - Added configurable switch distances via `lod.switchDistance`.
+   - Kept emissive hover boost bounded with `materialVariant.emissiveBoost`.
+5. Upgraded procedural fallback quality in `src/components/cyberpunk/DetailedBuilding.tsx`
+   - Replaced non-deterministic `Math.random()` window lighting with seeded deterministic patterns.
+   - Added facade corner columns and horizontal neon facade bands per section.
+   - Increased visual depth so fallback city reads closer to a game-ready style while GLB assets are pending.
+
+### Why this matters
+
+- The previous model pipeline forced metalness/roughness/emissive values, which reduced fidelity of high-quality GLB assets.
+- Current pipeline is now compatible with game-quality authored materials.
+
+### Next steps for any agent
+
+1. Import or create 8 project GLBs + 5-10 background GLBs.
+2. Populate `projectBuildingModels` and `backgroundBuildingModels`.
+3. Add LOD assets (`lod0/lod1/lod2`) where possible and wire paths.
+4. Tune lighting in `NeonLights.tsx` after real assets are loaded to avoid over-bloom/overexposure.
+5. Add optional scene-level LOD strategy only if per-building LOD becomes expensive.
+6. Remove/trim procedural facade effects after high-quality GLB models are fully adopted (optional cleanup).
+
+### Definition of done
+
+- Real GLB assets are visible in scene (no procedural fallback).
+- Hover feedback remains subtle and does not wash out base textures.
+- Desktop target: stable ~60 FPS, mobile target: 30+ FPS.
