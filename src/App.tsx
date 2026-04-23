@@ -7,6 +7,7 @@ import Contacts from "./sections/Contacts";
 import Footer from "./sections/Footer";
 import Experience from "./sections/Experience";
 import Gallery from "./sections/Gallery";
+import CyberpunkScene from "./sections/CyberpunkScene";
 import usePageTracking from "./hooks/usePageTracking";
 
 const MainContent = () => {
@@ -26,13 +27,33 @@ const App = () => {
   usePageTracking();
 
   return (
-    <main className="max-w-7xl mx-auto">
-      <Routes>
-        <Route path="/" element={<MainContent />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/project/:projectId" element={<ProjectDetail />} />
-      </Routes>
-    </main>
+    <Routes>
+      <Route path="/" element={<CyberpunkScene />} />
+      <Route
+        path="/old"
+        element={
+          <main className="max-w-7xl mx-auto">
+            <MainContent />
+          </main>
+        }
+      />
+      <Route
+        path="/gallery"
+        element={
+          <main className="max-w-7xl mx-auto">
+            <Gallery />
+          </main>
+        }
+      />
+      <Route
+        path="/project/:projectId"
+        element={
+          <main className="max-w-7xl mx-auto">
+            <ProjectDetail />
+          </main>
+        }
+      />
+    </Routes>
   );
 };
 
