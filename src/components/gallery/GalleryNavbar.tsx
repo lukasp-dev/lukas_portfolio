@@ -1,25 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const GITHUB_URL = "https://github.com/lukasp-dev";
 const LINKEDIN_URL = "https://www.linkedin.com/in/jewookpark/";
 
-const skills = [
-  "React",
-  "TypeScript",
-  "Python",
-  "Java",
-  "Three.js",
-  "Spring Boot",
-  "Next.js",
-  "FastAPI",
-  "AWS",
-  "GCP",
-  "PyTorch",
-  "Docker",
-  "PostgreSQL",
-  "Machine Learning",
+const skillGroups = [
+  {
+    label: "Languages",
+    items: ["C++", "Python", "C", "SQL", "Java", "JavaScript", "TypeScript", "Kotlin"],
+  },
+  {
+    label: "Full-Stack Engineering",
+    items: ["React", "Next.js", "Node.js", "Spring Boot", "FastAPI", "Express.js", "Redux", "GraphQL", "REST"],
+  },
+  {
+    label: "Systems & HPC",
+    items: ["Linux/Unix", "kqueue/epoll", "Multi-threading", "Lock-free Data Structures", "SIMD (ARM NEON)", "Memory Management", "Computer Architecture"],
+  },
+  {
+    label: "Infrastructure",
+    items: ["Azure", "AWS", "GCP", "Docker", "Kubernetes", "Redis", "Nginx", "Jenkins", "GitHub Actions"],
+  },
+  {
+    label: "Data & AI Infra",
+    items: ["PostgreSQL", "MySQL", "Snowflake", "Pinecone", "Milvus", "RAG Pipelines", "FastMCP"],
+  },
 ];
 
 // --- common style ---
@@ -125,13 +131,13 @@ const AboutPanel = ({ onClose }: { onClose: () => void }) => {
               Current Role
             </p>
             <p className="text-sm font-medium text-white mb-1">
-              ML Engineer Co-Op
+              SWE Intern · Azure Compute
             </p>
             <p
               className="text-xs italic"
               style={{ color: COLORS.textSecondary }}
             >
-              Itential · Network Automation
+              Microsoft · Redmond, WA
             </p>
           </div>
 
@@ -143,31 +149,37 @@ const AboutPanel = ({ onClose }: { onClose: () => void }) => {
               className="text-sm leading-relaxed font-light"
               style={{ color: COLORS.textSecondary }}
             >
-              Building AI-powered products across full-stack and ML domains.
-              Focusing on the intersection of{" "}
-              <span style={{ color: COLORS.accent }}>aesthetic design</span> and{" "}
-              <span style={{ color: COLORS.accent }}>robust engineering</span>.
+              Full-stack engineer with a backend and systems-first mindset.{" "}
+              <span style={{ color: COLORS.accent }}>OS-level intuition</span> and a genuine pull toward{" "}
+              <span style={{ color: COLORS.accent }}>distributed systems</span> and systems design.
+              Thinks in terms of concurrency, memory, and failure modes before reaching for a framework.
+              Most at home when the problem involves{" "}
+              <span style={{ color: COLORS.accent }}>how things scale and why they break</span>.
             </p>
           </div>
 
-          <div className="mb-12">
-            <h3 className="text-[10px] tracking-[0.3em] uppercase text-neutral-500 mb-4 font-bold">
+          <div className="mb-12 space-y-6">
+            <h3 className="text-[10px] tracking-[0.3em] uppercase text-neutral-500 font-bold">
               Tech Stack
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((s) => (
-                <span
-                  key={s}
-                  className="px-3 py-1 text-[10px] uppercase tracking-wider"
-                  style={{
-                    border: `1px solid ${COLORS.border}`,
-                    color: COLORS.textSecondary,
-                  }}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
+            {skillGroups.map((group) => (
+              <div key={group.label}>
+                <p className="text-[9px] tracking-[0.25em] uppercase mb-2" style={{ color: COLORS.accent }}>
+                  {group.label}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((s) => (
+                    <span
+                      key={s}
+                      className="px-3 py-1 text-[10px] uppercase tracking-wider"
+                      style={{ border: `1px solid ${COLORS.border}`, color: COLORS.textSecondary }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -210,7 +222,9 @@ const GalleryNavbar = () => {
   const { pathname } = useLocation();
 
   const navItems = [
-    { name: "PROJECTS", path: "/" },
+    { name: "HOME", path: "/" },
+    { name: "PROJECTS", path: "/projects" },
+    { name: "EXPERIENCE", path: "/about" },
     { name: "SKETCHBOOK", path: "/gallery" },
   ];
 
@@ -271,6 +285,15 @@ const GalleryNavbar = () => {
             >
               <GithubIcon className="w-4 h-4" />
             </a>
+
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-neutral-500 hover:text-white transition-colors"
+            >
+              <LinkedInIcon className="w-4 h-4" />
+            </a>
           </div>
 
           {/* Mobile Toggle */}
@@ -322,6 +345,14 @@ const GalleryNavbar = () => {
                 >
                   ABOUT
                 </button>
+                <div className="flex justify-center gap-6">
+                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-neutral-500">
+                    <GithubIcon className="w-4 h-4" />
+                  </a>
+                  <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="text-neutral-500">
+                    <LinkedInIcon className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </motion.div>
           )}

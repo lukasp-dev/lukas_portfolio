@@ -144,12 +144,39 @@ const DrawingFrame = ({
   const texture = useTexture(artwork.image);
   const FW = 2.7;
   const FH = 3.5;
-  const IW = 2.4;
-  const IH = 3.1;
+  // Mat inset — white passe-partout sits inside the outer frame
+  const MW = 2.46;
+  const MH = 3.18;
+  // Image opening inside the mat
+  const IW = 2.22;
+  const IH = 2.94;
+
+  // Clamp texture and crop-to-fill so image never bleeds past the opening
+  useEffect(() => {
+    if (!texture?.image) return;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+    const iw = texture.image.naturalWidth  || texture.image.width  || 1;
+    const ih = texture.image.naturalHeight || texture.image.height || 1;
+    const iAspect = iw / ih;
+    const fAspect = IW / IH;
+    if (iAspect > fAspect) {
+      // Image wider than opening → crop sides
+      const s = fAspect / iAspect;
+      texture.repeat.set(s, 1);
+      texture.offset.set((1 - s) / 2, 0);
+    } else {
+      // Image taller than opening → crop top/bottom
+      const s = iAspect / fAspect;
+      texture.repeat.set(1, s);
+      texture.offset.set(0, (1 - s) / 2);
+    }
+    texture.needsUpdate = true;
+  }, [texture]);
 
   return (
     <group position={position} rotation={rotation}>
-      {/* Thin dark metal frame */}
+      {/* Outer dark metal frame */}
       <mesh castShadow>
         <boxGeometry args={[FW, FH, 0.07]} />
         <meshStandardMaterial
@@ -161,7 +188,13 @@ const DrawingFrame = ({
         />
       </mesh>
 
-      {/* Drawing — actual image texture */}
+      {/* White mat / passe-partout */}
+      <mesh position={[0, 0, 0.04]}>
+        <planeGeometry args={[MW, MH]} />
+        <meshStandardMaterial color="#f5f2ec" roughness={0.95} metalness={0} />
+      </mesh>
+
+      {/* Drawing — image constrained inside the mat opening */}
       <mesh
         position={[0, 0, 0.05]}
         onPointerOver={(e) => {
@@ -183,7 +216,7 @@ const DrawingFrame = ({
         <planeGeometry args={[IW, IH]} />
         <meshStandardMaterial
           map={texture}
-          roughness={0.85}
+          roughness={0.88}
           emissive={hovered ? "#ffffff" : "#000000"}
           emissiveIntensity={hovered ? 0.04 : 0}
         />
@@ -208,7 +241,7 @@ const FramePlaceholder = ({
       <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
     </mesh>
     <mesh position={[0, 0, 0.05]}>
-      <planeGeometry args={[2.4, 3.1]} />
+      <planeGeometry args={[2.22, 2.94]} />
       <meshStandardMaterial color="#1e1e1e" roughness={1} />
     </mesh>
   </group>
@@ -372,7 +405,7 @@ const MuseumDoor = ({ onEnter }: { onEnter: () => void }) => {
             pointerEvents: "none",
           }}
         >
-          Project Gallery
+          ← Garden
         </div>
       </Html>
     </group>
@@ -464,7 +497,7 @@ const ArtRoom = ({
       </mesh>
 
       {/* AMBIENT — very low so spotlights do the work */}
-      <ambientLight intensity={0.12} color="#f0e8d8" />
+      <ambientLight intensity={0.65} color="#f0e8d8" />
 
       {/* WEST WALL DRAWINGS + individual spotlights */}
       {artworks.slice(0, 8).map((art, i) => (
@@ -839,6 +872,10 @@ const Gallery = () => {
         camera={{ position: [0, 1.8, 28], fov: 68, near: 0.1, far: 500 }}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         dpr={[1, 2]}
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 2.2;
+        }}
       >
         <Suspense fallback={null}>
           <ArtRoom
@@ -857,8 +894,8 @@ const Gallery = () => {
             enableRotate
             minDistance={0.5}
             maxDistance={50}
-            maxPolarAngle={Math.PI / 1.85}
-            minPolarAngle={Math.PI / 8}
+            maxPolarAngle={Math.PI / 1.78}
+            minPolarAngle={Math.PI / 2.8}
             target={[0, 1.8, 0]}
             enableDamping
             dampingFactor={0.06}

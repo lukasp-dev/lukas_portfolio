@@ -3,6 +3,7 @@ import { OrbitControls, Html } from "@react-three/drei";
 import React, { Suspense, useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
+import * as THREE from "three";
 import { Vector3 } from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { motion, AnimatePresence } from "framer-motion";
@@ -130,32 +131,43 @@ const ArtworkFrame = ({
 
       {/* Plaque label */}
       <Html position={[0, -(FH / 2 + 0.34), 0.14]} center transform occlude>
-        <div style={{ width: "150px", overflow: "hidden", textAlign: "center", pointerEvents: "none" }}>
-          <p style={{
-            color: "#a07820",
-            fontSize: "7px",
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            fontFamily: "Georgia, serif",
-            marginBottom: "2px",
-            lineHeight: 1,
-            whiteSpace: "nowrap",
+        <div
+          style={{
+            width: "150px",
             overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}>
+            textAlign: "center",
+            pointerEvents: "none",
+          }}
+        >
+          <p
+            style={{
+              color: "#a07820",
+              fontSize: "7px",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              fontFamily: "Georgia, serif",
+              marginBottom: "2px",
+              lineHeight: 1,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {project.type ?? "Project"}
           </p>
-          <p style={{
-            color: "#e0c870",
-            fontSize: "9px",
-            letterSpacing: "0.08em",
-            fontFamily: "Georgia, serif",
-            fontWeight: 600,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            lineHeight: 1.2,
-          }}>
+          <p
+            style={{
+              color: "#e0c870",
+              fontSize: "9px",
+              letterSpacing: "0.08em",
+              fontFamily: "Georgia, serif",
+              fontWeight: 600,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              lineHeight: 1.2,
+            }}
+          >
             {project.title.includes("(")
               ? project.title.split("(")[0].trim()
               : project.title}
@@ -295,17 +307,120 @@ const GalleryDoor = ({ onEnter }: { onEnter: () => void }) => {
   );
 };
 
+// Door back to the botanical home garden
+const AboutDoor = ({ onEnter }: { onEnter: () => void }) => {
+  const [hovered, setHovered] = useState(false);
+  const L = 82;
+  const DW = 2.6;
+  const DH = 3.8;
+  const z = L / 2 - 0.22;
+
+  return (
+    <group>
+      <mesh position={[0, DH / 2, L / 2 + 0.1]}>
+        <planeGeometry args={[DW - 0.1, DH - 0.1]} />
+        <meshStandardMaterial color="#0c1624" roughness={1} />
+      </mesh>
+
+      <mesh position={[0, DH / 2, z + 0.06]} castShadow>
+        <boxGeometry args={[DW + 0.46, DH + 0.36, 0.32]} />
+        <meshStandardMaterial
+          color={hovered ? "#3a2810" : "#221608"}
+          roughness={0.78}
+          metalness={0.08}
+          emissive={hovered ? "#1a0e00" : "#050300"}
+          emissiveIntensity={hovered ? 0.4 : 0.08}
+        />
+      </mesh>
+
+      <mesh
+        position={[0, DH / 2, z - 0.08]}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          document.body.style.cursor = "default";
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEnter();
+        }}
+      >
+        <boxGeometry args={[DW - 0.08, DH - 0.1, 0.1]} />
+        <meshStandardMaterial
+          color={hovered ? "#3d2810" : "#1c1005"}
+          roughness={0.7}
+          metalness={0.06}
+          emissive={hovered ? "#5a3818" : "#0e0800"}
+          emissiveIntensity={hovered ? 0.5 : 0.06}
+        />
+      </mesh>
+
+      <mesh position={[DW / 2 - 0.32, DH / 2, z - 0.18]}>
+        <sphereGeometry args={[0.09, 10, 10]} />
+        <meshStandardMaterial
+          color={hovered ? "#daa830" : "#a08018"}
+          metalness={0.95}
+          roughness={0.04}
+          emissive={hovered ? "#7a5500" : "#201200"}
+          emissiveIntensity={hovered ? 0.7 : 0.1}
+        />
+      </mesh>
+
+      <pointLight
+        position={[0, DH * 0.55, z - 1.5]}
+        intensity={hovered ? 3 : 1.2}
+        color="#ffe4b0"
+        distance={9}
+        decay={2}
+      />
+
+      <Html
+        position={[0, DH + 0.72, z - 0.2]}
+        center
+        transform
+        occlude
+        rotation={[0, Math.PI, 0]}
+      >
+        <div
+          style={{
+            background: "#1a1208",
+            border: "1px solid #7a6030",
+            borderRadius: "3px",
+            padding: "4px 14px",
+            color: hovered ? "#e0b840" : "#a07820",
+            fontSize: "10px",
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+            fontFamily: "Georgia, serif",
+            whiteSpace: "nowrap",
+            transition: "color 0.2s",
+            pointerEvents: "none",
+          }}
+        >
+          ← Garden
+        </div>
+      </Html>
+    </group>
+  );
+};
+
 // Museum corridor room
 const MuseumRoom = ({
   onFrameHover,
   onFrameUnhover,
   onFrameClick,
   onDoorClick,
+  onAboutDoorClick,
 }: {
   onFrameHover: (project: Project) => void;
   onFrameUnhover: () => void;
   onFrameClick: (project: Project) => void;
   onDoorClick: () => void;
+  onAboutDoorClick: () => void;
 }) => {
   const projects = myProjects.slice(0, 8);
   const L = 82;
@@ -352,11 +467,38 @@ const MuseumRoom = ({
       {/* GALLERY DOOR */}
       <GalleryDoor onEnter={onDoorClick} />
 
-      {/* SOUTH WALL */}
-      <mesh position={[0, H / 2, L / 2]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[W, H]} />
-        <meshStandardMaterial color="#eae4dc" roughness={1} />
-      </mesh>
+      {/* SOUTH WALL — split around about door */}
+      {(() => {
+        const DW = 2.6;
+        const DH = 3.8;
+        const sideW = (W - DW - 0.5) / 2;
+        return (
+          <>
+            <mesh
+              position={[-(W / 2 - sideW / 2), H / 2, L / 2]}
+              rotation={[0, Math.PI, 0]}
+            >
+              <planeGeometry args={[sideW, H]} />
+              <meshStandardMaterial color="#eae4dc" roughness={1} />
+            </mesh>
+            <mesh
+              position={[W / 2 - sideW / 2, H / 2, L / 2]}
+              rotation={[0, Math.PI, 0]}
+            >
+              <planeGeometry args={[sideW, H]} />
+              <meshStandardMaterial color="#eae4dc" roughness={1} />
+            </mesh>
+            <mesh
+              position={[0, H - (H - DH - 0.15) / 2, L / 2]}
+              rotation={[0, Math.PI, 0]}
+            >
+              <planeGeometry args={[DW + 0.5, H - DH - 0.15]} />
+              <meshStandardMaterial color="#eae4dc" roughness={1} />
+            </mesh>
+          </>
+        );
+      })()}
+      <AboutDoor onEnter={onAboutDoorClick} />
 
       {/* WEST WALL */}
       <mesh
@@ -424,12 +566,8 @@ const MuseumRoom = ({
       ))}
 
       {/* AMBIENT + FILL */}
-      <ambientLight intensity={0.52} color="#fff8f0" />
-      <directionalLight
-        position={[0, 10, 0]}
-        intensity={0.25}
-        color="#ffffff"
-      />
+      <ambientLight intensity={1.0} color="#fff8f0" />
+      <directionalLight position={[0, 10, 0]} intensity={0.7} color="#ffffff" />
 
       {/* WEST WALL FRAMES */}
       {projects.slice(0, 4).map((p, i) => (
@@ -615,7 +753,9 @@ const ProjectMuseum = () => {
 
   useEffect(() => {
     if (!selectedProject) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelectedProject(null); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedProject(null);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedProject]);
@@ -623,6 +763,11 @@ const ProjectMuseum = () => {
   const handleDoorClick = () => {
     setTransitioning(true);
     setTimeout(() => navigate("/gallery"), 650);
+  };
+
+  const handleAboutDoorClick = () => {
+    setTransitioning(true);
+    setTimeout(() => navigate("/"), 650);
   };
 
   return (
@@ -641,9 +786,6 @@ const ProjectMuseum = () => {
           Project Gallery
         </h1>
         <div className="mt-3 w-20 h-px bg-gradient-to-r from-transparent via-amber-500/80 to-transparent mx-auto" />
-        <p className="mt-2.5 text-stone-500 text-xs tracking-widest">
-          {myProjects.slice(0, 8).length} works on display
-        </p>
       </div>
 
       {/* Controls hint */}
@@ -669,6 +811,10 @@ const ProjectMuseum = () => {
           powerPreference: "high-performance",
         }}
         dpr={[1, 2]}
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 2.2;
+        }}
       >
         <Suspense fallback={null}>
           <MuseumRoom
@@ -676,6 +822,7 @@ const ProjectMuseum = () => {
             onFrameUnhover={() => setHoveredProject(null)}
             onFrameClick={setSelectedProject}
             onDoorClick={handleDoorClick}
+            onAboutDoorClick={handleAboutDoorClick}
           />
 
           {!isMobile && <WASDControls orbitRef={orbitRef} />}
@@ -687,8 +834,8 @@ const ProjectMuseum = () => {
             enableRotate={true}
             minDistance={0.5}
             maxDistance={55}
-            maxPolarAngle={Math.PI / 1.85}
-            minPolarAngle={Math.PI / 8}
+            maxPolarAngle={Math.PI / 1.78}
+            minPolarAngle={Math.PI / 2.8}
             target={[0, 1.8, 0]}
             enableDamping
             dampingFactor={0.06}
