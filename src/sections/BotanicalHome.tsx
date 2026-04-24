@@ -1,7 +1,7 @@
 import type React from "react";
 import { useRef, useMemo, useState, useEffect, useCallback } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Html, PerspectiveCamera } from "@react-three/drei";
+import { Html, PerspectiveCamera, Sky } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
@@ -241,58 +241,117 @@ const PathRoses = ({
 // ── Trees ─────────────────────────────────────────────────────────────────────
 const DarkTree = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => (
   <group position={position} scale={scale}>
-    <mesh position={[0, 2.5, 0]}>
-      <cylinderGeometry args={[0.18, 0.28, 5, 6]} />
-      <meshStandardMaterial color="#1e1008" roughness={1} />
+    <mesh position={[0, 3.5, 0]}>
+      <cylinderGeometry args={[0.30, 0.52, 7, 7]} />
+      <meshStandardMaterial color="#1a0e06" roughness={1} />
     </mesh>
-    <mesh position={[0, 6.8, 0]}>
-      <coneGeometry args={[2.2, 4.8, 8]} />
-      <meshStandardMaterial color="#0a1c10" roughness={1} />
+    <mesh position={[0, 9.5, 0]}>
+      <coneGeometry args={[3.6, 7.2, 8]} />
+      <meshStandardMaterial color="#0c1e12" roughness={0.95} />
     </mesh>
-    <mesh position={[0, 9.4, 0]}>
-      <coneGeometry args={[1.4, 3.2, 8]} />
-      <meshStandardMaterial color="#081a0e" roughness={1} />
+    <mesh position={[0, 14.0, 0]}>
+      <coneGeometry args={[2.4, 5.2, 8]} />
+      <meshStandardMaterial color="#0a1c10" roughness={0.95} />
+    </mesh>
+    <mesh position={[0, 17.5, 0]}>
+      <coneGeometry args={[1.4, 3.4, 8]} />
+      <meshStandardMaterial color="#081a0e" roughness={0.95} />
     </mesh>
   </group>
 );
 
 const DarkCherryTree = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => (
   <group position={position} scale={scale}>
-    <mesh position={[0, 2, 0]}>
-      <cylinderGeometry args={[0.16, 0.24, 4, 7]} />
-      <meshStandardMaterial color="#1e0c06" roughness={1} />
+    <mesh position={[0, 3.0, 0]}>
+      <cylinderGeometry args={[0.28, 0.48, 6, 7]} />
+      <meshStandardMaterial color="#1a0a04" roughness={1} />
     </mesh>
-    <mesh position={[0, 5, 0]}>
-      <sphereGeometry args={[2.4, 9, 9]} />
-      <meshStandardMaterial color="#281018" roughness={0.9} transparent opacity={0.9} />
+    <mesh position={[0, 8.0, 0]}>
+      <sphereGeometry args={[3.6, 10, 10]} />
+      <meshStandardMaterial color="#281418" roughness={0.9} transparent opacity={0.92} />
     </mesh>
-    <mesh position={[0.9, 5.6, 0.7]}>
-      <sphereGeometry args={[1.6, 8, 8]} />
-      <meshStandardMaterial color="#1e0c16" roughness={0.9} transparent opacity={0.88} />
+    <mesh position={[1.8, 8.8, 1.0]}>
+      <sphereGeometry args={[2.6, 9, 9]} />
+      <meshStandardMaterial color="#200e16" roughness={0.9} transparent opacity={0.90} />
     </mesh>
+    <mesh position={[-1.4, 8.2, 0.8]}>
+      <sphereGeometry args={[2.2, 9, 9]} />
+      <meshStandardMaterial color="#240e1a" roughness={0.9} transparent opacity={0.88} />
+    </mesh>
+  </group>
+);
+
+// ── Mountains ─────────────────────────────────────────────────────────────────
+const Mountain = ({ pos, rx, h }: { pos: [number,number,number]; rx: number; h: number }) => (
+  <mesh position={pos}>
+    <coneGeometry args={[rx, h, 7]} />
+    <meshStandardMaterial color="#1e1630" roughness={1} metalness={0} />
+  </mesh>
+);
+
+const Mountains = () => (
+  <group>
+    {/* Far back row */}
+    <Mountain pos={[-80, 28, -80]} rx={32} h={68} />
+    <Mountain pos={[-44, 22, -85]} rx={26} h={52} />
+    <Mountain pos={[-10, 26, -92]} rx={30} h={60} />
+    <Mountain pos={[28, 20, -88]} rx={27} h={50} />
+    <Mountain pos={[66, 24, -78]} rx={31} h={58} />
+    <Mountain pos={[100, 18, -65]} rx={24} h={44} />
+    {/* Mid row */}
+    <Mountain pos={[-65, 16, -55]} rx={20} h={38} />
+    <Mountain pos={[-32, 14, -62]} rx={18} h={32} />
+    <Mountain pos={[16, 12, -66]} rx={17} h={30} />
+    <Mountain pos={[52, 15, -58]} rx={21} h={36} />
+    {/* Side mountains */}
+    <Mountain pos={[-90, 14, -10]} rx={22} h={35} />
+    <Mountain pos={[-85, 10, 20]} rx={17} h={26} />
+    <Mountain pos={[88, 13, -5]} rx={20} h={32} />
+    <Mountain pos={[82, 9, 22]} rx={16} h={24} />
+    {/* Behind the doors */}
+    <Mountain pos={[-30, 12, 50]} rx={18} h={28} />
+    <Mountain pos={[30, 11, 52]} rx={17} h={26} />
   </group>
 );
 
 const Forest = () => {
   const trees = useMemo(() => [
-    { p: [-22, 0, -18] as [number, number, number], t: "e", s: 1.4 },
-    { p: [-18, 0, -8] as [number, number, number], t: "c", s: 1.1 },
-    { p: [-24, 0, 4] as [number, number, number], t: "e", s: 1.6 },
-    { p: [-20, 0, 14] as [number, number, number], t: "c", s: 1.2 },
-    { p: [-22, 0, 22] as [number, number, number], t: "e", s: 1.3 },
-    { p: [-18, 0, 30] as [number, number, number], t: "c", s: 1.1 },
-    { p: [22, 0, -18] as [number, number, number], t: "c", s: 1.2 },
-    { p: [18, 0, -8] as [number, number, number], t: "e", s: 1.5 },
-    { p: [24, 0, 4] as [number, number, number], t: "c", s: 1.3 },
-    { p: [20, 0, 14] as [number, number, number], t: "e", s: 1.2 },
-    { p: [22, 0, 22] as [number, number, number], t: "c", s: 1.1 },
-    { p: [18, 0, 30] as [number, number, number], t: "e", s: 1.3 },
-    { p: [-8, 0, -28] as [number, number, number], t: "e", s: 1.5 },
-    { p: [0, 0, -30] as [number, number, number], t: "c", s: 1.2 },
-    { p: [8, 0, -28] as [number, number, number], t: "e", s: 1.4 },
-    { p: [0, 0, 36] as [number, number, number], t: "c", s: 1.1 },
-    { p: [-6, 0, 34] as [number, number, number], t: "e", s: 1.2 },
-    { p: [6, 0, 34] as [number, number, number], t: "e", s: 1.0 },
+    // Left side — two rows deep
+    { p: [-22, 0, -18] as [number, number, number], t: "e", s: 1.8 },
+    { p: [-30, 0, -14] as [number, number, number], t: "e", s: 2.0 },
+    { p: [-18, 0, -8]  as [number, number, number], t: "c", s: 1.6 },
+    { p: [-28, 0, -4]  as [number, number, number], t: "c", s: 1.9 },
+    { p: [-24, 0,  4]  as [number, number, number], t: "e", s: 2.1 },
+    { p: [-32, 0,  8]  as [number, number, number], t: "e", s: 1.8 },
+    { p: [-20, 0, 14]  as [number, number, number], t: "c", s: 1.7 },
+    { p: [-30, 0, 18]  as [number, number, number], t: "c", s: 2.0 },
+    { p: [-22, 0, 22]  as [number, number, number], t: "e", s: 1.9 },
+    { p: [-28, 0, 28]  as [number, number, number], t: "e", s: 1.7 },
+    { p: [-18, 0, 32]  as [number, number, number], t: "c", s: 1.6 },
+    // Right side — two rows deep
+    { p: [22,  0, -18] as [number, number, number], t: "c", s: 1.7 },
+    { p: [30,  0, -14] as [number, number, number], t: "e", s: 2.0 },
+    { p: [18,  0, -8]  as [number, number, number], t: "e", s: 1.8 },
+    { p: [28,  0, -4]  as [number, number, number], t: "c", s: 1.9 },
+    { p: [24,  0,  4]  as [number, number, number], t: "c", s: 2.1 },
+    { p: [32,  0,  8]  as [number, number, number], t: "e", s: 1.7 },
+    { p: [20,  0, 14]  as [number, number, number], t: "e", s: 1.9 },
+    { p: [30,  0, 18]  as [number, number, number], t: "c", s: 1.8 },
+    { p: [22,  0, 22]  as [number, number, number], t: "c", s: 2.0 },
+    { p: [28,  0, 28]  as [number, number, number], t: "e", s: 1.8 },
+    { p: [18,  0, 32]  as [number, number, number], t: "e", s: 1.6 },
+    // Back row
+    { p: [-12, 0, -30] as [number, number, number], t: "e", s: 2.2 },
+    { p: [-6,  0, -32] as [number, number, number], t: "c", s: 1.9 },
+    { p: [0,   0, -34] as [number, number, number], t: "e", s: 2.0 },
+    { p: [6,   0, -32] as [number, number, number], t: "c", s: 1.8 },
+    { p: [12,  0, -30] as [number, number, number], t: "e", s: 2.1 },
+    // Behind the side doors
+    { p: [-16, 0,  18] as [number, number, number], t: "c", s: 1.6 },
+    { p: [16,  0,  18] as [number, number, number], t: "c", s: 1.7 },
+    { p: [-12, 0,  34] as [number, number, number], t: "e", s: 1.8 },
+    { p: [12,  0,  34] as [number, number, number], t: "e", s: 1.9 },
+    { p: [0,   0,  40] as [number, number, number], t: "c", s: 2.0 },
   ], []);
 
   return (
@@ -737,18 +796,27 @@ const GardenScene = ({ onEnter }: { onEnter: (path: string) => void }) => {
       <PerspectiveCamera makeDefault position={[0, 1.75, START_Z + 2]} fov={68} near={0.1} far={300} />
       <WASDControls onEnter={onEnter} />
 
-      <color attach="background" args={["#0c1624"]} />
-      <fog attach="fog" args={["#0c1624", 55, 110]} />
+      <Sky
+        distance={450000}
+        sunPosition={[0.2, 0.06, -1]}
+        turbidity={9}
+        rayleigh={2.8}
+        mieCoefficient={0.007}
+        mieDirectionalG={0.78}
+      />
+      <fog attach="fog" args={["#3a1e50", 60, 145]} />
 
-      <ambientLight intensity={0.5} color="#c8d8f0" />
-      <directionalLight position={[-10, 16, -8]} intensity={0.75} color="#9db8e0" />
-      <directionalLight position={[8, 10, 18]} intensity={0.38} color="#f0d890" />
-      <pointLight position={[0, 40, -20]} color="#d0e8ff" intensity={7} distance={120} decay={2} />
+      {/* Twilight lighting: warm low sun from behind, cool fill from sky */}
+      <ambientLight intensity={0.38} color="#f0c878" />
+      <hemisphereLight args={["#7a3c18", "#120a30", 0.42]} />
+      <directionalLight position={[5, 4, -22]} intensity={0.75} color="#ff8c38" castShadow={false} />
+      <directionalLight position={[-12, 18, 8]} intensity={0.22} color="#9080c8" />
+      <pointLight position={[0, 40, -20]} color="#ff7020" intensity={3} distance={160} decay={2} />
 
       {/* Ground */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 6]}>
-        <planeGeometry args={[120, 120]} />
-        <meshStandardMaterial color="#0e2010" roughness={1} />
+        <planeGeometry args={[240, 240]} />
+        <meshStandardMaterial color="#1a2410" roughness={1} />
       </mesh>
 
       {/* 4 path strips: entrance + 3 branches */}
@@ -777,6 +845,9 @@ const GardenScene = ({ onEnter }: { onEnter: (path: string) => void }) => {
 
       {/* Fountain at junction */}
       <Fountain position={[0, 0, JUNCTION[1]]} />
+
+      {/* Background mountains */}
+      <Mountains />
 
       {/* Background forest */}
       <Forest />
@@ -839,7 +910,7 @@ const BotanicalHome = () => {
   }, [navigate]);
 
   return (
-    <div style={{ width: "100vw", height: "100vh", background: "#0c1624", position: "relative" }}>
+    <div style={{ width: "100vw", height: "100vh", background: "#1a0c2e", position: "relative" }}>
       <Canvas
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         style={{ display: "block" }}
@@ -853,7 +924,7 @@ const BotanicalHome = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            style={{ position: "fixed", inset: 0, background: "#0a0a08", zIndex: 100, pointerEvents: "none" }}
+            style={{ position: "fixed", inset: 0, background: "#1a0c2e", zIndex: 100, pointerEvents: "none" }}
           />
         )}
       </AnimatePresence>
