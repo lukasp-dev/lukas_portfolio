@@ -1001,7 +1001,7 @@ const BotanicalHome = () => {
 
       {/* Back to Portfolio */}
       <button
-        onClick={() => window.close()}
+        onClick={() => { window.close(); setTimeout(() => { window.location.href = "https://jewook.com"; }, 300); }}
         style={{
           position: "fixed", top: "16px", left: "16px", zIndex: 30,
           display: "flex", alignItems: "center", gap: "6px",
