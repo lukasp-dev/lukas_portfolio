@@ -503,6 +503,7 @@ const ExperienceStation = ({
 }) => {
   const { camera } = useThree();
   const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const prev = useRef(false);
   const groupRef = useRef<THREE.Group>(null);
 
@@ -514,6 +515,7 @@ const ExperienceStation = ({
     if (now !== prev.current) {
       prev.current = now;
       setVisible(now);
+      if (!now) setDismissed(false);
     }
   });
 
@@ -586,12 +588,12 @@ const ExperienceStation = ({
         <div
           style={{
             width: "600px",
-            opacity: visible ? 1 : 0,
-            transform: visible
+            opacity: visible && !dismissed ? 1 : 0,
+            transform: visible && !dismissed
               ? "translateX(0) scale(1)"
               : `translateX(${x > 0 ? "30px" : "-30px"}) scale(0.93)`,
             transition: "opacity 0.55s ease, transform 0.55s ease",
-            pointerEvents: visible ? "auto" : "none",
+            pointerEvents: visible && !dismissed ? "auto" : "none",
             fontFamily: "Georgia, serif",
           }}
         >
@@ -605,7 +607,7 @@ const ExperienceStation = ({
               boxShadow: `0 8px 60px ${color}28, 0 0 0 1px rgba(0,0,0,0.4)`,
             }}
           >
-            {/* Index + type */}
+            {/* Index + type + close */}
             <div
               style={{
                 display: "flex",
@@ -624,19 +626,42 @@ const ExperienceStation = ({
               >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  padding: "4px 12px",
-                  borderRadius: "12px",
-                  border: `1px solid ${color}55`,
-                  color,
-                }}
-              >
-                {exp.type}
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    padding: "4px 12px",
+                    borderRadius: "12px",
+                    border: `1px solid ${color}55`,
+                    color,
+                  }}
+                >
+                  {exp.type}
+                </span>
+                <button
+                  onClick={() => setDismissed(true)}
+                  style={{
+                    background: "none",
+                    border: `1px solid rgba(255,255,255,0.15)`,
+                    borderRadius: "50%",
+                    width: "24px",
+                    height: "24px",
+                    cursor: "pointer",
+                    color: "rgba(255,255,255,0.4)",
+                    fontSize: "14px",
+                    lineHeight: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
             </div>
 
             {/* Company + logo */}
