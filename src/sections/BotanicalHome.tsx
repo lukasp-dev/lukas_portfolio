@@ -5,6 +5,8 @@ import { Html, PerspectiveCamera, Sky } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
+import MobileJoystick, { joystick } from "../components/MobileJoystick";
 
 // ── Door definitions ──────────────────────────────────────────────────────────
 interface DoorDef {
@@ -702,14 +704,22 @@ const GardenDoor = ({
 };
 
 // ── WASD controls ─────────────────────────────────────────────────────────────
-const WASDControls = ({ onEnter }: { onEnter: (path: string) => void }) => {
+const WASDControls = ({
+  onEnter,
+  onNearDoor,
+}: {
+  onEnter: (path: string) => void;
+  onNearDoor: (door: DoorDef | null) => void;
+}) => {
   const { camera } = useThree();
   const keys = useRef({ w: false, a: false, s: false, d: false });
-  const yaw = useRef(Math.PI); // face +Z (toward doors)
+  const yaw = useRef(Math.PI);
   const pitch = useRef(0);
   const isDragging = useRef(false);
-  const lastMouse = useRef({ x: 0, y: 0 });
+  const lastPointer = useRef({ x: 0, y: 0 });
+  const lookTouchId = useRef<number | null>(null);
   const _euler = useMemo(() => new THREE.Euler(0, 0, 0, "YXZ"), []);
+  const nearDoorRef = useRef<DoorDef | null>(null);
 
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
@@ -721,8 +731,10 @@ const WASDControls = ({ onEnter }: { onEnter: (path: string) => void }) => {
       if (k === "e") {
         const camPos = camera.position;
         for (const door of GARDEN_DOORS) {
-          const dp = camPos.distanceTo(new THREE.Vector3(...door.pos));
-          if (dp < 6.5) { onEnter(door.navPath); break; }
+          if (camPos.distanceTo(new THREE.Vector3(...door.pos)) < 6.5) {
+            onEnter(door.navPath);
+            break;
+          }
         }
       }
     };
@@ -733,27 +745,69 @@ const WASDControls = ({ onEnter }: { onEnter: (path: string) => void }) => {
       if (k === "a" || k === "arrowleft") keys.current.a = false;
       if (k === "d" || k === "arrowright") keys.current.d = false;
     };
-    const onMouseDown = (e: MouseEvent) => { isDragging.current = true; lastMouse.current = { x: e.clientX, y: e.clientY }; };
+
+    // Mouse look
+    const onMouseDown = (e: MouseEvent) => {
+      isDragging.current = true;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
+    };
     const onMouseUp = () => { isDragging.current = false; };
     const onMouseMove = (e: MouseEvent) => {
       if (!isDragging.current) return;
-      const dx = e.clientX - lastMouse.current.x;
-      const dy = e.clientY - lastMouse.current.y;
-      lastMouse.current = { x: e.clientX, y: e.clientY };
+      const dx = e.clientX - lastPointer.current.x;
+      const dy = e.clientY - lastPointer.current.y;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
       yaw.current -= dx * 0.003;
       pitch.current = Math.max(-0.55, Math.min(0.5, pitch.current - dy * 0.003));
     };
+
+    // Touch look — only tracks touches on the right half of the screen
+    const onTouchStart = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (lookTouchId.current === null && t.clientX > window.innerWidth * 0.42) {
+          lookTouchId.current = t.identifier;
+          lastPointer.current = { x: t.clientX, y: t.clientY };
+        }
+      }
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (t.identifier === lookTouchId.current) {
+          const dx = t.clientX - lastPointer.current.x;
+          const dy = t.clientY - lastPointer.current.y;
+          lastPointer.current = { x: t.clientX, y: t.clientY };
+          yaw.current -= dx * 0.004;
+          pitch.current = Math.max(-0.55, Math.min(0.5, pitch.current - dy * 0.004));
+        }
+      }
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === lookTouchId.current) {
+          lookTouchId.current = null;
+        }
+      }
+    };
+
     window.addEventListener("keydown", onDown);
     window.addEventListener("keyup", onUp);
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener("keydown", onDown);
       window.removeEventListener("keyup", onUp);
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
     };
   }, [camera, onEnter]);
 
@@ -767,15 +821,30 @@ const WASDControls = ({ onEnter }: { onEnter: (path: string) => void }) => {
     dir.normalize();
 
     const vel = new THREE.Vector3();
-    if (keys.current.w) vel.add(dir);
-    if (keys.current.s) vel.sub(dir);
-    if (keys.current.a) vel.add(new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir));
-    if (keys.current.d) vel.add(new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)));
+    const jx = joystick.dx;
+    const jy = joystick.dy;
+    if (keys.current.w || jy < -0.2) vel.add(dir);
+    if (keys.current.s || jy > 0.2) vel.sub(dir);
+    if (keys.current.a || jx < -0.2) vel.add(new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir));
+    if (keys.current.d || jx > 0.2) vel.add(new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)));
 
     if (vel.length() > 0) camera.position.addScaledVector(vel.normalize(), 7 * dt);
     camera.position.x = Math.max(-22, Math.min(22, camera.position.x));
     camera.position.z = Math.max(START_Z - 1, Math.min(32, camera.position.z));
     camera.position.y = 1.75;
+
+    // Near-door detection for mobile enter button
+    let closest: DoorDef | null = null;
+    for (const door of GARDEN_DOORS) {
+      if (camera.position.distanceTo(new THREE.Vector3(...door.pos)) < 6.5) {
+        closest = door;
+        break;
+      }
+    }
+    if (closest !== nearDoorRef.current) {
+      nearDoorRef.current = closest;
+      onNearDoor(closest);
+    }
   });
 
   return null;
@@ -784,7 +853,13 @@ const WASDControls = ({ onEnter }: { onEnter: (path: string) => void }) => {
 // ── Garden scene ──────────────────────────────────────────────────────────────
 const JUNCTION: [number, number] = [0, -4]; // where paths diverge
 
-const GardenScene = ({ onEnter }: { onEnter: (path: string) => void }) => {
+const GardenScene = ({
+  onEnter,
+  onNearDoor,
+}: {
+  onEnter: (path: string) => void;
+  onNearDoor: (door: DoorDef | null) => void;
+}) => {
   const fireflyData = useMemo(() =>
     Array.from({ length: 20 }, () => ({
       ox: (Math.random() - 0.5) * 32,
@@ -794,7 +869,7 @@ const GardenScene = ({ onEnter }: { onEnter: (path: string) => void }) => {
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 1.75, START_Z + 2]} fov={68} near={0.1} far={300} />
-      <WASDControls onEnter={onEnter} />
+      <WASDControls onEnter={onEnter} onNearDoor={onNearDoor} />
 
       <Sky
         distance={450000}
@@ -877,24 +952,26 @@ const KEY_STYLE: React.CSSProperties = {
   fontSize: "10px", fontFamily: "monospace",
 };
 
-const HUD = () => (
+const HUD = ({ isMobile }: { isMobile: boolean }) => (
   <div style={{
     position: "fixed", bottom: "28px", left: "50%", transform: "translateX(-50%)",
     display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
     pointerEvents: "none", zIndex: 10,
   }}>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px" }}>
-      <div style={KEY_STYLE}>W</div>
-      <div style={{ display: "flex", gap: "3px" }}>
-        {["A", "S", "D"].map((k) => <div key={k} style={KEY_STYLE}>{k}</div>)}
+    {!isMobile && (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px" }}>
+        <div style={KEY_STYLE}>W</div>
+        <div style={{ display: "flex", gap: "3px" }}>
+          {["A", "S", "D"].map((k) => <div key={k} style={KEY_STYLE}>{k}</div>)}
+        </div>
       </div>
-    </div>
+    )}
     <p style={{
       color: "rgba(160,150,135,0.5)",
       fontSize: "9px", letterSpacing: "0.36em",
       textTransform: "uppercase", fontFamily: "Georgia, serif",
     }}>
-      Move · Drag to look · Walk to a door
+      {isMobile ? "Joystick · Swipe right to look · Walk to a door" : "Move · Drag to look · Walk to a door"}
     </p>
   </div>
 );
@@ -903,6 +980,8 @@ const HUD = () => (
 const BotanicalHome = () => {
   const navigate = useNavigate();
   const [transitioning, setTransitioning] = useState(false);
+  const [nearDoor, setNearDoor] = useState<DoorDef | null>(null);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleEnter = useCallback((path: string) => {
     setTransitioning(true);
@@ -915,9 +994,40 @@ const BotanicalHome = () => {
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         style={{ display: "block" }}
       >
-        <GardenScene onEnter={handleEnter} />
+        <GardenScene onEnter={handleEnter} onNearDoor={setNearDoor} />
       </Canvas>
-      <HUD />
+
+      {isMobile && <MobileJoystick />}
+
+      {/* Mobile enter button — appears when standing near a door */}
+      {isMobile && nearDoor && (
+        <div style={{
+          position: "fixed", bottom: "44px", right: "44px",
+          zIndex: 20,
+        }}>
+          <button
+            onTouchStart={(e) => { e.preventDefault(); handleEnter(nearDoor.navPath); }}
+            onClick={() => handleEnter(nearDoor.navPath)}
+            style={{
+              padding: "14px 28px",
+              background: nearDoor.gold,
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "15px",
+              fontFamily: "Georgia, serif",
+              letterSpacing: "0.06em",
+              boxShadow: `0 0 18px ${nearDoor.glowColor}88`,
+              cursor: "pointer",
+            }}
+          >
+            Enter {nearDoor.label} →
+          </button>
+        </div>
+      )}
+
+      <HUD isMobile={isMobile} />
+
       <AnimatePresence>
         {transitioning && (
           <motion.div

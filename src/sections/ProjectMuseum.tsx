@@ -9,6 +9,7 @@ import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { motion, AnimatePresence } from "framer-motion";
 import HolographicUI from "../components/gallery/ProjectDetailModal";
 import GalleryNavbar from "../components/gallery/GalleryNavbar";
+import MobileJoystick, { joystick } from "../components/MobileJoystick";
 import { myProjects, Project } from "../constants";
 
 // Unique color palette for each frame canvas
@@ -658,18 +659,16 @@ const WASDControls = ({
     dir.normalize();
 
     const vel = new Vector3();
-    if (keys.current.w) vel.add(dir);
-    if (keys.current.s) vel.sub(dir);
-    if (keys.current.a)
+    if (keys.current.w || joystick.dy < -0.2) vel.add(dir);
+    if (keys.current.s || joystick.dy > 0.2) vel.sub(dir);
+    if (keys.current.a || joystick.dx < -0.2)
       vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
-    if (keys.current.d)
+    if (keys.current.d || joystick.dx > 0.2)
       vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
 
     if (vel.length() > 0) {
       camera.position.addScaledVector(vel.normalize(), 9 * dt);
       camera.position.y = 1.8;
-      // Keep OrbitControls target 4 units in front of the camera so
-      // minDistance never blocks forward movement.
       if (orbitRef.current) {
         orbitRef.current.target.copy(camera.position).addScaledVector(dir, 4);
         orbitRef.current.target.y = 1.8;
@@ -825,7 +824,7 @@ const ProjectMuseum = () => {
             onAboutDoorClick={handleAboutDoorClick}
           />
 
-          {!isMobile && <WASDControls orbitRef={orbitRef} />}
+          <WASDControls orbitRef={orbitRef} />
 
           <OrbitControls
             ref={orbitRef}
@@ -842,6 +841,8 @@ const ProjectMuseum = () => {
           />
         </Suspense>
       </Canvas>
+
+      {isMobile && <MobileJoystick />}
 
       {/* Hover preview panel */}
       <PreviewCard project={hoveredProject} />

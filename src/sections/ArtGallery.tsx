@@ -7,6 +7,7 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import GalleryNavbar from "../components/gallery/GalleryNavbar";
+import MobileJoystick, { joystick } from "../components/MobileJoystick";
 
 interface Artwork {
   id: number;
@@ -615,11 +616,11 @@ const WASDControls = ({
     dir.normalize();
 
     const vel = new Vector3();
-    if (keys.current.w) vel.add(dir);
-    if (keys.current.s) vel.sub(dir);
-    if (keys.current.a)
+    if (keys.current.w || joystick.dy < -0.2) vel.add(dir);
+    if (keys.current.s || joystick.dy > 0.2) vel.sub(dir);
+    if (keys.current.a || joystick.dx < -0.2)
       vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
-    if (keys.current.d)
+    if (keys.current.d || joystick.dx > 0.2)
       vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
 
     if (vel.length() > 0) {
@@ -885,7 +886,7 @@ const Gallery = () => {
             onDoorClick={handleDoorClick}
           />
 
-          {!isMobile && <WASDControls orbitRef={orbitRef} />}
+          <WASDControls orbitRef={orbitRef} />
 
           <OrbitControls
             ref={orbitRef as React.RefObject<React.ComponentRef<typeof OrbitControls>>}
@@ -902,6 +903,8 @@ const Gallery = () => {
           />
         </Suspense>
       </Canvas>
+
+      {isMobile && <MobileJoystick />}
 
       {/* Hover preview */}
       <PreviewCard artwork={hoveredArt} />
