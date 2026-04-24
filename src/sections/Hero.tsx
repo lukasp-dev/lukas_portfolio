@@ -21,7 +21,7 @@ const Hero = () => {
         background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,168,32,0.07) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(212,129,58,0.05) 0%, transparent 60%)',
       }} />
 
-      <div className="relative z-10 text-center w-full px-4">
+      <div className="relative z-10 text-center w-full px-4 pt-20 md:pt-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
