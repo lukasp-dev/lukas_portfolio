@@ -999,6 +999,31 @@ const BotanicalHome = () => {
 
       {isMobile && <MobileJoystick />}
 
+      {/* Back to Portfolio */}
+      <a
+        href="https://jewook.com"
+        style={{
+          position: "fixed", top: "16px", left: "16px", zIndex: 30,
+          display: "flex", alignItems: "center", gap: "6px",
+          padding: "8px 14px",
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "blur(6px)",
+          border: "1px solid rgba(255,255,255,0.15)",
+          borderRadius: "8px",
+          color: "rgba(255,255,255,0.8)",
+          fontSize: "13px",
+          fontFamily: "Georgia, serif",
+          letterSpacing: "0.04em",
+          textDecoration: "none",
+          cursor: "pointer",
+          transition: "background 0.2s",
+        }}
+        onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.65)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.45)")}
+      >
+        ← Portfolio
+      </a>
+
       {/* Mobile enter button — appears when standing near a door */}
       {isMobile && nearDoor && (
         <div style={{
