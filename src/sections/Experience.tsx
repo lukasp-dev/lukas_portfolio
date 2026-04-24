@@ -30,22 +30,30 @@ const Experience = () => {
         onClick={onClick}
       >
         <div
-          className="p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 
-                    group-hover:scale-[1.02] transition-all duration-300"
+          className="p-6 rounded-xl group-hover:scale-[1.02] transition-all duration-300"
+          style={{
+            background: 'linear-gradient(135deg, #131020, #1c1828)',
+            border: '1px solid rgba(200, 168, 32, 0.2)',
+            boxShadow: '0 0 0 rgba(200, 168, 32, 0)',
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 20px rgba(200, 168, 32, 0.12)')}
+          onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 0 rgba(200, 168, 32, 0)')}
         >
           <div className="flex gap-4">
             <img
-              className="w-12 h-12 rounded-lg object-contain bg-gray-700/30 p-2"
+              className="w-12 h-12 rounded-lg object-contain p-2"
+              style={{ background: 'rgba(200, 168, 32, 0.1)' }}
               src={item.icon}
               alt={`${item.name} logo`}
             />
             <div>
-              <h3 className="text-xl font-bold text-white">{item.name}</h3>
-              <p className="text-gray-400 text-sm">{item.pos}</p>
-              <p className="text-gray-500 text-sm">{item.duration}</p>
+              <h3 className="text-xl font-bold" style={{ color: '#f0e8d0' }}>{item.name}</h3>
+              <p className="text-sm" style={{ color: '#c8a820' }}>{item.pos}</p>
+              <p className="text-sm" style={{ color: '#a898b8' }}>{item.duration}</p>
             </div>
           </div>
-          <p className="mt-4 text-gray-300 group-hover:text-white transition-colors">
+          <p className="mt-4 transition-colors" style={{ color: '#c4b8d0' }}>
             {item.title}
           </p>
         </div>
@@ -63,7 +71,7 @@ const Experience = () => {
 
       <div className="relative max-w-5xl mx-auto">
         {/* Center timeline */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-[2px] h-full bg-gray-700" />
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-[2px] h-full" style={{ background: 'linear-gradient(to bottom, rgba(200,168,32,0.6), rgba(212,129,58,0.3))' }} />
 
         {allExperiences.map((exp, index) => (
           <TimelineItem

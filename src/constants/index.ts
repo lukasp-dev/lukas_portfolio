@@ -426,6 +426,27 @@ export const myProjects: Project[] = [
 
 export const experiences: Experience[] = [
   {
+    id: 7,
+    type: "work" as const,
+    startDate: "2026-05",
+    name: "Microsoft",
+    pos: "Software Engineering Intern (Incoming)",
+    duration: "May 2026 - August 2026",
+    title: "Software Engineering Intern at Microsoft",
+    companyLink: "https://www.microsoft.com",
+    companyInfo: "Azure Compute team · Redmond, WA · Low-level cloud infrastructure and high-performance computing systems",
+    techStack: ["Azure", "C++", "Cloud Infrastructure", "High-Performance Computing", "Distributed Systems"],
+    animation: "fade-left",
+    achievements: [
+      {
+        title: "Azure Compute",
+        description: "Selected for the Azure Compute team to work on low-level cloud infrastructure and high-performance computing systems",
+        details: [],
+      },
+    ],
+    icon: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+  },
+  {
     id: 1,
     type: "research" as const,
     startDate: "2025-05",
@@ -440,13 +461,12 @@ export const experiences: Experience[] = [
     animation: "fade-right",
     achievements: [
       {
-        title: "Full-Stack Product Search Platform",
-        description:
-          "Built full-stack product search platform (React + FastAPI) for NAPA Auto Parts with natural language filters",
+        title: "Full-Stack Enterprise Search Platform",
+        description: "Engineered a full-stack enterprise search platform serving 20K+ users across NAPA Auto Parts",
         details: [
-          "Reduced API calls by 94% (18→1) via Redux centralization and frontend memoization, generating $10M annual savings",
-          "Enhanced backend reliability with Pydantic unit tests, ensuring 100% schema validation and blocking malformed data",
-          "Developed RAG-based typo/abbreviation resolution using Gemini embeddings, vector DB, and Vertex AI",
+          "Engineered a full-stack enterprise search platform leveraging FastAPI, Gemini-based RAG, and React/Redux to serve 20K+ users",
+          "Reduced GraphQL API calls by 94% (18→1) and improved LLM response latency by ~45%, projecting ~$10M/yr savings",
+          "Enhanced backend reliability using Docker/Kubernetes and 50+ Pydantic CI/CD tests, reducing GraphQL query errors by 20%",
         ],
       },
     ],
@@ -502,23 +522,11 @@ export const experiences: Experience[] = [
     animation: "fade-right",
     achievements: [
       {
-        title: "Frontend Revamp",
-        description:
-          "Enhanced the frontend with 3D visualization for seamless user interaction and AI-driven functionality",
+        title: "AI-Powered CAD Platform",
+        description: "Co-founded an AI platform to automate custom orthotic design from foot scans",
         details: [
-          "Integrated Three.js to render scanned foot models (STL) in 3D space",
-          "Implemented interactive point selection system for precise measurements",
-          "Developed data pipeline to transmit selected points to AI backend for insole generation",
-        ],
-      },
-      {
-        title: "User Report System",
-        description:
-          "Integrated GCP user data processing and Slack notification system",
-        details: [
-          "Built Express.js module for handling user-reported data uploads to GCP bucket",
-          "Implemented automatic public URL generation for uploaded files",
-          "Created Slack integration for real-time team notifications with formatted messages",
+          "Joined as a founding engineer on an AI platform leveraging PointNet++ to automate custom CAD orthotic design from foot images in under 30 seconds",
+          "Developed a React/Three.js interactive viewer for real-time model manipulation including rotation, scaling, and texture mapping",
         ],
       },
     ],
@@ -538,20 +546,12 @@ export const experiences: Experience[] = [
     animation: "fade-right",
     achievements: [
       {
-        title: "SOMA Artistry",
-        description:
-          "Independently designed and developed the entire frontend web page using React & Redux",
+        title: "Backend & Infrastructure",
+        description: "Architected scalable microservices and secure auth for an online art marketplace",
         details: [
-          "Designed application logic in Figma for a web app with end-to-end transactions and smooth API/database integration",
-          "Integrated React purchase logic with backend and APIs, streamlining checkout by auto-filling address fields based on Zipcode, reducing manual errors",
-        ],
-      },
-      {
-        title: "Optimization",
-        description: "Enhanced Web Performance and Security",
-        details: [
-          "Implemented OAuth 2.0 with JWT authentication, ensuring efficient token management and secure access control",
-          "Reduced server costs by 30% through local caching of user data, minimizing API calls and optimizing token usage",
+          "Architected scalable microservices using Spring Boot and JPA with PostgreSQL for an online art marketplace",
+          "Deployed a Kotlin backend on AWS EC2 and automated testing and deployment through a GitHub Actions-based CI/CD pipeline",
+          "Implemented secure JWT authentication with HttpOnly cookies, mitigating XSS risks and improving session persistence",
         ],
       },
     ],
@@ -578,24 +578,12 @@ export const experiences: Experience[] = [
     animation: "fade-right",
     achievements: [
       {
-        title: "Research Focus",
-        description:
-          "Development of AI tools for responsible decision-making in engineering and healthcare",
+        title: "Autonomous Rover Navigation",
+        description: "Built autonomous rover navigation simulation in ROS2 with modular pub/sub pipeline",
         details: [
-          "Specialized Language Models: Tailoring LLMs for domain-specific knowledge extraction",
-          "Multi-modal Data Analysis: Creating AI systems to integrate various data sources",
-          "Time Series Forecasting: Developing robust predictive models using historical data",
-          "AI-based Optimization: Leveraging AI for complex optimization problems",
-        ],
-      },
-      {
-        title: "Project Scope",
-        description:
-          "Applications across multiple sectors including supply chain, manufacturing, and healthcare",
-        details: [
-          "Focus on developing confidence-aware and interpretable AI systems",
-          "Integration of uncertainty quantification in decision-making processes",
-          "Implementation of robust and reliable AI methods for high-stakes decisions",
+          "Built autonomous rover navigation simulation in ROS2 using a modular pub/sub pipeline for deterministic control evaluation",
+          "Developed C++/Python modules consuming LiDAR sensor streams, implementing perception→planning routing logic",
+          "Built telemetry analysis pipeline to evaluate route quality, debug navigation decisions, and measure ETA/latency tradeoffs",
         ],
       },
     ],
@@ -606,26 +594,23 @@ export const experiences: Experience[] = [
     type: "work" as const,
     startDate: "2026-01",
     name: "Itential",
-    pos: "Machine Learning Engineer Co-Op",
+    pos: "Software Engineering Intern",
     duration: "January 2026 - Present",
-    title: "Machine Learning Engineer Co-Op at Itential",
+    title: "Software Engineering Intern at Itential",
     companyLink: "https://www.itential.com",
     companyInfo:
       "Network automation software company specializing in enterprise network orchestration and automation for Fortune 500 companies",
-    techStack: [
-      "Python",
-      "SQL",
-      "Snowflake",
-      "AWS Lambda",
-      "Machine Learning",
-      "Deep Learning",
-    ],
+    techStack: ["Python", "FastMCP", "Snowflake", "SQL", "LLMs", "AWS"],
     animation: "fade-left",
     achievements: [
       {
-        title: "Ongoing",
-        description: "Currently working on machine learning projects",
-        details: [],
+        title: "LLM & Infrastructure",
+        description: "Built LLM tooling and high-throughput data pipelines for sales intelligence and server optimization",
+        details: [
+          "Developed an MCP server using FastMCP to abstract Snowflake schemas into LLM-ready tools for seamless sales insight retrieval",
+          "Engineered an asynchronous LLM pipeline, reducing batch latency by 40% through optimized SQL CTEs and parallel execution",
+          "Built a Python simulation engine for 140M+ tasks to optimize rate-limiting algorithms and align server scaling with billing",
+        ],
       },
     ],
     icon: "/assets/itential-logo-stacked-r.png",

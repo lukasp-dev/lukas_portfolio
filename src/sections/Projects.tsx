@@ -10,12 +10,21 @@ const Projects = () => {
         {myProjects.map((project, index) => (
           <div
             key={index}
-            className="relative cursor-pointer group overflow-hidden rounded-xl shadow-md border border-gray-700 transition-all duration-300 p-6 bg-gradient-to-br from-white-700 to-gray-900"
+            className="relative cursor-pointer group overflow-hidden rounded-xl transition-all duration-300 p-6"
+            style={{
+              background: 'linear-gradient(135deg, #131020, #1c1828)',
+              border: '1px solid rgba(200, 168, 32, 0.18)',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 28px rgba(200, 168, 32, 0.14)')}
+            onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
           >
             <Link to={`/project/${project.title}`} className="block h-full">
               <div className="relative h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-xl font-bold group-hover:text-blue-300 transition-colors text-white">
+                  <h3
+                    className="text-xl font-bold transition-colors"
+                    style={{ color: '#f0e8d0' }}
+                  >
                     {project.title}
                   </h3>
                 </div>
@@ -24,19 +33,21 @@ const Projects = () => {
                     src={project.picture}
                     alt={`${project.title} thumbnail`}
                     className="w-full h-[180px] object-cover rounded-lg shadow-md mb-4"
+                    style={{ border: '1px solid rgba(200, 168, 32, 0.15)' }}
                   />
                 )}
-                <p className="text-sm text-gray-100 group-hover:text-white transition-colors mb-4 font-bold">
+                <p className="text-sm mb-4 font-semibold" style={{ color: '#d4c4a0' }}>
                   {project.desc}
                 </p>
-                <p className="text-sm text-gray-100 group-hover:text-white transition-colors mb-4">
+                <p className="text-sm mb-4" style={{ color: '#a898b8' }}>
                   {project.subdesc}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <div
                       key={tag.id}
-                      className="flex items-center bg-gray-100 px-2 py-1 rounded-full text-sm text-gray-700"
+                      className="flex items-center px-2 py-1 rounded-full text-sm"
+                      style={{ background: 'rgba(200, 168, 32, 0.1)', border: '1px solid rgba(200, 168, 32, 0.2)', color: '#c8a820' }}
                     >
                       <img
                         src={tag.path}

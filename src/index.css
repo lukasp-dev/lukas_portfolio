@@ -9,7 +9,7 @@
 }
 
 body {
-  background: #010103;
+  background: #0c0a12;
   font-family: 'General Sans', sans-serif;
 }
 
@@ -39,7 +39,7 @@ body {
   }
 
   .text-gray_gradient {
-    @apply bg-gradient-to-r from-[#BEC1CF] from-60% via-[#D5D8EA] via-60% to-[#D5D8EA] to-100% bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#e8d5a8] from-40% via-[#c8a820] via-70% to-[#f0e8d0] to-100% bg-clip-text text-transparent;
   }
 
   /* button component */
@@ -49,11 +49,13 @@ body {
   }
 
   .btn-ping {
-    @apply animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75;
+    @apply animate-ping absolute inline-flex h-full w-full rounded-full opacity-75;
+    background: #c8a820;
   }
 
   .btn-ping_dot {
-    @apply relative inline-flex rounded-full h-3 w-3 bg-green-500;
+    @apply relative inline-flex rounded-full h-3 w-3;
+    background: #d4813a;
   }
 
   /* hero section */
@@ -63,15 +65,23 @@ body {
 
   /* about section */
   .grid-container {
-    @apply w-full h-full border border-black-300 bg-black-200 rounded-lg sm:p-7 p-4 flex flex-col gap-5;
+    @apply w-full h-full bg-black-200 rounded-lg sm:p-7 p-4 flex flex-col gap-5;
+    border: 1px solid rgba(200, 168, 32, 0.18);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .grid-container:hover {
+    box-shadow: 0 0 24px rgba(200, 168, 32, 0.1);
   }
 
   .grid-headtext {
-    @apply text-xl font-semibold mb-2 text-white font-generalsans;
+    @apply text-xl font-semibold mb-2 font-generalsans;
+    color: #f0e8d0;
   }
 
   .grid-subtext {
-    @apply text-[#afb0b6] text-base font-generalsans;
+    @apply text-base font-generalsans;
+    color: #a898b8;
   }
 
   .copy-container {
@@ -94,6 +104,7 @@ body {
 
   .client-review {
     @apply rounded-lg md:p-10 p-5 col-span-1 bg-black-300 bg-opacity-50;
+    border: 1px solid rgba(200, 168, 32, 0.12);
   }
 
   .client-content {
@@ -106,15 +117,17 @@ body {
   }
 
   .work-canvas {
-    @apply col-span-1 rounded-lg bg-black-200 border border-black-300;
+    @apply col-span-1 rounded-lg bg-black-200;
+    border: 1px solid rgba(200, 168, 32, 0.18);
   }
 
   .work-content {
-    @apply col-span-2 rounded-lg bg-black-200 border border-black-300;
+    @apply col-span-2 rounded-lg bg-black-200;
+    border: 1px solid rgba(200, 168, 32, 0.18);
   }
 
   .work-content_container {
-    @apply grid grid-cols-[auto_1fr] items-start gap-5  transition-all ease-in-out duration-500 cursor-pointer hover:bg-black-300 rounded-lg sm:px-5 px-2.5;
+    @apply grid grid-cols-[auto_1fr] items-start gap-5 transition-all ease-in-out duration-500 cursor-pointer hover:bg-black-300 rounded-lg sm:px-5 px-2.5;
   }
 
   .work-content_logo {
@@ -136,12 +149,13 @@ body {
 
 .arrow-gradient {
   background-image: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0.1) 10%,
-          rgba(255, 255, 255, 0.000025) 50%,
-          rgba(255, 255, 255, 0.000025) 50%,
-          rgba(255, 255, 255, 0.025) 100%
+    to right,
+    rgba(200, 168, 32, 0.18) 10%,
+    rgba(200, 168, 32, 0.04) 50%,
+    rgba(212, 129, 58, 0.04) 50%,
+    rgba(212, 129, 58, 0.1) 100%
   );
+  border: 1px solid rgba(200, 168, 32, 0.25);
 }
 
 @keyframes wave-animation {
