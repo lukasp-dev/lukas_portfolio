@@ -178,3 +178,10 @@ body {
 .soft-blink {
   animation: softBlink 2s ease-in-out infinite;
 }
+
+/* 14-inch laptop viewport adjustment: avoid fixed header overlap */
+@media (min-width: 1200px) and (max-width: 1600px) and (max-height: 1050px) {
+  .hero-offset {
+    padding-top: 88px;
+  }
+}

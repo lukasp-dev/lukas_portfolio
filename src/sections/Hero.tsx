@@ -13,7 +13,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden hero-offset"
       id="home"
     >
       {/* Ambient background — CSS only, no WebGL */}
