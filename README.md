@@ -1,229 +1,124 @@
-# Jewook’s Portfolio Website
+# Jewook Park Portfolio
 
-## Introduction
+A production-grade personal portfolio built with React, TypeScript, and Vite.  
+The site presents projects, experience, and interactive 3D sections, and integrates Notion-based project content through a dedicated API layer.
 
-Welcome to my portfolio website! I created this website to showcase my experience, projects, and more. I decided to build it myself using **React** for the frontend and **Express** for the backend.
+## Overview
 
-## Used Technologies
+This repository contains the frontend application for [jewook.dev](https://jewook.dev).  
+Key goals of the project:
 
-### IDE
-[![Visual Studio Code](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
+- Present professional experience and project history in a clean, interactive format.
+- Support rich, long-form project documentation powered by Notion blocks.
+- Maintain a modern, high-performance frontend architecture using Vite and React.
 
-### Languages / Frameworks
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-yellow?logo=javascript&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) 
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) 
-[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/) 
-[![Express](https://img.shields.io/badge/Express-404D59?logo=express&logoColor=white)](https://expressjs.com/) 
-[![Notion API](https://img.shields.io/badge/Notion_API-000000?logo=notion&logoColor=white)](https://developers.notion.com/)
+## Tech Stack
 
-### Cloud Services
-[![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/) 
-[![AWS EC2](https://img.shields.io/badge/AWS_EC2-FF9900?logo=amazon-ec2&logoColor=white)](https://aws.amazon.com/ec2/) 
-[![AWS Route 53](https://img.shields.io/badge/AWS_Route%2053-232F3E?logo=amazon-route53&logoColor=white)](https://aws.amazon.com/route53/)
+- **Frontend:** React, TypeScript, Vite
+- **Styling:** Tailwind CSS
+- **Animation / 3D:** Framer Motion, Three.js, React Three Fiber, Drei, GSAP
+- **Content Integration:** Notion API (via external `notion-server` endpoint)
+- **Utilities:** Axios, React Router
 
+## Project Structure
 
-## System Architecture
-
-![System Architecture](https://lukas-portfolio.s3.us-east-2.amazonaws.com/335f59e3ea369ac65f464f0a39562ab0.jpg)
-
-The frontend is hosted on **AWS S3** and configured with the domain [https://jewook.dev](https://jewook.dev) using the **Route 53** service on AWS. The **Node.js Express** server is hosted on **AWS EC2**. The server communicates with the **Notion API** to fetch page content, allowing me to display the content from my Notion app on my portfolio website.
-
-Additionally, when the server processes image data from Notion, it uploads the images to **Amazon S3** and retrieves their public URLs. This approach enables me to display both image content and text information to the visitors of my portfolio.
-
-## EC2 Hosting
-
-Since the project size isn't very large, I decided to upload the files directly to the EC2 server. When creating the EC2 instance, I ensured to add port `5000` to the inbound ruleset, as that’s the port I used locally to communicate with the frontend.
-
-### Transferring Code to EC2
-
-To transfer the code to EC2, use the following command:
-
-### Accessing EC2 via SSH
-
-Connect to your EC2 instance using SSH:
-
-```bash
-ssh -i <path-to-the-pem-file> ec2-user@<public-ip-address>
+```text
+src/
+  components/      # Reusable UI and content components
+  sections/        # Page-level sections (Hero, Projects, Contact, etc.)
+  hooks/           # Custom hooks (e.g., Notion block fetching)
+  constants/       # Portfolio/project metadata
+  types/           # Shared TypeScript types
 ```
 
-### Unzipping and Running the Server
+## Notion Content Integration
 
-After transferring the ZIP file, unzip it and remove the ZIP file as it's no longer needed:
+Project entries include `pageId` values in `src/constants/index.ts`.  
+Detailed Notion blocks are fetched through:
+
+- `src/hooks/useAxios.ts`
+- API pattern: `GET /page/:pageId/blocks`
+
+Current API base used by the hook:
+
+- `https://notion-server.jewook-dev.workers.dev`
+
+If you want environment-based configuration, move the base URL into `import.meta.env.VITE_NOTION_API_BASE` and read it from the hook.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js `>= 18.18.0`
+- npm (recommended: latest stable)
+
+### Installation
 
 ```bash
-unzip <project-name>.zip
-rm -f <project-name>.zip
-cd <project-name>
+git clone https://github.com/lukasp-dev/lukas_portfolio.git
+cd lukas_portfolio
 npm install
-node index.js
 ```
 
-### Testing the Server
+### Run in Development
 
-Use Postman to test if the server is working as expected by sending a GET request to:
-
-```
-http://<EC2-PUBLIC-IP>:5000/page/{notion_page_id}/blocks
+```bash
+npm run dev
 ```
 
-A `200 Success` message indicates that the server is functioning correctly.
+Vite will start on `5173` by default, or automatically pick another port if needed.
 
-![Server Success](https://lukas-portfolio.s3.us-east-2.amazonaws.com/775987405bb920bfd58c46da528a9f39.jpg)
+### Production Build
 
-### Configuring Frontend Communication
-
-Once the server is confirmed to be working, configure Axios on the frontend to communicate with the server hosted on AWS EC2. I created a custom React Hook to fetch content data from the Notion page.
-
-```jsx
-import { useState, useEffect } from "react";
-import axios from "axios";
-
-interface BlockResponse {
-    data: any; 
-}
-
-export const useAxios = (pageId: string) => {
-    const [data, setData] = useState<BlockResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
-
-    const BASE_URL = "http://<PUBLIC-IP-ADDRESS>";
-
-    useEffect(() => {
-        axios.get(`${BASE_URL}/page/${pageId}/blocks`)
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                setError(error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [pageId]);
-
-    return { data, loading, error };
-};
+```bash
+npm run build
+npm run preview
 ```
 
-## Problem Solving: Duplicate Images Uploaded to S3
+## Available Scripts
 
-I encountered an issue where duplicate images were being uploaded to S3. Initially, I tried fetching the image URLs directly from the Notion page, but it wasn't feasible. To resolve this, I implemented the following steps to download images from Notion and upload them to an AWS S3 bucket, ensuring that only unique images are stored.
+- `npm run dev` - Start development server
+- `npm run build` - Type-check and build production assets
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
 
-### 1. Generate Unique Hashes for Images
+## Troubleshooting
 
-I used the MD5 hash of the image content to identify duplicates.
+### Missing package errors during `npm run dev`
 
-```jsx
-import axios from "axios";
-import crypto from "crypto";
+If you see errors like:
 
-async function generateContentHash(imageUrl) {
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    return crypto.createHash("md5").update(response.data).digest("hex");
-}
+- `Failed to resolve import "axios"`
+- `Failed to resolve import "@emailjs/browser"`
+- `Failed to resolve import "react-type-animation"`
+
+run a clean install:
+
+```bash
+rm -rf node_modules
+npm ci
 ```
 
-### 2. Check File Existence in S3
+If `npm ci` fails due to lockfile drift:
 
-Before uploading, the system checks if the file already exists in the S3 bucket.
-
-```jsx
-import { S3Client, HeadObjectCommand } from "@aws-sdk/client-s3";
-
-const s3 = new S3Client({ region: "us-east-2" });
-
-async function checkIfFileExists(bucket, key) {
-    try {
-        await s3.send(new HeadObjectCommand({ Bucket: bucket, Key: key }));
-        return true; 
-    } catch (err) {
-        return false; 
-    }
-}
+```bash
+npm install
 ```
 
-### 3. Upload Only Unique Files
+### Notion content not loading
 
-If the file does not exist, it gets uploaded to S3; otherwise, the existing URL is reused.
+Verify:
 
-```jsx
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+1. The API endpoint is reachable.
+2. The `pageId` exists and is valid.
+3. The Notion integration has access to the target page.
 
-async function uploadImage(imageUrl) {
-    const hash = await generateContentHash(imageUrl);
-    const fileName = `${hash}.jpg`;
+## Deployment Notes
 
-    if (await checkIfFileExists(process.env.S3_BUCKET_NAME, fileName)) {
-        return `File already exists: ${fileName}`;
-    }
+The frontend is designed for static hosting/CDN deployment.  
+Notion content delivery depends on the external API service and its availability.
 
-    const data = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    await s3.send(new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: fileName,
-        Body: data.data,
-    }));
-    return `File uploaded: ${fileName}`;
-}
-```
+## License
 
-### 4. Integrate with Notion API
-
-```jsx
-import { Client } from "@notionhq/client";
-
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
-
-async function processNotionImages(pageId) {
-    const blocks = await notion.blocks.children.list({ block_id: pageId });
-    for (const block of blocks.results) {
-        if (block.type === "image") {
-            const url = block.image.file?.url || block.image.external?.url;
-            console.log(await uploadImage(url));
-        }
-    }
-}
-```
-
-When fetching a page from Notion, if the images already exist in the S3 bucket, the following message is displayed:
-
-![Duplicate Image Message](https://lukas-portfolio.s3.us-east-2.amazonaws.com/c7c1750aa0423d09f611756212699c76.jpg)
-
-## Installation
-
-To set up the project locally, follow these steps:
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/your-username/your-repository.git
-    cd your-repository
-    ```
-
-2. **Install dependencies:**
-
-    ```bash
-    npm install
-    ```
-
-3. **Configure environment variables:**
-
-    Create a `.env` file and add the necessary environment variables, such as AWS credentials and Notion API keys.
-
-4. **Run the server:**
-
-    ```bash
-    node index.js
-    ```
-
-## Usage
-
-1. **Access the website:**
-
-    Open your browser and navigate to [https://jewook.dev](https://jewook.dev).
-
-2. **Interact with the portfolio:**
-
-    Browse through the projects, experience, and other sections showcased on the website.
+This project is for portfolio and demonstration purposes.  
+If you plan to reuse significant parts of the codebase, please request permission.

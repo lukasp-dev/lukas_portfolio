@@ -11,7 +11,7 @@ export const useAxios = (pageId: string) => {
     const [error, setError] = useState<Error | null>(null);
 
     // const BASE_URL = "http://localhost:5001";
-    const BASE_URL = "https://notion-server.jewook.com";
+    const BASE_URL = "https://notion-server.jewook-dev.workers.dev";
     
 
     useEffect(() => {

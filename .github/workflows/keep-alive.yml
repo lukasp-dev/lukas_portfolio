@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Notion Server
-        run: curl -s -o /dev/null -w "%{http_code}" https://notion-server.jewook.com
+        run: curl -s -o /dev/null -w "%{http_code}" https://notion-server.jewook-dev.workers.dev
