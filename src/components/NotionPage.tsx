@@ -45,7 +45,7 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
                     content = (
                         <a
                             href={text.text.link.url}
-                            className="text-blue-500 underline"
+                            className="text-amber-glow underline hover:text-amber-gold transition-colors"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -61,7 +61,7 @@ const NotionPage: React.FC<NotionPageProps> = ({ pageId }) => {
                     content = (
                         <a
                             href={mention.link_preview.url}
-                            className="text-blue-500 underline"
+                            className="text-amber-glow underline hover:text-amber-gold transition-colors"
                             target="_blank"
                             rel="noopener noreferrer"
                         >

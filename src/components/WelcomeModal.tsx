@@ -32,7 +32,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                             transition={{ type: "spring", duration: 0.5 }}
-                            className="bg-gradient-to-br from-blue-900 to-yellow-600 border border-gray-300 rounded-xl p-8 max-w-md w-full mx-4 relative z-10 shadow-lg"
+                            className="bg-gradient-to-br from-black-300 to-black-200 border border-amber-gold/20 rounded-xl p-8 max-w-md w-full mx-4 relative z-10 shadow-2xl shadow-amber-gold/10"
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <h2 className="text-2xl font-bold text-white">
@@ -104,11 +104,11 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
 
                                 <div className="border-t border-gray-700 pt-6">
                                     <div className="flex items-start gap-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-1 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-1 text-amber-glow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                         </svg>
                                         <div>
-                                            <span className="text-blue-400 font-medium">Fun fact!</span>
+                                            <span className="text-amber-glow font-medium">Fun fact!</span>
                                             <p className="mt-1 text-gray-300">I love drawing in my free time. Check out my art gallery in the navigation bar!</p>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={onClose}
-                                className="w-full mt-8 btn bg-gradient-to-r from-black-500 to-black-400"
+                                className="w-full mt-8 btn bg-amber-gold !text-black-200 hover:bg-amber-glow"
                             >
                                 Get Started
                             </motion.button>

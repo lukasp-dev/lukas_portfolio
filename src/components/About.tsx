@@ -11,7 +11,7 @@ const About = () => {
       >
         <p className="text-lg text-white text-center leading-relaxed max-w-xl">
           Studying Computer Science at{" "}
-          <span className="font-bold text-yellow-400">Georgia Tech</span>,
+          <span className="font-bold text-gray_gradient">Georgia Tech</span>,
           <br></br>I am a software engineer blending a strong foundation in
           full-stack development with a deep focus on systems programming and
           low-latency infrastructure.

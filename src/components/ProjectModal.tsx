@@ -64,7 +64,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                             href={project.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block text-blue-400 hover:text-blue-300"
+                            className="inline-block text-amber-glow hover:text-amber-gold transition-colors"
                         >
                             View Project →
                         </a>

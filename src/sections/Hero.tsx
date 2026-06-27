@@ -48,20 +48,22 @@ const Hero = () => {
             />
           </h1>
           <About />
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-          >
-            Navigate through my portfolio
-          </button>
-          <a
-            href="https://drive.google.com/file/d/1K5KkUG7clXLlDm7q2AP_Ni8it-nYKpku/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 mt-4 px-4 py-3 text-white rounded transition bg-blue-800 hover:bg-blue-900"
-          >
-            Resume
-          </a>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-6 py-2.5 rounded-lg font-medium bg-amber-gold text-black-200 hover:bg-amber-glow transition-all duration-200 shadow-lg shadow-amber-gold/20 hover:shadow-amber-gold/30"
+            >
+              Navigate through my portfolio
+            </button>
+            <a
+              href="https://drive.google.com/file/d/1K5KkUG7clXLlDm7q2AP_Ni8it-nYKpku/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-2.5 rounded-lg font-medium border border-amber-gold/40 text-amber-glow hover:bg-amber-gold/10 transition-all duration-200"
+            >
+              Resume
+            </a>
+          </div>
 
           {/* Interactive world preview */}
           <motion.div
@@ -79,7 +81,7 @@ const Hero = () => {
                 href={GARDEN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-4 rounded-xl border border-white/20 bg-white/5 backdrop-blur text-white hover:bg-white/10 transition w-full max-w-sm justify-center"
+                className="flex items-center gap-2 px-6 py-4 rounded-xl border border-amber-gold/20 bg-white/5 backdrop-blur text-white hover:bg-amber-gold/10 hover:border-amber-gold/40 transition w-full max-w-sm justify-center"
               >
                 <span className="text-lg">🌿</span>
                 <span className="text-sm font-medium">Enter the Botanical Garden</span>
@@ -87,7 +89,7 @@ const Hero = () => {
               </a>
             ) : (
               <div className="relative group w-full max-w-2xl mx-auto">
-                <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60">
+                <div className="rounded-2xl overflow-hidden border border-amber-gold/15 shadow-2xl shadow-black/60">
                   <iframe
                     src={GARDEN_URL}
                     title="Interactive Botanical Garden"
@@ -103,7 +105,7 @@ const Hero = () => {
                   rel="noopener noreferrer"
                   className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 rounded-2xl backdrop-blur-sm"
                 >
-                  <span className="px-5 py-2.5 bg-white/10 border border-white/20 rounded-full text-white text-sm font-medium tracking-wide">
+                  <span className="px-5 py-2.5 bg-amber-gold/15 border border-amber-gold/40 rounded-full text-amber-glow text-sm font-medium tracking-wide">
                     Open in full screen →
                   </span>
                 </a>

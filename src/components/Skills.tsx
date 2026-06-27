@@ -66,9 +66,9 @@ const Skills: React.FC = () => {
                 <span className="text-gray-300">{skill.name}</span>
                 <span className="text-gray-300">{skill.years} years</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-4 mt-1 overflow-hidden">
+            <div className="w-full bg-black-500 rounded-full h-4 mt-1 overflow-hidden">
                 <div
-                    className="skill-bar-fill bg-green-800 h-4 rounded-full transition-all duration-1000"
+                    className="skill-bar-fill bg-gradient-to-r from-amber-gold to-amber-glow h-4 rounded-full transition-all duration-1000"
                     style={{ width: '0%' }}
                     data-width={`${skill.years * 25}%`} // Adjust to your preferred calculation
                 />
@@ -86,15 +86,15 @@ const Skills: React.FC = () => {
             }}
         >
             <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-4">Languages</h3>
+                <h3 className="text-2xl font-bold mb-4 text-gray_gradient">Languages</h3>
                 {skillsData.languages.map(renderBar)}
             </div>
             <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-4">Technologies / Frameworks</h3>
+                <h3 className="text-2xl font-bold mb-4 text-gray_gradient">Technologies / Frameworks</h3>
                 {skillsData.technologies.map(renderBar)}
             </div>
             <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-4">Database Technologies</h3>
+                <h3 className="text-2xl font-bold mb-4 text-gray_gradient">Database Technologies</h3>
                 {skillsData.databases.map(renderBar)}
             </div>
         </section>

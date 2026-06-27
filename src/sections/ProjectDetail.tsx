@@ -13,11 +13,11 @@ const ProjectDetail = () => {
 
     return (
         <div className="p-6 text-white rounded-lg shadow-lg h-screen mx-4 mb-6">
-            <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
+            <h1 className="text-4xl font-bold mb-4 text-gray_gradient">{project.title}</h1>
             <p className="text-lg mb-2">{project.desc}</p>
             <div className="flex flex-row mb-4 rounded-lg shadow-md">
-                <div className="type bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-2">{project.type}</div>
-                <div className="role bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">{project.role}</div>
+                <div className="type bg-amber-gold/15 text-amber-glow border border-amber-gold/30 px-3 py-1 rounded-full text-sm font-semibold mr-2">{project.type}</div>
+                <div className="role bg-black-400 text-gray-200 border border-amber-gold/20 px-3 py-1 rounded-full text-sm font-semibold">{project.role}</div>
             </div>
             {project.links?.youtube && (
                 <div className="mb-4 flex justify-center">
@@ -38,7 +38,7 @@ const ProjectDetail = () => {
                         href={project.links.live} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-block px-4 py-2 bg-yellow-600 text-white rounded-lg shadow hover:bg-yellow-500 transition"
+                        className="inline-block px-4 py-2 bg-amber-gold text-black-200 font-medium rounded-lg shadow hover:bg-amber-glow transition"
                     >
                         Live
                     </a>

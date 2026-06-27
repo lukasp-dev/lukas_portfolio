@@ -123,7 +123,7 @@ const Contacts: React.FC = () => {
                                     value={form.name}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-amber-gold transition-colors"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -136,7 +136,7 @@ const Contacts: React.FC = () => {
                                     value={form.email}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-amber-gold transition-colors"
                                     placeholder="john@example.com"
                                 />
                             </div>
@@ -149,7 +149,7 @@ const Contacts: React.FC = () => {
                                     onChange={handleChange}
                                     required
                                     rows={4}
-                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                                    className="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-amber-gold transition-colors resize-none"
                                     placeholder="Your message here..."
                                 />
                             </div>
@@ -157,7 +157,7 @@ const Contacts: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full py-3 px-6 rounded-lg bg-blue-800 hover:bg-blue-900 text-white font-medium transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="w-full py-3 px-6 rounded-lg bg-amber-gold hover:bg-amber-glow text-black-200 font-medium transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                             >
                                 {loading ? (
                                     <span className="flex items-center gap-2">

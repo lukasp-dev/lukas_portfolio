@@ -180,7 +180,7 @@ const Gallery = () => {
                       <p className="text-gray-300 text-sm mb-2">
                         {art.description}
                       </p>
-                      <p className="text-blue-400 text-sm">{art.date}</p>
+                      <p className="text-amber-glow text-sm">{art.date}</p>
                     </div>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ const Gallery = () => {
                   </h2>
                   <p className="text-gray-300">{selectedArt.description}</p>
                   {selectedArt.date && (
-                    <p className="text-blue-400">{selectedArt.date}</p>
+                    <p className="text-amber-glow">{selectedArt.date}</p>
                   )}
                 </div>
               </div>

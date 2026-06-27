@@ -430,18 +430,25 @@ export const experiences: Experience[] = [
     type: "work" as const,
     startDate: "2026-05",
     name: "Microsoft",
-    pos: "Software Engineering Intern (Incoming)",
+    pos: "Software Engineering Intern",
     duration: "May 2026 - August 2026",
     title: "Software Engineering Intern at Microsoft",
     companyLink: "https://www.microsoft.com",
-    companyInfo: "Azure Compute team · Redmond, WA · Low-level cloud infrastructure and high-performance computing systems",
-    techStack: ["Azure", "C++", "Cloud Infrastructure", "High-Performance Computing", "Distributed Systems"],
+    companyInfo:
+      "Azure networking team working on the platform behind Azure's Software-Defined Networking and accelerated datapath",
+    techStack: ["C++", "Python", "Pytest", "Rust", "gRPC", "Azure", "Networking"],
     animation: "fade-left",
     achievements: [
       {
-        title: "Azure Compute",
-        description: "Selected for the Azure Compute team to work on low-level cloud infrastructure and high-performance computing systems",
-        details: [],
+        title: "Accelerated Networking Datapath Testing",
+        description:
+          "Modernized Azure's datapath test suite onto a new Pytest + Rust gRPC framework and extended its core test infrastructure",
+        details: [
+          "Ported and verified multiple legacy C++ test groups onto a new Pytest client + Rust gRPC framework",
+          "Extended the gRPC and harness layer connecting client-facing tests to the underlying drivers, building reusable infrastructure that accelerates every future test port",
+          "Validated the accelerated networking datapath end-to-end across host, SoC, and hardware-offload components",
+          "Drove an AI-assisted workflow using precise Markdown test specs as ground truth to increase test-generation throughput while verifying results against the system",
+        ],
       },
     ],
     icon: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",

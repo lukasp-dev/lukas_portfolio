@@ -42,7 +42,7 @@ const WorkModal = ({ work, isOpen, onClose }: WorkModalProps) => {
                         href={work.companyLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block mb-6 text-blue-400 hover:text-blue-300"
+                        className="inline-block mb-6 text-amber-glow hover:text-amber-gold transition-colors"
                     >
                         Visit Company Website →
                     </a>
