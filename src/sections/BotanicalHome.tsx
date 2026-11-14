@@ -7,6 +7,15 @@ import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import MobileJoystick, { joystick } from "../components/MobileJoystick";
+import RomanGarden from "../components/gallery/RomanGarden";
+import { goldMat, stoneMat } from "../components/gallery/StoneMaterials";
+import {
+  PlayerAvatar,
+  ViewToggleButton,
+  createPlayer,
+  getViewMode,
+  toggleView,
+} from "../components/gallery/PlayerAvatar";
 
 // ── Door definitions ──────────────────────────────────────────────────────────
 interface DoorDef {
@@ -33,11 +42,11 @@ const GARDEN_DOORS: DoorDef[] = [
     pos: [-14, 0, 10],
     yaw: -Math.PI / 4,
     doorScale: 0.82,
-    gold: "#c07828",
-    goldDark: "#6a3c08",
-    glowColor: "#d4813a",
-    pillarColor: "#8a7260",
-    stoneColor: "#9a8a7a",
+    gold: "#c9a24a",
+    goldDark: "#6b5420",
+    glowColor: "#d9b25a",
+    pillarColor: "#cfc6b2",
+    stoneColor: "#bdb4a0",
   },
   {
     id: "projects",
@@ -47,11 +56,11 @@ const GARDEN_DOORS: DoorDef[] = [
     pos: [0, 0, 26],
     yaw: 0,
     doorScale: 1.0,
-    gold: "#c8a820",
-    goldDark: "#7a6010",
-    glowColor: "#d4b030",
-    pillarColor: "#9a9088",
-    stoneColor: "#b0a898",
+    gold: "#c9a24a",
+    goldDark: "#6b5420",
+    glowColor: "#d9b25a",
+    pillarColor: "#cfc6b2",
+    stoneColor: "#bdb4a0",
   },
   {
     id: "gallery",
@@ -61,60 +70,22 @@ const GARDEN_DOORS: DoorDef[] = [
     pos: [14, 0, 10],
     yaw: Math.PI / 4,
     doorScale: 0.82,
-    gold: "#6898b8",
-    goldDark: "#2a5070",
-    glowColor: "#4890cc",
-    pillarColor: "#7a8898",
-    stoneColor: "#8898a8",
+    gold: "#c9a24a",
+    goldDark: "#6b5420",
+    glowColor: "#d9b25a",
+    pillarColor: "#cfc6b2",
+    stoneColor: "#bdb4a0",
   },
 ];
 
 const START_Z = -18;
 
-// ── Falling petals ────────────────────────────────────────────────────────────
-const PETAL_COUNT = 65;
-
-const Petals = () => {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const states = useRef(
-    Array.from({ length: PETAL_COUNT }, () => ({
-      x: (Math.random() - 0.5) * 70, y: Math.random() * 20 + 1,
-      z: (Math.random() - 0.5) * 70,
-      vx: (Math.random() - 0.5) * 0.25, vy: -(Math.random() * 0.55 + 0.18),
-      vz: (Math.random() - 0.5) * 0.25,
-      rx: Math.random() * Math.PI * 2, ry: Math.random() * Math.PI * 2, rz: Math.random() * Math.PI * 2,
-      rvx: (Math.random() - 0.5) * 1.4, rvy: (Math.random() - 0.5) * 1.4, rvz: (Math.random() - 0.5) * 1.4,
-      s: Math.random() * 0.1 + 0.04,
-    }))
-  );
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-
-  useFrame((_, dt) => {
-    if (!meshRef.current) return;
-    states.current.forEach((p, i) => {
-      p.x += p.vx * dt * 40 * 0.025; p.y += p.vy * dt * 40 * 0.025; p.z += p.vz * dt * 40 * 0.025;
-      p.rx += p.rvx * dt; p.ry += p.rvy * dt; p.rz += p.rvz * dt;
-      if (p.y < -1) { p.x = (Math.random() - 0.5) * 70; p.y = 20 + Math.random() * 4; p.z = (Math.random() - 0.5) * 70; }
-      dummy.position.set(p.x, p.y, p.z);
-      dummy.rotation.set(p.rx, p.ry, p.rz);
-      dummy.scale.setScalar(p.s);
-      dummy.updateMatrix();
-      meshRef.current!.setMatrixAt(i, dummy.matrix);
-    });
-    meshRef.current.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, PETAL_COUNT]}>
-      <planeGeometry args={[1, 1.3]} />
-      <meshStandardMaterial color="#ede0d5" side={THREE.DoubleSide} transparent opacity={0.65} />
-    </instancedMesh>
-  );
-};
+// ── Player (shared first/third-person view lives in PlayerAvatar.tsx) ───────
+const PLAYER = createPlayer(0, 1.75, START_Z + 2); // eye position
 
 // ── Path strip (diagonal) ─────────────────────────────────────────────────────
 const PathStrip = ({
-  fromXZ, toXZ, width = 3.4,
+  fromXZ, toXZ, width = 5.4,
 }: {
   fromXZ: [number, number]; toXZ: [number, number]; width?: number;
 }) => {
@@ -132,7 +103,7 @@ const PathStrip = ({
   );
 };
 
-// ── Lantern ───────────────────────────────────────────────────────────────────
+// ── Lamp post (classical, gold-lined) ────────────────────────────────────────
 const Lantern = ({ position }: { position: [number, number, number] }) => {
   const lightRef = useRef<THREE.PointLight>(null);
   useFrame(({ clock }) => {
@@ -141,23 +112,56 @@ const Lantern = ({ position }: { position: [number, number, number] }) => {
   });
   return (
     <group position={position}>
-      <mesh position={[0, 1.1, 0]}>
-        <cylinderGeometry args={[0.065, 0.085, 2.2, 7]} />
-        <meshStandardMaterial color="#4a4238" roughness={0.85} metalness={0.3} />
+      {/* stepped plinth */}
+      <mesh position={[0, 0.1, 0]}>
+        <boxGeometry args={[0.52, 0.2, 0.52]} />
+        <primitive object={stoneMat} attach="material" />
       </mesh>
-      <mesh position={[0, 2.24, 0]}>
-        <cylinderGeometry args={[0.2, 0.14, 0.1, 7]} />
-        <meshStandardMaterial color="#3a3228" roughness={0.7} metalness={0.4} />
+      <mesh position={[0, 0.22, 0]}>
+        <boxGeometry args={[0.56, 0.04, 0.56]} />
+        <primitive object={goldMat} attach="material" />
       </mesh>
-      <mesh position={[0, 2.48, 0]}>
-        <boxGeometry args={[0.26, 0.3, 0.26]} />
-        <meshStandardMaterial color="#fde68a" emissive="#f59e0b" emissiveIntensity={1.2} transparent opacity={0.55} />
+      <mesh position={[0, 0.55, 0]}>
+        <boxGeometry args={[0.3, 0.66, 0.3]} />
+        <primitive object={stoneMat} attach="material" />
       </mesh>
-      <mesh position={[0, 2.68, 0]}>
-        <coneGeometry args={[0.18, 0.16, 7]} />
-        <meshStandardMaterial color="#3a3228" roughness={0.7} metalness={0.5} />
+      {/* slender column with gold bands */}
+      <mesh position={[0, 1.55, 0]}>
+        <cylinderGeometry args={[0.065, 0.085, 1.9, 14]} />
+        <primitive object={stoneMat} attach="material" />
       </mesh>
-      <pointLight ref={lightRef} position={[0, 2.48, 0]} color="#f59e0b" intensity={2.0} distance={6} decay={2} />
+      {[0.9, 1.55, 2.2].map((y) => (
+        <mesh key={y} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[0.1, 0.022, 8, 18]} />
+          <primitive object={goldMat} attach="material" />
+        </mesh>
+      ))}
+      {/* capital */}
+      <mesh position={[0, 2.5, 0]}>
+        <cylinderGeometry args={[0.19, 0.08, 0.16, 14]} />
+        <primitive object={goldMat} attach="material" />
+      </mesh>
+      {/* glass globe in a gold cage */}
+      <mesh position={[0, 2.75, 0]}>
+        <sphereGeometry args={[0.18, 18, 16]} />
+        <meshStandardMaterial color="#fde68a" emissive="#f5b84a" emissiveIntensity={1.3} transparent opacity={0.7} roughness={0.5} />
+      </mesh>
+      {[0, Math.PI / 2].map((r) => (
+        <mesh key={r} position={[0, 2.75, 0]} rotation={[0, r, 0]}>
+          <torusGeometry args={[0.19, 0.012, 6, 24]} />
+          <primitive object={goldMat} attach="material" />
+        </mesh>
+      ))}
+      <mesh position={[0, 2.75, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.19, 0.012, 6, 24]} />
+        <primitive object={goldMat} attach="material" />
+      </mesh>
+      {/* finial */}
+      <mesh position={[0, 3.0, 0]}>
+        <sphereGeometry args={[0.055, 10, 10]} />
+        <primitive object={goldMat} attach="material" />
+      </mesh>
+      <pointLight ref={lightRef} position={[0, 2.75, 0]} color="#f5b84a" intensity={2.0} distance={6} decay={2} />
     </group>
   );
 };
@@ -183,7 +187,7 @@ const PathLanterns = ({
       arr.push([bx + px * sideOffset, 0, bz + pz * sideOffset]);
       arr.push([bx - px * sideOffset, 0, bz - pz * sideOffset]);
     }
-    return arr;
+    return arr.filter(([x, , z]) => clearOfPaths(x, z, 3.5));
   }, [fromXZ, toXZ, spacing, sideOffset]);
 
   return <group>{positions.map((p, i) => <Lantern key={i} position={p} />)}</group>;
@@ -234,52 +238,49 @@ const PathRoses = ({
       arr.push([bx + px * (sideOffset + Math.random() * 0.6), 0, bz + pz * (sideOffset + Math.random() * 0.6)]);
       arr.push([bx - px * (sideOffset + Math.random() * 0.6), 0, bz - pz * (sideOffset + Math.random() * 0.6)]);
     }
-    return arr;
+    return arr.filter(([x, , z]) => clearOfPaths(x, z, 3.5));
   }, [fromXZ, toXZ, spacing, sideOffset]);
 
   return <group>{positions.map((p, i) => <RoseBush key={i} position={p} />)}</group>;
 };
 
 // ── Trees ─────────────────────────────────────────────────────────────────────
+// Italian cypress: tall, slender, dark.
 const DarkTree = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => (
   <group position={position} scale={scale}>
-    <mesh position={[0, 3.5, 0]}>
-      <cylinderGeometry args={[0.30, 0.52, 7, 7]} />
-      <meshStandardMaterial color="#1a0e06" roughness={1} />
+    <mesh position={[0, 1.2, 0]}>
+      <cylinderGeometry args={[0.3, 0.45, 2.4, 8]} />
+      <meshStandardMaterial color="#1a120a" roughness={1} />
     </mesh>
-    <mesh position={[0, 9.5, 0]}>
-      <coneGeometry args={[3.6, 7.2, 8]} />
-      <meshStandardMaterial color="#0c1e12" roughness={0.95} />
+    <mesh position={[0, 9.2, 0]}>
+      <coneGeometry args={[1.9, 16, 14]} />
+      <meshStandardMaterial color="#12281a" roughness={0.97} />
     </mesh>
-    <mesh position={[0, 14.0, 0]}>
-      <coneGeometry args={[2.4, 5.2, 8]} />
-      <meshStandardMaterial color="#0a1c10" roughness={0.95} />
-    </mesh>
-    <mesh position={[0, 17.5, 0]}>
-      <coneGeometry args={[1.4, 3.4, 8]} />
-      <meshStandardMaterial color="#081a0e" roughness={0.95} />
+    <mesh position={[0, 7.2, 0]}>
+      <coneGeometry args={[1.5, 11, 12]} />
+      <meshStandardMaterial color="#0f2416" roughness={0.97} />
     </mesh>
   </group>
 );
 
-const DarkCherryTree = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => (
+// Italian stone pine (umbrella pine): bare trunk, broad flat canopy.
+const StonePine = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => (
   <group position={position} scale={scale}>
-    <mesh position={[0, 3.0, 0]}>
-      <cylinderGeometry args={[0.28, 0.48, 6, 7]} />
-      <meshStandardMaterial color="#1a0a04" roughness={1} />
+    <mesh position={[0, 4.6, 0]} rotation={[0, 0, 0.04]}>
+      <cylinderGeometry args={[0.38, 0.6, 9.2, 8]} />
+      <meshStandardMaterial color="#2a1c10" roughness={1} />
     </mesh>
-    <mesh position={[0, 8.0, 0]}>
-      <sphereGeometry args={[3.6, 10, 10]} />
-      <meshStandardMaterial color="#281418" roughness={0.9} transparent opacity={0.92} />
-    </mesh>
-    <mesh position={[1.8, 8.8, 1.0]}>
-      <sphereGeometry args={[2.6, 9, 9]} />
-      <meshStandardMaterial color="#200e16" roughness={0.9} transparent opacity={0.90} />
-    </mesh>
-    <mesh position={[-1.4, 8.2, 0.8]}>
-      <sphereGeometry args={[2.2, 9, 9]} />
-      <meshStandardMaterial color="#240e1a" roughness={0.9} transparent opacity={0.88} />
-    </mesh>
+    {[
+      [0, 10.4, 0, 5.2],
+      [2.6, 9.6, 1.2, 3.6],
+      [-2.4, 9.9, -1.0, 3.8],
+      [0.6, 11.4, -0.4, 3.2],
+    ].map(([x, y, z, r], i) => (
+      <mesh key={i} position={[x, y, z]} scale={[1, 0.34, 1]}>
+        <sphereGeometry args={[r, 14, 10]} />
+        <meshStandardMaterial color={i % 2 ? "#14301c" : "#112a18"} roughness={0.97} />
+      </mesh>
+    ))}
   </group>
 );
 
@@ -287,7 +288,7 @@ const DarkCherryTree = ({ position, scale = 1 }: { position: [number, number, nu
 const Mountain = ({ pos, rx, h }: { pos: [number,number,number]; rx: number; h: number }) => (
   <mesh position={pos}>
     <coneGeometry args={[rx, h, 7]} />
-    <meshStandardMaterial color="#1e1630" roughness={1} metalness={0} />
+    <meshStandardMaterial color="#232830" roughness={1} metalness={0} />
   </mesh>
 );
 
@@ -361,128 +362,8 @@ const Forest = () => {
       {trees.map((t, i) =>
         t.t === "e"
           ? <DarkTree key={i} position={t.p} scale={t.s} />
-          : <DarkCherryTree key={i} position={t.p} scale={t.s} />
+          : <StonePine key={i} position={t.p} scale={t.s * 0.8} />
       )}
-    </group>
-  );
-};
-
-// ── Fountain water effects ────────────────────────────────────────────────────
-const FDROP_COUNT = 52;
-const LAUNCH_Y = 1.86;
-const WATER_Y  = 0.60;
-
-const FountainDroplets = () => {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy  = useMemo(() => new THREE.Object3D(), []);
-  const drops  = useMemo(() =>
-    Array.from({ length: FDROP_COUNT }, (_, i) => ({
-      angle:  (i / FDROP_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.28,
-      offset: Math.random(),
-      period: 1.05 + Math.random() * 0.55,
-      landR:  0.82 + Math.random() * 0.38,
-      arcH:   0.52 + Math.random() * 0.58,
-    })), []);
-
-  useFrame(({ clock }) => {
-    if (!meshRef.current) return;
-    const t = clock.getElapsedTime();
-    drops.forEach((d, i) => {
-      const phi = ((t + d.offset * d.period) % d.period) / d.period;
-      const x = d.landR * Math.cos(d.angle) * phi;
-      const z = d.landR * Math.sin(d.angle) * phi;
-      const y = LAUNCH_Y + (WATER_Y - LAUNCH_Y) * phi + d.arcH * Math.sin(Math.PI * phi);
-      dummy.position.set(x, y, z);
-      dummy.scale.setScalar(0.021 + phi * 0.013);
-      dummy.updateMatrix();
-      meshRef.current!.setMatrixAt(i, dummy.matrix);
-    });
-    meshRef.current.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, FDROP_COUNT]}>
-      <sphereGeometry args={[1, 6, 6]} />
-      <meshStandardMaterial color="#c0e8f8" emissive="#80d0f0" emissiveIntensity={0.55} transparent opacity={0.80} />
-    </instancedMesh>
-  );
-};
-
-const FountainRipples = () => {
-  const r0 = useRef<THREE.Mesh>(null);
-  const r1 = useRef<THREE.Mesh>(null);
-  const r2 = useRef<THREE.Mesh>(null);
-
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    [[r0, 0], [r1, 0.62], [r2, 1.24]].forEach(([ref, off]) => {
-      const mesh = (ref as React.RefObject<THREE.Mesh>).current;
-      if (!mesh) return;
-      const phi = ((t * 0.68 + (off as number)) % 1.82) / 1.82;
-      mesh.scale.setScalar(0.16 + phi * 1.18);
-      (mesh.material as THREE.MeshStandardMaterial).opacity = (1 - phi) * 0.52;
-    });
-  });
-
-  const ringProps = { rotation: [-Math.PI / 2, 0, 0] as [number, number, number], position: [0, 0.592, 0] as [number, number, number] };
-  return (
-    <>
-      <mesh ref={r0} {...ringProps}>
-        <ringGeometry args={[0.82, 0.97, 28]} />
-        <meshStandardMaterial color="#90d4f0" transparent opacity={0.5} />
-      </mesh>
-      <mesh ref={r1} {...ringProps}>
-        <ringGeometry args={[0.82, 0.97, 28]} />
-        <meshStandardMaterial color="#90d4f0" transparent opacity={0.5} />
-      </mesh>
-      <mesh ref={r2} {...ringProps}>
-        <ringGeometry args={[0.82, 0.97, 28]} />
-        <meshStandardMaterial color="#90d4f0" transparent opacity={0.5} />
-      </mesh>
-    </>
-  );
-};
-
-// ── Fountain ──────────────────────────────────────────────────────────────────
-const Fountain = ({ position }: { position: [number, number, number] }) => {
-  const waterRef = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    if (!waterRef.current) return;
-    (waterRef.current.material as THREE.MeshStandardMaterial).emissiveIntensity =
-      0.28 + Math.sin(clock.getElapsedTime() * 2.8) * 0.10;
-  });
-  return (
-    <group position={position}>
-      {/* Basin */}
-      <mesh position={[0, 0.28, 0]}>
-        <cylinderGeometry args={[1.6, 1.4, 0.5, 16]} />
-        <meshStandardMaterial color="#6a6258" roughness={0.85} metalness={0.15} />
-      </mesh>
-      {/* Center pillar */}
-      <mesh position={[0, 1.0, 0]}>
-        <cylinderGeometry args={[0.15, 0.22, 1.4, 8]} />
-        <meshStandardMaterial color="#7a7268" roughness={0.8} metalness={0.15} />
-      </mesh>
-      {/* Water surface */}
-      <mesh ref={waterRef} position={[0, 0.565, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.35, 28]} />
-        <meshStandardMaterial color="#5ab4d4" emissive="#3aa8c8" emissiveIntensity={0.28} transparent opacity={0.70} />
-      </mesh>
-      {/* Top dish */}
-      <mesh position={[0, 1.72, 0]}>
-        <cylinderGeometry args={[0.5, 0.38, 0.16, 10]} />
-        <meshStandardMaterial color="#7a7268" roughness={0.8} />
-      </mesh>
-      {/* Water stream (thin upward jet) */}
-      <mesh position={[0, 1.84, 0]}>
-        <cylinderGeometry args={[0.028, 0.042, 0.26, 7]} />
-        <meshStandardMaterial color="#b8e8f8" emissive="#80d0f0" emissiveIntensity={0.7} transparent opacity={0.72} />
-      </mesh>
-      {/* Animated droplets and ripples */}
-      <FountainDroplets />
-      <FountainRipples />
-      {/* Ambient water glow */}
-      <pointLight color="#60b8e8" intensity={1.8} distance={6} decay={2} position={[0, 0.8, 0]} />
     </group>
   );
 };
@@ -520,12 +401,11 @@ const GardenDoor = ({
   const [hovered, setHovered] = useState(false);
   const [near, setNear] = useState(false);
   const glowRef = useRef<THREE.PointLight>(null);
-  const { camera } = useThree();
 
   useFrame(({ clock }) => {
     if (glowRef.current)
       glowRef.current.intensity = 2.5 + Math.sin(clock.getElapsedTime() * 1.4 + door.pos[0]) * 0.7;
-    const dist = camera.position.distanceTo(new THREE.Vector3(...door.pos));
+    const dist = PLAYER.pos.distanceTo(new THREE.Vector3(...door.pos));
     setNear(dist < 6.5);
   });
 
@@ -581,10 +461,38 @@ const GardenDoor = ({
         <meshStandardMaterial color="#9a9288" roughness={0.72} />
       </mesh>
 
+      {/* Gold lining: entablature, pediment edges, column bands, step edges */}
+      {[8.62, 9.16].map((y) => (
+        <mesh key={y} position={[0, y, 0.02]}>
+          <boxGeometry args={[6.6, 0.06, 0.7]} />
+          <primitive object={goldMat} attach="material" />
+        </mesh>
+      ))}
+      {[-1, 1].map((sd) => (
+        <mesh key={sd} position={[sd * 1.3, 9.55, 0.34]} rotation={[0, 0, sd * -0.4636]}>
+          <boxGeometry args={[2.95, 0.07, 0.06]} />
+          <primitive object={goldMat} attach="material" />
+        </mesh>
+      ))}
+      {[-2.6, 2.6].flatMap((x) =>
+        [0.7, 4.2, 7.9].map((y) => (
+          <mesh key={`${x}-${y}`} position={[x, y, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.36, 0.04, 8, 20]} />
+            <primitive object={goldMat} attach="material" />
+          </mesh>
+        ))
+      )}
+      {[0, 1, 2].map((i) => (
+        <mesh key={i} position={[0, i * 0.2 + 0.11, i * -0.25 - 0.28]}>
+          <boxGeometry args={[5.5 - i * 0.4, 0.03, 0.04]} />
+          <primitive object={goldMat} attach="material" />
+        </mesh>
+      ))}
+
       {/* Gold arch */}
       <mesh position={[0, 5.8, 0.08]}>
         <torusGeometry args={[1.85, 0.16, 10, 28, Math.PI]} />
-        <meshStandardMaterial color={gold} metalness={0.92} roughness={0.14} emissive={goldDark} emissiveIntensity={0.45} />
+        <meshStandardMaterial color={gold} metalness={0.3} roughness={0.78} emissive={goldDark} emissiveIntensity={0.2} />
       </mesh>
 
       {/* Door panels */}
@@ -598,10 +506,10 @@ const GardenDoor = ({
         >
           <boxGeometry args={[1.72, 6.4, 0.13]} />
           <meshStandardMaterial
-            color={hovered ? "#2a1c0e" : "#181008"}
+            color={hovered ? "#2c2c32" : "#1a1a1e"}
             roughness={0.6}
             metalness={0.12}
-            emissive={hovered ? "#5a3808" : "#0c0800"}
+            emissive={hovered ? "#5a4416" : "#0a0906"}
             emissiveIntensity={hovered ? 0.38 : 0.06}
           />
         </mesh>
@@ -616,7 +524,7 @@ const GardenDoor = ({
       ].map(([x, y, z, w, h], i) => (
         <mesh key={i} position={[x, y, z]}>
           <boxGeometry args={[w, h, 0.1]} />
-          <meshStandardMaterial color={gold} metalness={0.95} roughness={0.1} emissive={goldDark} emissiveIntensity={0.4} />
+          <meshStandardMaterial color={gold} metalness={0.3} roughness={0.78} emissive={goldDark} emissiveIntensity={0.2} />
         </mesh>
       ))}
 
@@ -625,7 +533,7 @@ const GardenDoor = ({
         [1.7, 3.2, 4.7].map((y) => (
           <mesh key={`${side}-${y}`} position={[side * 0.86, y, 0.12]}>
             <boxGeometry args={[1.58, 0.055, 0.055]} />
-            <meshStandardMaterial color={gold} metalness={0.9} roughness={0.14} />
+            <meshStandardMaterial color={gold} metalness={0.3} roughness={0.78} />
           </mesh>
         ))
       )}
@@ -634,7 +542,7 @@ const GardenDoor = ({
       {[-1, 1].map((side) => (
         <mesh key={side} position={[side * 0.12, 3.2, 0.19]}>
           <sphereGeometry args={[0.092, 9, 9]} />
-          <meshStandardMaterial color="#f0c030" metalness={1} roughness={0.07} />
+          <meshStandardMaterial color="#c8a438" metalness={0.3} roughness={0.75} />
         </mesh>
       ))}
 
@@ -721,6 +629,13 @@ const WASDControls = ({
   const _euler = useMemo(() => new THREE.Euler(0, 0, 0, "YXZ"), []);
   const nearDoorRef = useRef<DoorDef | null>(null);
 
+  // start every visit at the entrance, facing the garden
+  useEffect(() => {
+    PLAYER.pos.set(0, 1.75, START_Z + 2);
+    PLAYER.charYaw = 0;
+    PLAYER.moving = false;
+  }, []);
+
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
@@ -728,8 +643,9 @@ const WASDControls = ({
       if (k === "s" || k === "arrowdown") keys.current.s = true;
       if (k === "a" || k === "arrowleft") keys.current.a = true;
       if (k === "d" || k === "arrowright") keys.current.d = true;
+      if (k === "v") toggleView();
       if (k === "e") {
-        const camPos = camera.position;
+        const camPos = PLAYER.pos;
         for (const door of GARDEN_DOORS) {
           if (camPos.distanceTo(new THREE.Vector3(...door.pos)) < 6.5) {
             onEnter(door.navPath);
@@ -812,13 +728,8 @@ const WASDControls = ({
   }, [camera, onEnter]);
 
   useFrame((_, dt) => {
-    _euler.set(pitch.current, yaw.current, 0);
-    camera.quaternion.setFromEuler(_euler);
-
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-    dir.y = 0;
-    dir.normalize();
+    // movement is relative to the look direction (yaw), in both view modes
+    const dir = new THREE.Vector3(-Math.sin(yaw.current), 0, -Math.cos(yaw.current));
 
     const vel = new THREE.Vector3();
     const jx = joystick.dx;
@@ -828,15 +739,44 @@ const WASDControls = ({
     if (keys.current.a || jx < -0.2) vel.add(new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir));
     if (keys.current.d || jx > 0.2) vel.add(new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)));
 
-    if (vel.length() > 0) camera.position.addScaledVector(vel.normalize(), 7 * dt);
-    camera.position.x = Math.max(-22, Math.min(22, camera.position.x));
-    camera.position.z = Math.max(START_Z - 1, Math.min(32, camera.position.z));
-    camera.position.y = 1.75;
+    const moving = vel.length() > 0;
+    PLAYER.moving = moving;
+    if (moving) {
+      vel.normalize();
+      PLAYER.pos.addScaledVector(vel, 7 * dt);
+      // turn the character smoothly toward its movement direction
+      const target = Math.atan2(vel.x, vel.z);
+      let diff = target - PLAYER.charYaw;
+      diff = ((diff + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+      PLAYER.charYaw += diff * Math.min(1, dt * 12);
+    }
+    PLAYER.pos.x = Math.max(-22, Math.min(22, PLAYER.pos.x));
+    PLAYER.pos.z = Math.max(START_Z - 1, Math.min(32, PLAYER.pos.z));
+    PLAYER.pos.y = 1.75;
+
+    if (getViewMode() === "first") {
+      _euler.set(pitch.current, yaw.current, 0);
+      camera.quaternion.setFromEuler(_euler);
+      camera.position.copy(PLAYER.pos);
+    } else {
+      // third person: orbit behind the character; dragging up/down tilts the view
+      const e = THREE.MathUtils.clamp(0.28 - pitch.current * 0.9, 0.03, 1.1);
+      const D = 5.4;
+      const tx = PLAYER.pos.x;
+      const ty = 1.3;
+      const tz = PLAYER.pos.z;
+      camera.position.set(
+        tx - dir.x * D * Math.cos(e),
+        Math.max(0.6, ty + D * Math.sin(e)),
+        tz - dir.z * D * Math.cos(e)
+      );
+      camera.lookAt(tx, ty + 0.2, tz);
+    }
 
     // Near-door detection for mobile enter button
     let closest: DoorDef | null = null;
     for (const door of GARDEN_DOORS) {
-      if (camera.position.distanceTo(new THREE.Vector3(...door.pos)) < 6.5) {
+      if (PLAYER.pos.distanceTo(new THREE.Vector3(...door.pos)) < 6.5) {
         closest = door;
         break;
       }
@@ -852,6 +792,21 @@ const WASDControls = ({
 
 // ── Garden scene ──────────────────────────────────────────────────────────────
 const JUNCTION: [number, number] = [0, -4]; // where paths diverge
+const DOOR_POSES = GARDEN_DOORS.map((d) => ({ pos: d.pos, yaw: d.yaw }));
+
+// Every path centreline, used to keep props off the (widened) paths.
+const PATH_SEGS: { a: [number, number]; b: [number, number] }[] = [
+  { a: [0, START_Z + 2], b: JUNCTION },
+  ...GARDEN_DOORS.map((d) => ({ a: JUNCTION, b: [d.pos[0], d.pos[2]] as [number, number] })),
+];
+function clearOfPaths(x: number, z: number, minDist: number) {
+  return PATH_SEGS.every(({ a, b }) => {
+    const dx = b[0] - a[0];
+    const dz = b[1] - a[1];
+    const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (z - a[1]) * dz) / (dx * dx + dz * dz)));
+    return Math.hypot(x - (a[0] + t * dx), z - (a[1] + t * dz)) >= minDist;
+  });
+}
 
 const GardenScene = ({
   onEnter,
@@ -870,20 +825,21 @@ const GardenScene = ({
     <>
       <PerspectiveCamera makeDefault position={[0, 1.75, START_Z + 2]} fov={68} near={0.1} far={300} />
       <WASDControls onEnter={onEnter} onNearDoor={onNearDoor} />
+      <PlayerAvatar player={PLAYER} />
 
       <Sky
         distance={450000}
-        sunPosition={[0.2, 0.06, -1]}
-        turbidity={9}
-        rayleigh={2.8}
+        sunPosition={[0.2, 0.1, -1]}
+        turbidity={6}
+        rayleigh={1.6}
         mieCoefficient={0.007}
         mieDirectionalG={0.78}
       />
-      <fog attach="fog" args={["#3a1e50", 60, 145]} />
+      <fog attach="fog" args={["#2e2c33", 60, 145]} />
 
       {/* Twilight lighting: warm low sun from behind, cool fill from sky */}
       <ambientLight intensity={0.38} color="#f0c878" />
-      <hemisphereLight args={["#7a3c18", "#120a30", 0.42]} />
+      <hemisphereLight args={["#6a4a28", "#141018", 0.42]} />
       <directionalLight position={[5, 4, -22]} intensity={0.75} color="#ff8c38" castShadow={false} />
       <directionalLight position={[-12, 18, 8]} intensity={0.22} color="#9080c8" />
       <pointLight position={[0, 40, -20]} color="#ff7020" intensity={3} distance={160} decay={2} />
@@ -895,7 +851,7 @@ const GardenScene = ({
       </mesh>
 
       {/* 4 path strips: entrance + 3 branches */}
-      <PathStrip fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} width={3.6} />
+      <PathStrip fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} width={5.6} />
       <PathStrip fromXZ={JUNCTION} toXZ={[-14, 10]} />
       <PathStrip fromXZ={JUNCTION} toXZ={[0, 26]} />
       <PathStrip fromXZ={JUNCTION} toXZ={[14, 10]} />
@@ -907,28 +863,29 @@ const GardenScene = ({
       </mesh>
 
       {/* Lanterns along each path */}
-      <PathLanterns fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} spacing={6} sideOffset={2.4} />
-      <PathLanterns fromXZ={JUNCTION} toXZ={[-14, 10]} spacing={5.5} sideOffset={2.2} />
-      <PathLanterns fromXZ={JUNCTION} toXZ={[0, 26]} spacing={6} sideOffset={2.4} />
-      <PathLanterns fromXZ={JUNCTION} toXZ={[14, 10]} spacing={5.5} sideOffset={2.2} />
+      <PathLanterns fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} spacing={6} sideOffset={3.8} />
+      <PathLanterns fromXZ={JUNCTION} toXZ={[-14, 10]} spacing={5.5} sideOffset={3.8} />
+      <PathLanterns fromXZ={JUNCTION} toXZ={[0, 26]} spacing={6} sideOffset={3.8} />
+      <PathLanterns fromXZ={JUNCTION} toXZ={[14, 10]} spacing={5.5} sideOffset={3.8} />
 
       {/* Rose bushes flanking paths */}
-      <PathRoses fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} spacing={5} sideOffset={3} />
-      <PathRoses fromXZ={JUNCTION} toXZ={[-14, 10]} spacing={4.5} sideOffset={2.8} />
-      <PathRoses fromXZ={JUNCTION} toXZ={[0, 26]} spacing={5} sideOffset={3} />
-      <PathRoses fromXZ={JUNCTION} toXZ={[14, 10]} spacing={4.5} sideOffset={2.8} />
+      <PathRoses fromXZ={[0, START_Z + 2]} toXZ={JUNCTION} spacing={5} sideOffset={4.6} />
+      <PathRoses fromXZ={JUNCTION} toXZ={[-14, 10]} spacing={4.5} sideOffset={4.6} />
+      <PathRoses fromXZ={JUNCTION} toXZ={[0, 26]} spacing={5} sideOffset={4.6} />
+      <PathRoses fromXZ={JUNCTION} toXZ={[14, 10]} spacing={4.5} sideOffset={4.6} />
 
-      {/* Fountain at junction */}
-      <Fountain position={[0, 0, JUNCTION[1]]} />
+      {/* Luxurious Roman garden layer: paving, balustrades, arch, forecourts */}
+      <RomanGarden
+        start={[0, START_Z + 2]}
+        junction={JUNCTION}
+        doors={DOOR_POSES}
+      />
 
       {/* Background mountains */}
       <Mountains />
 
       {/* Background forest */}
       <Forest />
-
-      {/* Falling petals */}
-      <Petals />
 
       {/* 3 grand doors */}
       {GARDEN_DOORS.map((door) => (
@@ -971,7 +928,7 @@ const HUD = ({ isMobile }: { isMobile: boolean }) => (
       fontSize: "9px", letterSpacing: "0.36em",
       textTransform: "uppercase", fontFamily: "Georgia, serif",
     }}>
-      {isMobile ? "Joystick · Swipe right to look · Walk to a door" : "Move · Drag to look · Walk to a door"}
+      {isMobile ? "Joystick · Swipe right to look · Walk to a door" : "Move · Drag to look · V switch view · Walk to a door"}
     </p>
   </div>
 );
@@ -982,7 +939,6 @@ const BotanicalHome = () => {
   const [transitioning, setTransitioning] = useState(false);
   const [nearDoor, setNearDoor] = useState<DoorDef | null>(null);
   const isMobile = useMediaQuery({ maxWidth: 768 });
-
   const handleEnter = useCallback((path: string) => {
     setTransitioning(true);
     setTimeout(() => navigate(path), 650);
@@ -1049,6 +1005,9 @@ const BotanicalHome = () => {
           </button>
         </div>
       )}
+
+      {/* View switch: first person <-> third person */}
+      <ViewToggleButton isMobile={isMobile} />
 
       <HUD isMobile={isMobile} />
 

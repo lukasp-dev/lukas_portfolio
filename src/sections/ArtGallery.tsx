@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, useTexture, Html } from "@react-three/drei";
 import React, { Suspense, useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -7,7 +7,14 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import GalleryNavbar from "../components/gallery/GalleryNavbar";
-import MobileJoystick, { joystick } from "../components/MobileJoystick";
+import RomanHall from "../components/gallery/RomanHall";
+import MobileJoystick from "../components/MobileJoystick";
+import {
+  OrbitWalker,
+  PlayerAvatar,
+  ViewToggleButton,
+  createPlayer,
+} from "../components/gallery/PlayerAvatar";
 
 interface Artwork {
   id: number;
@@ -413,6 +420,9 @@ const MuseumDoor = ({ onEnter }: { onEnter: () => void }) => {
   );
 };
 
+const GALLERY_PLAYER = createPlayer(0, 1.8, 28);
+const GALLERY_BOUNDS = { minX: -10.2, maxX: 10.2, minZ: -30.2, maxZ: 30.2 };
+
 // ─── Gallery room ──────────────────────────────────────────────────────────────
 const ArtRoom = ({
   onHover,
@@ -440,17 +450,8 @@ const ArtRoom = ({
 
   return (
     <group>
-      {/* FLOOR — dark hardwood */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[W, L]} />
-        <meshStandardMaterial color="#1a1108" roughness={0.55} metalness={0.05} />
-      </mesh>
-
-      {/* CEILING */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, H, 0]}>
-        <planeGeometry args={[W, L]} />
-        <meshStandardMaterial color="#0c0b0a" roughness={1} />
-      </mesh>
+      {/* Roman hall: floor, vault, cladding, pilasters, braziers, niche */}
+      <RomanHall L={L} W={W} H={H} westZ={westZ} eastZ={eastZ} />
 
       {/* NORTH WALL */}
       <mesh position={[0, H / 2, -L / 2]}>
@@ -485,16 +486,6 @@ const ArtRoom = ({
       <mesh position={[W / 2, H / 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[L, H]} />
         <meshStandardMaterial color="#181614" roughness={1} />
-      </mesh>
-
-      {/* FLOOR TRIM */}
-      <mesh position={[-W / 2 + 0.05, 0.18, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[L, 0.36]} />
-        <meshStandardMaterial color="#2a1f0e" />
-      </mesh>
-      <mesh position={[W / 2 - 0.05, 0.18, 0]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[L, 0.36]} />
-        <meshStandardMaterial color="#2a1f0e" />
       </mesh>
 
       {/* AMBIENT — very low so spotlights do the work */}
@@ -580,61 +571,6 @@ const ArtRoom = ({
 };
 
 // ─── WASD movement ─────────────────────────────────────────────────────────────
-const WASDControls = ({
-  orbitRef,
-}: {
-  orbitRef: React.RefObject<{ target: Vector3 }>;
-}) => {
-  const { camera } = useThree();
-  const keys = useRef({ w: false, s: false, a: false, d: false });
-
-  useEffect(() => {
-    const dn = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = true;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = true;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = true;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = true;
-    };
-    const up = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = false;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = false;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = false;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = false;
-    };
-    window.addEventListener("keydown", dn);
-    window.addEventListener("keyup", up);
-    return () => {
-      window.removeEventListener("keydown", dn);
-      window.removeEventListener("keyup", up);
-    };
-  }, []);
-
-  useFrame((_, dt) => {
-    const dir = new Vector3();
-    camera.getWorldDirection(dir);
-    dir.y = 0;
-    dir.normalize();
-
-    const vel = new Vector3();
-    if (keys.current.w || joystick.dy < -0.2) vel.add(dir);
-    if (keys.current.s || joystick.dy > 0.2) vel.sub(dir);
-    if (keys.current.a || joystick.dx < -0.2)
-      vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
-    if (keys.current.d || joystick.dx > 0.2)
-      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
-
-    if (vel.length() > 0) {
-      camera.position.addScaledVector(vel.normalize(), 9 * dt);
-      camera.position.y = 1.8;
-      if (orbitRef.current) {
-        orbitRef.current.target.copy(camera.position).addScaledVector(dir, 4);
-        orbitRef.current.target.y = 1.8;
-      }
-    }
-  });
-
-  return null;
-};
 
 // ─── Hover preview card ────────────────────────────────────────────────────────
 const PreviewCard = ({ artwork }: { artwork: Artwork | null }) => (
@@ -814,6 +750,7 @@ const Gallery = () => {
       style={{ position: "fixed", inset: 0, background: "#0c0a08" }}
     >
       <GalleryNavbar />
+      <ViewToggleButton isMobile={isMobile} />
 
       {/* Title */}
       <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none px-4">
@@ -886,7 +823,13 @@ const Gallery = () => {
             onDoorClick={handleDoorClick}
           />
 
-          <WASDControls orbitRef={orbitRef} />
+          <OrbitWalker
+            orbitRef={orbitRef as React.RefObject<{ target: Vector3 } | null>}
+            player={GALLERY_PLAYER}
+            speed={9}
+            bounds={GALLERY_BOUNDS}
+          />
+          <PlayerAvatar player={GALLERY_PLAYER} />
 
           <OrbitControls
             ref={orbitRef as React.RefObject<React.ComponentRef<typeof OrbitControls>>}

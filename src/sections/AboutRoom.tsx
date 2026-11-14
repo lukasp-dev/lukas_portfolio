@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, Sky } from "@react-three/drei";
 import React, {
   Suspense,
@@ -13,8 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { Vector3 } from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { motion, AnimatePresence } from "framer-motion";
-import MobileJoystick, { joystick } from "../components/MobileJoystick";
+import MobileJoystick from "../components/MobileJoystick";
+import {
+  OrbitWalker,
+  PlayerAvatar,
+  ViewToggleButton,
+  createPlayer,
+} from "../components/gallery/PlayerAvatar";
 import GalleryNavbar from "../components/gallery/GalleryNavbar";
+import ColosseumArena from "../components/gallery/ColosseumArena";
+import PortalGuide, { PORTAL, WALK_EVENT } from "../components/gallery/PortalGuide";
 import { experiences } from "../constants";
 
 // Oldest → newest chronological order for path progression
@@ -23,29 +31,9 @@ const chronoExps = [...experiences].reverse();
 // ─── Constants ─────────────────────────────────────────────────────────────────
 // Path: player enters south (z≈18), walks north (z→-18), fountain at north end
 // Numbered 01(oldest)→09(newest). 01–04 on left, 05–09 on right.
-// Station 09 (Microsoft, newest) is at z=16 — closest to the door.
-const STATIONS: { x: number; z: number }[] = [
-  { x: -9.5, z: -8 }, // 01 WPI         (oldest, farthest from door)
-  { x: -9.5, z: -1 }, // 02 MoD
-  { x: -9.5, z: 6 }, // 03 Gallery SOMA
-  { x: -9.5, z: 12 }, // 04 Stride Labs
-  { x: 9.5, z: -5 }, // 05 VIP
-  { x: 9.5, z: 3 }, // 06 GPC
-  { x: 9.5, z: 10 }, // 07 Itential
-  { x: 9.5, z: 16 }, // 08 Microsoft   (newest, closest to door)
-];
-
-// All gold tones — modern, elegant, unified palette
-const EXP_COLORS = [
-  "#d4a820",
-  "#e8c030",
-  "#b89018",
-  "#d0a828",
-  "#e4b824",
-  "#c8a020",
-  "#dab030",
-  "#c09018",
-];
+// The individual experience pillars were removed; the portal in front of the
+// fountain now carries the whole timeline.
+const NO_STATIONS: { x: number; z: number }[] = [];
 
 const TREE_DEFS: { x: number; z: number; h: number; s: number }[] = [
   { x: -12, z: 17, h: 7.0, s: 2.4 },
@@ -457,9 +445,9 @@ const PathLantern = ({ x, z }: { x: number; z: number }) => (
 const StonePathway = () => {
   const slabs: { z: number; v: number }[] = [];
   let i = 0;
-  for (let z = 18; z >= -20; z -= 2.6, i++) slabs.push({ z, v: i % 3 });
+  for (let z = 18; z >= -8.5; z -= 2.6, i++) slabs.push({ z, v: i % 3 });
 
-  const colors = ["#4a4438", "#423e34", "#504a3e"];
+  const colors = ["#b9ab8c", "#b0a283", "#c0b293"];
   return (
     <>
       {slabs.map(({ z, v }) => (
@@ -475,11 +463,11 @@ const StonePathway = () => {
           {/* Edge kerb stones */}
           <mesh position={[2.15, 0.018, z]}>
             <boxGeometry args={[0.3, 0.04, 2.1]} />
-            <meshStandardMaterial color="#201e18" roughness={0.9} />
+            <meshStandardMaterial color="#8f8165" roughness={0.9} />
           </mesh>
           <mesh position={[-2.15, 0.018, z]}>
             <boxGeometry args={[0.3, 0.04, 2.1]} />
-            <meshStandardMaterial color="#201e18" roughness={0.9} />
+            <meshStandardMaterial color="#8f8165" roughness={0.9} />
           </mesh>
         </React.Fragment>
       ))}
@@ -487,322 +475,8 @@ const StonePathway = () => {
   );
 };
 
-// ─── Experience Station ────────────────────────────────────────────────────────
-const ExperienceStation = ({
-  exp,
-  x,
-  z,
-  color,
-  index,
-}: {
-  exp: (typeof experiences)[0];
-  x: number;
-  z: number;
-  color: string;
-  index: number;
-}) => {
-  const { camera } = useThree();
-  const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
-  const prev = useRef(false);
-  const groupRef = useRef<THREE.Group>(null);
-
-  useFrame(() => {
-    const dx = camera.position.x - x;
-    const dz = camera.position.z - z;
-    const d = Math.sqrt(dx * dx + dz * dz);
-    const now = d < 8;
-    if (now !== prev.current) {
-      prev.current = now;
-      setVisible(now);
-      if (!now) setDismissed(false);
-    }
-  });
-
-  const ach = exp.achievements[0];
-  const details: string[] = Array.isArray(ach?.details)
-    ? (ach.details as string[]).slice(0, 3)
-    : typeof ach?.details === "string"
-      ? [ach.details]
-      : [];
-
-  return (
-    <group ref={groupRef} position={[x, 0, z]}>
-      {/* Stone pedestal base */}
-      <mesh position={[0, 0.14, 0]} receiveShadow>
-        <cylinderGeometry args={[0.8, 1.0, 0.28, 8]} />
-        <meshStandardMaterial
-          color="#1c1810"
-          roughness={0.84}
-          metalness={0.12}
-        />
-      </mesh>
-      {/* Pedestal shaft */}
-      <mesh position={[0, 0.85, 0]} castShadow>
-        <boxGeometry args={[0.7, 1.2, 0.52]} />
-        <meshStandardMaterial
-          color="#181410"
-          roughness={0.82}
-          metalness={0.1}
-          emissive={color}
-          emissiveIntensity={visible ? 0.07 : 0.02}
-        />
-      </mesh>
-      {/* Color accent top */}
-      <mesh position={[0, 1.48, 0]}>
-        <boxGeometry args={[0.72, 0.065, 0.54]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={visible ? 1.2 : 0.45}
-          roughness={0.28}
-        />
-      </mesh>
-      {/* Number marker */}
-      <Html position={[0, 0.85, 0.3]} center>
-        <div
-          style={{
-            color,
-            fontFamily: "Georgia, serif",
-            fontSize: "12px",
-            letterSpacing: "0.18em",
-            pointerEvents: "none",
-            fontWeight: 700,
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </div>
-      </Html>
-
-      {/* Accent light from pedestal */}
-      <pointLight
-        position={[0, 2.2, 0]}
-        intensity={visible ? 6 : 2.5}
-        color={color}
-        distance={14}
-        decay={2}
-      />
-
-      {/* Card panel — appears on approach, opens outward toward the trees */}
-      <Html position={[x > 0 ? 7.0 : -7.0, 4.0, 0]} center>
-        <div
-          style={{
-            width: "600px",
-            opacity: visible && !dismissed ? 1 : 0,
-            transform: visible && !dismissed
-              ? "translateX(0) scale(1)"
-              : `translateX(${x > 0 ? "30px" : "-30px"}) scale(0.93)`,
-            transition: "opacity 0.55s ease, transform 0.55s ease",
-            pointerEvents: visible && !dismissed ? "auto" : "none",
-            fontFamily: "Georgia, serif",
-          }}
-        >
-          <div
-            style={{
-              background: "rgba(6,4,1,0.97)",
-              border: `1px solid ${color}66`,
-              borderTop: `3px solid ${color}`,
-              borderRadius: "10px",
-              padding: "24px 30px",
-              boxShadow: `0 8px 60px ${color}28, 0 0 0 1px rgba(0,0,0,0.4)`,
-            }}
-          >
-            {/* Index + type + close */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "13px",
-                  letterSpacing: "0.4em",
-                  color: `${color}bb`,
-                  fontWeight: 700,
-                }}
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    padding: "4px 12px",
-                    borderRadius: "12px",
-                    border: `1px solid ${color}55`,
-                    color,
-                  }}
-                >
-                  {exp.type}
-                </span>
-                <button
-                  onClick={() => setDismissed(true)}
-                  style={{
-                    background: "none",
-                    border: `1px solid rgba(255,255,255,0.15)`,
-                    borderRadius: "50%",
-                    width: "24px",
-                    height: "24px",
-                    cursor: "pointer",
-                    color: "rgba(255,255,255,0.4)",
-                    fontSize: "14px",
-                    lineHeight: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                  title="Close"
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-
-            {/* Company + logo */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "16px",
-                marginBottom: "8px",
-              }}
-            >
-              {exp.icon && (
-                <img
-                  src={exp.icon}
-                  alt={exp.name}
-                  style={{
-                    width: "52px",
-                    height: "52px",
-                    objectFit: "contain",
-                    flexShrink: 0,
-                    borderRadius: "8px",
-                    background: "#fff",
-                    padding: "5px",
-                  }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              )}
-              <div>
-                <div
-                  style={{
-                    color,
-                    fontSize: "22px",
-                    fontWeight: 700,
-                    letterSpacing: "0.02em",
-                    lineHeight: 1.15,
-                  }}
-                >
-                  {exp.name}
-                </div>
-                <div
-                  style={{
-                    color: "#7a6a48",
-                    fontSize: "11px",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    marginTop: "4px",
-                  }}
-                >
-                  {exp.duration}
-                </div>
-              </div>
-            </div>
-
-            <div
-              style={{
-                height: "1px",
-                background: `${color}28`,
-                marginBottom: "14px",
-              }}
-            />
-
-            {/* Role */}
-            <div
-              style={{
-                color: "#d0c090",
-                fontSize: "15px",
-                letterSpacing: "0.03em",
-                marginBottom: "14px",
-                lineHeight: 1.4,
-              }}
-            >
-              {exp.pos}
-            </div>
-
-            {/* Achievement description */}
-            {ach?.description && (
-              <div
-                style={{
-                  color: "#9a8e70",
-                  fontSize: "13px",
-                  lineHeight: 1.65,
-                  marginBottom: "10px",
-                  fontStyle: "italic",
-                }}
-              >
-                {ach.description}
-              </div>
-            )}
-
-            {/* Detail bullets */}
-            {details.length > 0 && (
-              <div
-                style={{
-                  marginBottom: "16px",
-                  paddingLeft: "14px",
-                  borderLeft: `2px solid ${color}44`,
-                }}
-              >
-                {details.map((d, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      color: "#7a7060",
-                      fontSize: "12px",
-                      lineHeight: 1.7,
-                      marginBottom: i < details.length - 1 ? "6px" : 0,
-                    }}
-                  >
-                    · {d}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Tech tags */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-              {exp.techStack.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    background: "#181208",
-                    border: `1px solid ${color}33`,
-                    color: "#a09060",
-                    fontSize: "11px",
-                    padding: "4px 12px",
-                    borderRadius: "4px",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Html>
-    </group>
-  );
-};
+const ABOUT_PLAYER = createPlayer(0, 1.8, 17);
+const ABOUT_BOUNDS = { minX: -19, maxX: 19, minZ: -35, maxZ: 22 };
 
 // ─── Warp Portal — proximity-triggered, visuals only (panel rendered outside Canvas) ──
 const WarpPortal = ({
@@ -810,7 +484,6 @@ const WarpPortal = ({
 }: {
   onNearChange: (v: boolean) => void;
 }) => {
-  const { camera } = useThree();
   const prev = useRef(false);
   const ring1 = useRef<THREE.Mesh>(null);
   const ring2 = useRef<THREE.Mesh>(null);
@@ -820,8 +493,8 @@ const WarpPortal = ({
   const tc = useRef(0);
 
   useFrame((_, dt) => {
-    const dx = camera.position.x;
-    const dz = camera.position.z - -13;
+    const dx = ABOUT_PLAYER.pos.x;
+    const dz = ABOUT_PLAYER.pos.z - -13;
     const d = Math.sqrt(dx * dx + dz * dz);
     const now = d < 10;
     if (now !== prev.current) {
@@ -1082,6 +755,8 @@ const GardenScene = ({
       castShadow
     />
 
+    <ColosseumArena stations={NO_STATIONS} />
+
     <StonePathway />
 
     {/* Path lanterns (both sides) */}
@@ -1099,18 +774,6 @@ const GardenScene = ({
 
     <RomanFountain />
 
-    {/* Experience stations — 01(oldest)→09(newest), station 09 closest to door */}
-    {chronoExps.slice(0, STATIONS.length).map((exp, i) => (
-      <ExperienceStation
-        key={exp.id}
-        exp={exp}
-        x={STATIONS[i].x}
-        z={STATIONS[i].z}
-        color={EXP_COLORS[i % EXP_COLORS.length]}
-        index={i}
-      />
-    ))}
-
     <WarpPortal onNearChange={onNearPortal} />
 
     <ReturnDoor onEnter={onDoorClick} />
@@ -1123,20 +786,12 @@ const PathHintDetector = ({
 }: {
   onHintChange: (v: boolean) => void;
 }) => {
-  const { camera } = useThree();
   const prev = useRef(false);
 
   useFrame(() => {
-    const onPath =
-      Math.abs(camera.position.x) < 4.5 &&
-      camera.position.z < 14 &&
-      camera.position.z > -14;
-    const nearAny = STATIONS.some(({ x, z }) => {
-      const dx = camera.position.x - x;
-      const dz = camera.position.z - z;
-      return Math.sqrt(dx * dx + dz * dz) < 8;
-    });
-    const now = onPath && !nearAny;
+    const dx = ABOUT_PLAYER.pos.x - PORTAL.x;
+    const dz = ABOUT_PLAYER.pos.z - PORTAL.z;
+    const now = Math.sqrt(dx * dx + dz * dz) >= 10;
     if (now !== prev.current) {
       prev.current = now;
       onHintChange(now);
@@ -1147,61 +802,6 @@ const PathHintDetector = ({
 };
 
 // ─── WASD Controls ────────────────────────────────────────────────────────────
-const WASDControls = ({
-  orbitRef,
-}: {
-  orbitRef: React.RefObject<{ target: Vector3 }>;
-}) => {
-  const { camera } = useThree();
-  const keys = useRef({ w: false, s: false, a: false, d: false });
-
-  useEffect(() => {
-    const dn = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = true;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = true;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = true;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = true;
-    };
-    const up = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = false;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = false;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = false;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = false;
-    };
-    window.addEventListener("keydown", dn);
-    window.addEventListener("keyup", up);
-    return () => {
-      window.removeEventListener("keydown", dn);
-      window.removeEventListener("keyup", up);
-    };
-  }, []);
-
-  useFrame((_, dt) => {
-    const dir = new Vector3();
-    camera.getWorldDirection(dir);
-    dir.y = 0;
-    dir.normalize();
-
-    const vel = new Vector3();
-    if (keys.current.w || joystick.dy < -0.2) vel.add(dir);
-    if (keys.current.s || joystick.dy > 0.2) vel.sub(dir);
-    if (keys.current.a || joystick.dx < -0.2)
-      vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
-    if (keys.current.d || joystick.dx > 0.2)
-      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
-
-    if (vel.length() > 0) {
-      camera.position.addScaledVector(vel.normalize(), 8 * dt);
-      camera.position.y = 1.8;
-      if (orbitRef.current) {
-        orbitRef.current.target.copy(camera.position).addScaledVector(dir, 4);
-        orbitRef.current.target.y = 1.8;
-      }
-    }
-  });
-
-  return null;
-};
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 const AboutRoom = () => {
@@ -1246,6 +846,7 @@ const AboutRoom = () => {
       style={{ background: "#87ceeb" }}
     >
       <GalleryNavbar />
+      <ViewToggleButton isMobile={isMobile} />
 
       {/* Overlay hint */}
       <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none px-4">
@@ -1287,7 +888,7 @@ const AboutRoom = () => {
           >
             {isMobile
               ? "Drag to look · Pinch to zoom"
-              : "WASD · walk north to explore experiences chronologically"}
+              : "WASD · follow the golden light to the portal"}
           </p>
         </div>
       </div>
@@ -1312,8 +913,16 @@ const AboutRoom = () => {
             onNearPortal={handleNearPortal}
           />
           <PathHintDetector onHintChange={setShowPathHint} />
-          <WASDControls
+          <OrbitWalker
+            orbitRef={orbitRef as React.RefObject<{ target: Vector3 } | null>}
+            player={ABOUT_PLAYER}
+            speed={8}
+            bounds={ABOUT_BOUNDS}
+          />
+          <PlayerAvatar player={ABOUT_PLAYER} />
+          <PortalGuide
             orbitRef={orbitRef as React.RefObject<{ target: Vector3 }>}
+            player={ABOUT_PLAYER}
           />
           <OrbitControls
             ref={orbitRef}
@@ -1333,29 +942,35 @@ const AboutRoom = () => {
 
       {isMobile && <MobileJoystick />}
 
-      {/* Path hint — shown when on path but not near any pillar */}
+      {/* Guide — shown until the visitor reaches the portal */}
       <AnimatePresence>
         {showPathHint && !transitioning && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 0.55, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.5 }}
-            className="absolute bottom-16 left-0 right-0 z-20 pointer-events-none text-center"
+            className="absolute bottom-16 left-0 right-0 z-20 flex justify-center pointer-events-none"
           >
-            <p
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event(WALK_EVENT))}
+              className="pointer-events-auto px-6 py-2.5 rounded-full transition hover:brightness-125"
               style={{
-                color: "#c8b880",
+                background: "rgba(20,14,4,0.65)",
+                border: "1px solid rgba(220,170,60,0.55)",
+                boxShadow: "0 0 24px rgba(220,170,60,0.25)",
+                color: "#f0d890",
                 fontFamily: "Georgia, serif",
                 fontSize: "12px",
                 letterSpacing: "0.28em",
                 textTransform: "uppercase",
                 whiteSpace: "nowrap",
+                cursor: "pointer",
               }}
             >
-              Walk closer to a pillar to explore · For the full timeline, visit
-              the portal in front of the fountain
-            </p>
+              Follow the light · Walk to the portal ›
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

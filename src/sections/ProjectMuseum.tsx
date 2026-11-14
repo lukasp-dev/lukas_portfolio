@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import React, { Suspense, useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -9,7 +9,14 @@ import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { motion, AnimatePresence } from "framer-motion";
 import HolographicUI from "../components/gallery/ProjectDetailModal";
 import GalleryNavbar from "../components/gallery/GalleryNavbar";
-import MobileJoystick, { joystick } from "../components/MobileJoystick";
+import MobileJoystick from "../components/MobileJoystick";
+import {
+  OrbitWalker,
+  PlayerAvatar,
+  ViewToggleButton,
+  createPlayer,
+} from "../components/gallery/PlayerAvatar";
+import MilanDecor from "../components/gallery/MilanDecor";
 import { myProjects, Project } from "../constants";
 
 // Unique color palette for each frame canvas
@@ -409,6 +416,9 @@ const AboutDoor = ({ onEnter }: { onEnter: () => void }) => {
   );
 };
 
+const MUSEUM_PLAYER = createPlayer(0, 1.8, 38);
+const MUSEUM_BOUNDS = { minX: -14.2, maxX: 14.2, minZ: -40.2, maxZ: 40.2 };
+
 // Museum corridor room
 const MuseumRoom = ({
   onFrameHover,
@@ -432,20 +442,13 @@ const MuseumRoom = ({
 
   return (
     <group>
-      {/* FLOOR - polished stone */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[W, L]} />
-        <meshStandardMaterial
-          color="#c9bfb0"
-          roughness={0.22}
-          metalness={0.06}
-        />
-      </mesh>
+      {/* Milanese floor, arcade, glass vault, dado and chandeliers */}
+      <MilanDecor W={W} L={L} H={H} />
 
-      {/* CEILING */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, H, 0]}>
+      {/* Base floor under the marble layer (avoids any z-fighting gaps) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
         <planeGeometry args={[W, L]} />
-        <meshStandardMaterial color="#f0eae2" roughness={1} />
+        <meshStandardMaterial color="#2b2a28" roughness={0.4} />
       </mesh>
 
       {/* NORTH WALL — split around door opening (3.0 wide × 4.1 tall) */}
@@ -623,61 +626,6 @@ const MuseumRoom = ({
 
 // Free WASD movement — also slides the OrbitControls target so distance
 // constraints never block forward movement.
-const WASDControls = ({
-  orbitRef,
-}: {
-  orbitRef: React.RefObject<{ target: Vector3 }>;
-}) => {
-  const { camera } = useThree();
-  const keys = useRef({ w: false, s: false, a: false, d: false });
-
-  useEffect(() => {
-    const dn = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = true;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = true;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = true;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = true;
-    };
-    const up = (e: KeyboardEvent) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") keys.current.w = false;
-      if (e.code === "KeyS" || e.code === "ArrowDown") keys.current.s = false;
-      if (e.code === "KeyA" || e.code === "ArrowLeft") keys.current.a = false;
-      if (e.code === "KeyD" || e.code === "ArrowRight") keys.current.d = false;
-    };
-    window.addEventListener("keydown", dn);
-    window.addEventListener("keyup", up);
-    return () => {
-      window.removeEventListener("keydown", dn);
-      window.removeEventListener("keyup", up);
-    };
-  }, []);
-
-  useFrame((_, dt) => {
-    const dir = new Vector3();
-    camera.getWorldDirection(dir);
-    dir.y = 0;
-    dir.normalize();
-
-    const vel = new Vector3();
-    if (keys.current.w || joystick.dy < -0.2) vel.add(dir);
-    if (keys.current.s || joystick.dy > 0.2) vel.sub(dir);
-    if (keys.current.a || joystick.dx < -0.2)
-      vel.add(new Vector3().crossVectors(new Vector3(0, 1, 0), dir));
-    if (keys.current.d || joystick.dx > 0.2)
-      vel.add(new Vector3().crossVectors(dir, new Vector3(0, 1, 0)));
-
-    if (vel.length() > 0) {
-      camera.position.addScaledVector(vel.normalize(), 9 * dt);
-      camera.position.y = 1.8;
-      if (orbitRef.current) {
-        orbitRef.current.target.copy(camera.position).addScaledVector(dir, 4);
-        orbitRef.current.target.y = 1.8;
-      }
-    }
-  });
-
-  return null;
-};
 
 // Hover preview card (HTML overlay, appears on frame hover)
 const PreviewCard = ({ project }: { project: Project | null }) => (
@@ -775,6 +723,7 @@ const ProjectMuseum = () => {
       style={{ background: "#18140f" }}
     >
       <GalleryNavbar />
+      <ViewToggleButton isMobile={isMobile} />
 
       {/* Gallery title */}
       <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none px-4">
@@ -783,8 +732,7 @@ const ProjectMuseum = () => {
         </p>
         <h1 className="text-2xl sm:text-3xl md:text-[2.4rem] font-light tracking-[0.25em] uppercase text-stone-100">
           Project Gallery
-        </h1>
-        <div className="mt-3 w-20 h-px bg-gradient-to-r from-transparent via-amber-500/80 to-transparent mx-auto" />
+        </h1>        <div className="mt-3 w-20 h-px bg-gradient-to-r from-transparent via-amber-500/80 to-transparent mx-auto" />
       </div>
 
       {/* Controls hint */}
@@ -824,7 +772,13 @@ const ProjectMuseum = () => {
             onAboutDoorClick={handleAboutDoorClick}
           />
 
-          <WASDControls orbitRef={orbitRef} />
+          <OrbitWalker
+            orbitRef={orbitRef as React.RefObject<{ target: Vector3 } | null>}
+            player={MUSEUM_PLAYER}
+            speed={9}
+            bounds={MUSEUM_BOUNDS}
+          />
+          <PlayerAvatar player={MUSEUM_PLAYER} />
 
           <OrbitControls
             ref={orbitRef}

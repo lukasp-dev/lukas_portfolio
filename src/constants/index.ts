@@ -116,6 +116,52 @@ export const clientReviews: ClientReview[] = [
 
 export const myProjects: Project[] = [
   {
+    title: "Systems Study",
+    desc: "A personal C++ study workspace for algorithms, language fundamentals, and systems-oriented practice",
+    subdesc:
+      "A C++17 repository of small, focused programs covering core syntax and semantics, algorithm and data structure exercises, and a sandbox for experiments, with systems, networking, and architecture topics added over time.",
+    pageId: "418a96ff12e68025abc5d6cf4efa2eac",
+    href: "https://github.com/lukasp-dev/systems",
+    logo: "/assets/cpp.png",
+    logoStyle: {
+      backgroundColor: "#2A1816",
+      border: "0.2px solid #36201D",
+      boxShadow: "0px 0px 60px 0px #AA3C304D",
+    },
+    spotlight: "/assets/spotlight3.png",
+    tags: [
+      { id: 1, name: "C++", path: "/assets/cpp.png" },
+      {
+        id: 2,
+        name: "Operating Systems",
+        path: "https://cdn.simpleicons.org/linux/FFFFFF",
+      },
+      {
+        id: 3,
+        name: "Algorithms & Data Structures",
+        path: "https://cdn.simpleicons.org/thealgorithms/FFFFFF",
+      },
+      {
+        id: 4,
+        name: "Networking",
+        path: "https://cdn.simpleicons.org/wireshark/FFFFFF",
+      },
+      {
+        id: 5,
+        name: "Computer Architecture",
+        path: "https://cdn.simpleicons.org/arm/FFFFFF",
+      },
+    ],
+    picture: "/assets/cpp_system_thumbnail.png",
+    type: "Personal Project",
+    role: "Developer",
+    links: {
+      github: {
+        fullstack: "https://github.com/lukasp-dev/systems",
+      },
+    },
+  },
+  {
     title:
       "BuzzLine (Winner of Google Built With AI and overall software track at WooHacks 2025)",
     desc: "a platform for fire survivors, providing emergency support, safe routes, and a live walkability maps",
@@ -426,23 +472,55 @@ export const myProjects: Project[] = [
 
 export const experiences: Experience[] = [
   {
-    id: 1,
-    type: "work" as const,
-    startDate: "2026-04",
-    name: "Microsoft",
-    pos: "Software Engineer Intern",
-    duration: "Apr 2026 - Present",
-    title: "Software Engineer Intern at Microsoft",
-    companyLink: "https://www.microsoft.com",
-    companyInfo: "Incoming SWE intern at Microsoft Azure Compute, Redmond, Washington",
-    techStack: ["Azure", "Azure Compute", "C#", "Distributed Systems"],
+    id: 10,
+    type: "research" as const,
+    startDate: "2026-09",
+    name: "Georgia Tech",
+    pos: "Undergraduate Researcher",
+    duration: "Sep 2026 - Present",
+    title: "Undergraduate Researcher at Georgia Tech",
+    companyLink: "https://www.gatech.edu",
+    companyInfo:
+      "Georgia Tech | Atlanta, GA | Research on operating system support for AI agent workloads",
+    techStack: ["C", "Linux Kernel", "Operating Systems", "Memory Management"],
     animation: "fade-left",
     achievements: [
       {
-        title: "Azure Compute",
-        description: "Incoming SWE intern @ Azure Compute",
+        title: "OS Memory Management for AI Agents",
+        description:
+          "Designed a Linux kernel module exposing typed AI agent state semantics to OS memory management",
         details: [
-          "Starting April 2026 at Microsoft Azure Compute, Redmond, WA — On-site",
+          "Designed a Linux kernel module exposing typed AI agent state semantics to OS memory management",
+          "Architected action state dependencies to guide memory placement, reclamation, migration, and cross-process sharing",
+          "Defined evaluations across 3 benchmarks and 6 baselines measuring sharing, persistence, and memory efficiency",
+        ],
+      },
+    ],
+    icon: "/assets/gt_logo.png",
+  },
+  {
+    id: 1,
+    type: "work" as const,
+    startDate: "2026-05",
+    name: "Microsoft",
+    pos: "Software Engineering Intern",
+    duration: "May 2026 - Aug 2026",
+    title: "Software Engineering Intern at Microsoft",
+    companyLink: "https://www.microsoft.com",
+    companyInfo:
+      "Azure networking team working on the platform behind Azure's Software-Defined Networking and accelerated datapath",
+    techStack: ["C++", "Python", "Pytest", "Rust", "gRPC", "Azure", "Networking"],
+    animation: "fade-left",
+    achievements: [
+      {
+        title: "Accelerated Networking Datapath Testing",
+        description:
+          "Modernized Azure's datapath test suite onto a new Pytest + Rust gRPC framework and extended its core test infrastructure",
+        details: [
+          "Ported and verified multiple legacy C++ test groups onto a new Pytest client + Rust gRPC framework",
+          "Extended the gRPC and harness layer connecting client-facing tests to the underlying drivers, building reusable infrastructure that accelerates every future test port",
+          "Validated the accelerated networking datapath end-to-end across host, SoC, and hardware-offload components",
+          "Drove an AI-assisted workflow using precise Markdown test specs as ground truth to increase test-generation throughput while verifying results against the system",
         ],
       },
     ],
@@ -454,7 +532,7 @@ export const experiences: Experience[] = [
     startDate: "2026-01",
     name: "Itential",
     pos: "Software Engineering Intern",
-    duration: "Jan 2026 - Present",
+    duration: "Jan 2026 - May 2026",
     title: "Software Engineering Intern at Itential",
     companyLink: "https://www.itential.com",
     companyInfo: "Network automation software company specializing in enterprise network orchestration and automation for Fortune 500 companies",
